@@ -1,0 +1,7 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+        "thitracnghiem/src/main/java/com/laptrinhweb/thitracnghiem"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
+}
