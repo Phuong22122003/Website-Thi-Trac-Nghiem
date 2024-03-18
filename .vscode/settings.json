@@ -3,5 +3,6 @@
         "src",
         "thitracnghiem/src/main/java/com/laptrinhweb/thitracnghiem"
     ],
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
