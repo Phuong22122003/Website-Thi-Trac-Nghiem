@@ -48,7 +48,7 @@ public class DangNhapService {
             // Xử lý trường hợp giá trị null hoặc không tồn tại
             return -1; // hoặc giá trị mặc định khác
         }
-    }dsaffasd
+    }
 
     public NhanVien getUserByUsernameNhanVien(String username) {
         return nhanVienRepository.findUserByUsername(username);
