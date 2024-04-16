@@ -2,9 +2,13 @@ package com.laptrinhweb.thitracnghiem.Entity;
 
 import java.io.Serializable;
 
+import java.util.Collection;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,6 +33,10 @@ public class GiangVien implements Serializable {
     private String passWord;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
+    @OneToMany(mappedBy = "giangvien", fetch = FetchType.LAZY)
+    private Collection<DangKyThi> dkThis;
+    @OneToMany(mappedBy = "giangvien", fetch = FetchType.EAGER)
+    private Collection<CauHoi> cauHois;
 
     public String getMaGv() {
         return maGv;
@@ -101,4 +109,29 @@ public class GiangVien implements Serializable {
     public void setTrangThaiXoa(boolean trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
     }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public boolean isTrangThaiXoa() {
+        return trangThaiXoa;
+    }
+
+    public Collection<DangKyThi> getDkThis() {
+        return dkThis;
+    }
+
+    public void setDkThis(Collection<DangKyThi> dkThis) {
+        this.dkThis = dkThis;
+    }
+
+    public Collection<CauHoi> getCauHois() {
+        return cauHois;
+    }
+
+    public void setCauHois(Collection<CauHoi> cauHois) {
+        this.cauHois = cauHois;
+    }
+
 }

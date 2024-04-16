@@ -4,8 +4,13 @@ import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.Collection;
 
 @Entity
 @Table(name = "SINHVIEN")
@@ -27,10 +32,15 @@ public class SinhVien {
     private String userName;
     @Column(name = "PASSWORD")
     private String passWord;
-    @Column(name = "MALOP")
-    private String maLop;
+    // @Column(name = "MALOP")
+    // private String maLop;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
+    @ManyToOne
+    @JoinColumn(name = "MALOP")
+    private Lop lop;
+    @OneToMany(mappedBy = "sinhvien", fetch = FetchType.EAGER)
+    private Collection<Thi> _this;
 
     public SinhVien() {
     }
@@ -45,7 +55,7 @@ public class SinhVien {
         this.ngaySinh = ngaySinh;
         this.userName = userName;
         this.passWord = passWord;
-        this.maLop = maLop;
+        // this.maLop = maLop;
     }
 
     public String getMasv() {
@@ -112,12 +122,12 @@ public class SinhVien {
         this.passWord = passWord;
     }
 
-    public String getMaLop() {
-        return maLop;
+    public Collection<Thi> get_this() {
+        return _this;
     }
 
-    public void setMaLop(String maLop) {
-        this.maLop = maLop;
+    public void set_this(Collection<Thi> _this) {
+        this._this = _this;
     }
 
     public boolean isTrangThaiXoa() {
@@ -127,5 +137,21 @@ public class SinhVien {
     public void setTrangThaiXoa(boolean trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
     }
+
+    public Lop getLop() {
+        return lop;
+    }
+
+    public void setLop(Lop lop) {
+        this.lop = lop;
+    }
+
+    // public String getMaLop() {
+    // return maLop;
+    // }
+
+    // public void setMaLop(String maLop) {
+    // this.maLop = maLop;
+    // }
 
 }

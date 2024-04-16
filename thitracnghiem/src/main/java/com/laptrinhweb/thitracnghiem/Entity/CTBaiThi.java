@@ -4,15 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "CTBAITHI")
 @IdClass(IDCTBaiThi.class)
 public class CTBaiThi {
-	@Id
-	@Column(name = "IDTHI")
-	private int idThi;
 	@Id
 	@Column(name = "IDCH")
 	private int idch;
@@ -22,29 +21,18 @@ public class CTBaiThi {
 	private int thuTuChon;
 	@Column(name = "TRANGTHAIXOA")
 	private boolean trangThaiXoa;
+	@ManyToOne
+	@JoinColumn(name = "IDTHI")
+	private Thi thi;
 
-	public CTBaiThi(int idThi) {
-		this.idThi = idThi;
-		dapAnSv = 0;
-	}
-
-	public CTBaiThi(int idThi, int idch, int dapAnSv, int thuTuChon, boolean trangThaiXoa) {
-		this.idThi = idThi;
+	public CTBaiThi(int idch, int dapAnSv, int thuTuChon, boolean trangThaiXoa) {
 		this.idch = idch;
 		this.dapAnSv = dapAnSv;
 		this.thuTuChon = thuTuChon;
 		this.trangThaiXoa = trangThaiXoa;
 	}
 
-	public int getIdThi() {
-		return idThi;
-	}
-
 	public CTBaiThi() {
-	}
-
-	public void setIdThi(int idThi) {
-		this.idThi = idThi;
 	}
 
 	public int getIdch() {

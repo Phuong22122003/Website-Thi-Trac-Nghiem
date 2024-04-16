@@ -1,8 +1,12 @@
 package com.laptrinhweb.thitracnghiem.Entity;
 
+import java.util.Collection;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +27,8 @@ public class NhanVien {
     private String passWord;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
+    @OneToMany(mappedBy = "nhanvien", fetch = FetchType.LAZY)
+    private Collection<DangKyThi> dkThis;
 
     public NhanVien(String manv, String ho, String ten, boolean gioiTinh, String userName, String passWord,
             boolean trangThaiXoa) {

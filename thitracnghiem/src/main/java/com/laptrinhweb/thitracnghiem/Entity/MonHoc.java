@@ -1,8 +1,12 @@
 package com.laptrinhweb.thitracnghiem.Entity;
 
+import java.util.Collection;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +23,8 @@ public class MonHoc {
     private int soTietTh;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
+    @OneToMany(mappedBy = "monhoc", fetch = FetchType.EAGER)
+    private Collection<CauHoi> cauHois;
 
     public MonHoc(String mamh, String tenmh, int soTietLt, int soTietTh, boolean trangThaiXoa) {
         this.mamh = mamh;
@@ -70,6 +76,14 @@ public class MonHoc {
 
     public void setTrangThaiXoa(boolean trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
+    }
+
+    public Collection<CauHoi> getCauHois() {
+        return cauHois;
+    }
+
+    public void setCauHois(Collection<CauHoi> cauHois) {
+        this.cauHois = cauHois;
     }
 
 }
