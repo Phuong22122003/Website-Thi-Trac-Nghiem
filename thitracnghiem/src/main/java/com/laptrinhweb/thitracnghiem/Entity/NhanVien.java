@@ -27,7 +27,7 @@ public class NhanVien {
     private String passWord;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
-    @OneToMany(mappedBy = "nhanvien", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
     private Collection<DangKyThi> dkThis;
 
     public NhanVien(String manv, String ho, String ten, boolean gioiTinh, String userName, String passWord,

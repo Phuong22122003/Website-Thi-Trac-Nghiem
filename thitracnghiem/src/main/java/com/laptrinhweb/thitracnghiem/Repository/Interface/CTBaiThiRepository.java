@@ -1,4 +1,4 @@
-package com.laptrinhweb.thitracnghiem.Repository;
+package com.laptrinhweb.thitracnghiem.Repository.Interface;
 
 import java.util.Map;
 
@@ -12,8 +12,8 @@ import com.laptrinhweb.thitracnghiem.Entity.IDCTBaiThi;
 
 @Repository
 public interface CTBaiThiRepository extends JpaRepository<CTBaiThi, IDCTBaiThi> {
-    @Query(value = "Exec layThongTinKQ @idThi= :idThi", nativeQuery = true)
-    public Map<String, Object> layThongTinKQ(@Param("idThi") int idThi);
+    // @Query(value = "Exec layThongTinKQ @idThi= :idThi", nativeQuery = true)
+    // public Map<String, Object> layThongTinKQ(@Param("idThi") int idThi);
 
-    public long countByIdchAndTrangThaiXoa(int idch, boolean trangThaiXoa);
+    // public long countByIdchAndTrangThaiXoa(int idch, boolean trangThaiXoa);
 }

@@ -1,4 +1,4 @@
-package com.laptrinhweb.thitracnghiem.Repository;
+package com.laptrinhweb.thitracnghiem.Repository.Interface;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

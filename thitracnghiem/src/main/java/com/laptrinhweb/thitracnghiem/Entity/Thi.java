@@ -28,7 +28,7 @@ public class Thi {
     private boolean trangThaiXoa;
     @ManyToOne
     @JoinColumn(name = "MASV")
-    private SinhVien sinhvien;
+    private SinhVien sinhVien;
     @ManyToOne
     @JoinColumn(name = "IDDK")
     private DangKyThi dkThi;
@@ -68,11 +68,11 @@ public class Thi {
     }
 
     public SinhVien getSinhvien() {
-        return sinhvien;
+        return sinhVien;
     }
 
     public void setSinhvien(SinhVien sinhvien) {
-        this.sinhvien = sinhvien;
+        this.sinhVien = sinhvien;
     }
 
     public DangKyThi getDkThi() {

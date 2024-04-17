@@ -39,7 +39,7 @@ public class SinhVien {
     @ManyToOne
     @JoinColumn(name = "MALOP")
     private Lop lop;
-    @OneToMany(mappedBy = "sinhvien", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sinhVien", fetch = FetchType.EAGER)
     private Collection<Thi> _this;
 
     public SinhVien() {
