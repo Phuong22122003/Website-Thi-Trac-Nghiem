@@ -109,7 +109,7 @@
                             <td th:text=${lich.getThoiLuong()}> </td>
                             <td>
                                 <div th:if="${lich.getTrangThai()}">
-                                    <form th:action="@{/student/exam}" method="post">
+                                    <form th:action="@{/student/exam}" style="display: flex; align-items: center; justify-content: center;" method="post">
                                         <input name="idthi" th:value="${lich.getIDTHI()}" type="hidden">
                                         <input name="mamh" th:value="${lich.getMaMH()}" type="hidden">
                                         <input name="tenmh" th:value="${lich.getTenMH()}" type="hidden" />
