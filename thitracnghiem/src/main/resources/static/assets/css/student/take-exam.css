@@ -1,0 +1,167 @@
+body {
+    overflow-y: hidden;
+    font-size: 1.6rem;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ================container==================== */
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+.question-index-bar {
+    max-width: 110px;
+    min-width: 100px;
+    height: 98vh;
+    overflow-y: scroll;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exam-view {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 98vh;
+    flex-grow: 9;
+    padding: 20px;
+    padding-top: 0px;
+}
+.info-view{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    flex-grow: 1;
+    width: 250px;
+    height: 98vh;
+    border-radius: 10px;
+    align-items: center;
+}
+/* =========================question and answer========================== */
+.exam-view .subject-name {
+    color: #4A3AFF;
+    font-weight: 700;
+    padding-left: 35%;
+    font-size: 2.8rem;
+    height: 40px;
+}
+.exam-view .form {
+    display: flex;
+    flex-direction: column ;
+    flex-grow:10;
+}
+.exam-view .form .question-answer{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    display: none;
+}
+.exam-view .form .question-answer .question {
+    flex-grow: 1;
+    border: solid 1px;
+    border-radius: 10px;
+    min-height: 150px;
+    max-height: 200px;
+    padding: 10px;
+}
+
+
+.exam-view .form .question-answer .box-answer {
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding:20px;
+    flex-grow: 10;
+    /* height: 55vh; */
+}
+
+.exam-view .form .question-answer .box-answer .answer {
+    flex-grow: 1;
+    
+}
+
+/* ======================previous and next========================= */
+.exam-view .navigation {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.exam-view .navigation .previous {
+    background-color: #4A3AFF;
+    color: white;
+    margin-left: 3%;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.exam-view .navigation .next {
+    margin-left: 75%;
+    background-color: #4A3AFF;
+    color: white;
+    height: 40px;
+    border-radius: 5px;
+    width: 80px;
+}
+/* ==================info========================= */
+.info-view .time-left{
+    max-height: 80px;
+    max-width: 250px;
+    background-color: #4A3AFF;
+    color: white;
+    border-radius: 10px;
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.info-view .candidate-info{
+    border: #000000 solid 1px;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.info-view .score{
+    margin-top: 50px;
+    font-size: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4A3AFF;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px 0px rgba(100, 89, 220, 0.75);
+    border: 1px solid;
+    padding: 30px 50px;
+}
+.info-view .submit{
+    margin-top: 50px;
+    color: white;
+    background-color: #4A3AFF;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+.info-view .submit:hover{
+    cursor: pointer;
+}

@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiThiDTO;
-import com.laptrinhweb.thitracnghiem.DTO.DanhSachCauHoiThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.ResultSetDTO;
 import com.laptrinhweb.thitracnghiem.Entity.CTBaiThi;
 import com.laptrinhweb.thitracnghiem.Entity.CauHoi;

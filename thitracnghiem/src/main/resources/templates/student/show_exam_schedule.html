@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <html xmlns:th="http://www.thymeleaf.org">
+
+    </html>
+    <title>Xem lịch thi</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/assets/css/student/show_exam_schedule.css"
+        th:href="@{/assets/css/student/show_exam_schedule.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- thanh chọn các chức năng -->
+        <div class="left-container child-container">
+            <!-- logo canh ngay student -->
+            <div>
+                <img src="../../static/assets/img/multi-dot.svg" alt="" th:src="@{/assets/img/multi-dot.svg}" />
+                <span class="student-text">Student</span>
+            </div>
+            <!-- danh sách các chức năng -->
+            <ul class="list">
+                <!-- các chức năng cụ thể -->
+                <li class="item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" fill="none"
+                        class="icon">
+                        <path
+                            d="M12 21.4073C11.59 21.4073 11.25 21.0363 11.25 20.5889V17.3156C11.25 16.8682 11.59 16.4973 12 16.4973C12.41 16.4973 12.75 16.8682 12.75 17.3156V20.5889C12.75 21.0363 12.41 21.4073 12 21.4073Z"
+                            fill="currentColor" />
+                        <path
+                            d="M17.6 25.5644H6.39996C4.57996 25.5644 2.91996 24.0368 2.61996 22.0837L1.28996 13.3876C1.06996 12.0346 1.67996 10.2997 2.66996 9.43775L9.59996 3.38209C10.94 2.20369 13.05 2.2146 14.4 3.393L21.33 9.43775C22.31 10.2997 22.91 12.0346 22.71 13.3876L21.38 22.0728C21.08 24.0041 19.38 25.5644 17.6 25.5644ZM11.99 4.14586C11.46 4.14586 10.93 4.32044 10.54 4.65869L3.60996 10.7253C3.04996 11.2163 2.64996 12.351 2.76996 13.1257L4.09996 21.811C4.27996 22.9566 5.32996 23.9277 6.39996 23.9277H17.6C18.67 23.9277 19.72 22.9566 19.9 21.8L21.23 13.1148C21.34 12.351 20.94 11.1944 20.39 10.7144L13.46 4.6696C13.06 4.32044 12.52 4.14586 11.99 4.14586Z"
+                            fill="currentColor" />
+                    </svg>
+                    <span>Thi</span>
+                </li>
+                <li class="item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27" fill="none"
+                        class="icon">
+                        <path
+                            d="M15 25.3561H9C3.57 25.3561 1.25 22.8247 1.25 16.9V10.3533C1.25 4.42859 3.57 1.89722 9 1.89722H14C14.41 1.89722 14.75 2.26819 14.75 2.71555C14.75 3.16291 14.41 3.53388 14 3.53388H9C4.39 3.53388 2.75 5.32331 2.75 10.3533V16.9C2.75 21.93 4.39 23.7194 9 23.7194H15C19.61 23.7194 21.25 21.93 21.25 16.9V11.4444C21.25 10.9971 21.59 10.6261 22 10.6261C22.41 10.6261 22.75 10.9971 22.75 11.4444V16.9C22.75 22.8247 20.43 25.3561 15 25.3561Z"
+                            fill="currentColor" />
+                        <path
+                            d="M22 12.2606H18C14.58 12.2606 13.25 10.8094 13.25 7.07777V2.71333C13.25 2.386 13.43 2.08048 13.71 1.96046C13.99 1.82953 14.31 1.90591 14.53 2.13504L22.53 10.8639C22.6343 10.9786 22.7052 11.1243 22.7338 11.2828C22.7624 11.4412 22.7474 11.6054 22.6908 11.7546C22.6342 11.9038 22.5384 12.0315 22.4155 12.1215C22.2926 12.2115 22.148 12.2599 22 12.2606ZM14.75 4.68824V7.07777C14.75 9.89284 15.42 10.6239 18 10.6239H20.19L14.75 4.68824Z"
+                            fill="currentColor" />
+                    </svg>
+                    <span>Xem điểm</span>
+                </li>
+                <li class="item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
+                        <path
+                            d="M13.6 15.4029C13.29 19.3309 11.44 20.9348 7.39 20.9348H7.26C2.79 20.9348 1 18.9817 1 14.1045V6.99041C1 2.11315 2.79 0.160059 7.26 0.160059H7.39C11.41 0.160059 13.26 1.74217 13.59 5.6047M7.5 10.5583L18.88 10.5583M16.65 14.2136L20 10.5583L16.65 6.90313"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <a>Sign Out</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right-container child-container">
+            <div class="right-child-container-top">
+                <div class="header">
+                    <div class="user-wrapper">
+                        <span class="text" th:text="'Hello, ' + ${session.username}"></span>
+                        <div class="img-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4ZM15.641 12.7694C17.075 11.673 18 9.94452 18 8C18 4.68629 15.3137 2 12 2C8.68629 2 6 4.68629 6 8C6 9.94452 6.92501 11.673 8.35901 12.7694C7.35354 13.2142 6.4285 13.8436 5.63604 14.636C5.02411 15.248 4.50935 15.939 4.10177 16.6851C3.34966 18.0619 3.65638 19.4657 4.50339 20.4584C5.3188 21.414 6.62502 22 8 22H16C17.375 22 18.6812 21.414 19.4966 20.4584C20.3436 19.4657 20.6503 18.0619 19.8982 16.6851C19.4907 15.939 18.9759 15.248 18.364 14.636C17.5715 13.8436 16.6465 13.2142 15.641 12.7694ZM12 14C10.1435 14 8.36301 14.7375 7.05025 16.0503C6.57425 16.5263 6.17394 17.0637 5.85696 17.6439C5.54999 18.2058 5.64902 18.7198 6.02481 19.1602C6.4322 19.6376 7.16584 20 8 20H16C16.8342 20 17.5678 19.6376 17.9752 19.1602C18.351 18.7198 18.45 18.2058 18.143 17.6439C17.8261 17.0637 17.4258 16.5263 16.9497 16.0503C15.637 14.7375 13.8565 14 12 14Z"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 20px;padding-left: 50px;">Exsisting Exame</p>
+            </div>
+            <div class="right-child-container-bottom">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>STT</td>
+                            <td>MÔN</td>
+                            <td>NGÀY THI</td>
+                            <td>LẦN THI</td>
+                            <td>SỐ CÂU</td>
+                            <td>THỜI LƯỢNG</td>
+                            <td>TRẠNG THÁI</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="lich: ${lichthi}">
+                            <td th:text=${lich.getStt()}> </td>
+                            <td th:text=${lich.getTenMH()}> </td>
+                            <td th:text=${lich.getNgayThi()}> </td>
+                            <td th:text=${lich.getLanThi()}> </td>
+                            <td th:text=${lich.getSoCau()}> </td>
+                            <td th:text=${lich.getThoiLuong()}> </td>
+                            <td>
+                                <button th:if="${lich.isTrangThai()}" type="button">Thi</button>
+                                <button th:unless="${lich.isTrangThai()}" type="button" th:disabled="true">Thi</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

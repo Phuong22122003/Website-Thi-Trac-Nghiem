@@ -49,6 +49,14 @@ public class CTBaiThi {
 		this.thi = thi;
 		this.cauHoi = cauHoi;
 	}
+	public CTBaiThi(Integer idThi, Integer idch, Integer dapAnSv, Integer thuTuChon, boolean trangThaiXoa) {
+		this.idThi = idThi;
+		this.idch = idch;
+		this.dapAnSv = dapAnSv;
+		this.thuTuChon = thuTuChon;
+		this.trangThaiXoa = trangThaiXoa;
+	}
+	public CTBaiThi(){}
 	// =================================getter and setter================//
 	public Integer getIdThi() {
 		return idThi;

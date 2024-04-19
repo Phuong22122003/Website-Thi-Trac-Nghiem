@@ -72,6 +72,7 @@ public class DangKyThi {
         this.nhanVien = nhanvien;
         this.monHoc = monHoc;
     }
+    public DangKyThi(){}
     // ====================GETTER AND SETTER===========================//
     public int getIddk() {
         return iddk;

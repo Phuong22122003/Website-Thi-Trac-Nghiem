@@ -48,7 +48,8 @@ public class CauHoi {
         this.giangVien = giangvien;
         this.monHoc = monhoc;
     }
-
+    public CauHoi(){}
+    // =================getter and setter===================//
     public Integer getIdch() {
         return idch;
     }

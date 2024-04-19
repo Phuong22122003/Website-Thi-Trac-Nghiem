@@ -23,8 +23,8 @@ public interface ThiRepository extends JpaRepository<Thi, Integer> {
     // @Query(value = "SELECT * FROM Thi t where t.masv = :masv and t.trangThaiXoa = 0", nativeQuery = true)
     // public List<Thi> checkExsitsThi(@Param("masv") String masv);
 
-    // @Transactional
-    // @Modifying
-    // @Query("update Thi t set t.dathi = true,t.diem = :diem where t.idThi = :idthi")
-    // public void update(@Param(value = "idthi") int idthi, @Param(value = "diem") float diem);
+    @Transactional
+    @Modifying
+    @Query("update Thi t set t.dathi = true,t.diem = :diem where t.idThi = :idthi")
+    public void update(@Param(value = "idthi") int idthi, @Param(value = "diem") float diem);
 }

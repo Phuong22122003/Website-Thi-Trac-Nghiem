@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Thi</title>
+    <link rel="stylesheet" href="../../static/assets/css/student/take-exam.css" th:href="@{/assets/css/student/take-exam.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body th:onload="'showQuestion(0); countdownMinutes(' + ${thongTinThi.getThoiLuong()} + ');moveQuestion(' + ${thongTinThi.getSoCau()}+ ');'">
+    <div class="main-container">
+        <div class="question-index-bar">
+            <div th:each="i: ${#numbers.sequence(1, thongTinThi.getSoCau())}">
+                <a th:text="'Câu '+ ${i}" th:onclick="'showQuestion(' + ${i-1} +  ');'"></a>
+            </div>
+        </div>
+        <div class="exam-view">
+            <div class="subject-name" th:text="${thongTinThi.getTenMH()}"></div>
+            <form th:action="@{/student/result}" method="post" th:object="${danhsachch}" class="form" id = "form">
+                <input type="hidden" th:field = "*{idThi}">
+                <div th:each="cauhoi,itemStat :*{listCauHoi}" class="question-answer">
+                    <div class="question" th:text="${cauhoi.getNoiDung()}"></div>
+                    <input type="hidden" th:field = "*{listCauHoi[__${itemStat.index}__].idch}">   
+                    <div class="box-answer">
+                        <div class="answer" th:each="luachon,stat : ${cauhoi.getLuaChons()}">
+                            <input type="radio" th:value="${luachon.getThuTu()}"
+                                th:field="*{listCauHoi[__${itemStat.index}__].dapAnSV}"/>
+                            <label th:text="${luachon.getNoiDung()}"></label>
+                        </div>
+                    </div> 
+                </div>
+            </form>
+
+            <div class="navigation">
+                <button id  = "previous" class="previous">&laquo; Previous</button>
+                <button id = "next" class="next">Next &raquo;</button>
+            </div>
+        </div>
+        <div class="info-view">
+            <div class="time-left" id = "time">
+                <p>Thời gian: 60:00 phút</p>
+                <p>Còn lại: 59:00 phút</p>
+            </div>
+            <div class="candidate-info">
+                <div>THÔNG TIN</div>
+                <div th:text = "'MASV: '+${sinhvien.getMasv()}">MASV: masv</div>
+                <div th:text = "'Họ và tên: '+${sinhvien.getTen()}">Họ và tên: Nguyễn Bình Phương</div>
+                <div th:text = "'Lần thi: '+${thongTinThi.getLanThi()}">Lần thi: 1</div>
+                <div th:text = "'Ngày thi: '+${thongTinThi.getNgayThi()}">Ngày thi: 1/1/2024</div>
+            </div>
+            <div class="score">
+                <div>ĐIỂM</div>
+                <div>00</div>
+            </div>
+            <button class="submit" id = "submitbtn" onclick="subMit()"><a>SUBMIT</a></button>
+        </div>
+    </div>
+    <script src="./../../static/javascript/student/take-exam.js" th:src="@{/javascript/student/take-exam.js}"></script>
+</body>
+
+</html>

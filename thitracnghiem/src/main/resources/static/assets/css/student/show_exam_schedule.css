@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --primary-color: #4A3AFF;
+    --primary-black-color: rgba(0, 0, 0, 0.60);
+    --gray: #696F79;
+    --width-header: 107px;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+/* ===========================container================================ */
+.main-container {
+    display: flex;
+}
+
+.child-container {
+    height: 100vh;
+}
+
+.left-container {
+    background-color: var(--primary-color);
+    padding: 63px 63px 90px;
+    padding-right: 0px;
+    border-radius: 0px 40px 40px 0px;
+    flex-grow: 1;
+}
+
+.right-container {
+    flex-grow: 5;
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===============left-container============================= */
+.left-container .list {
+    margin-top: 115px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+
+.left-container .list .item {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    color: #ccc;
+    cursor: pointer;
+    padding-left: none
+}
+
+.left-container .student-text {
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 4rem;
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+/* =====================.right-container======================= */
+.right-child-container-top {
+    /* background-color: blueviolet; */
+    flex-grow: 1;
+}
+
+.right-child-container-bottom {
+    padding: 10px;  
+    padding-top: 0px;
+    flex-grow: 4;
+    overflow: scroll;
+}
+
+/* =========================table=============================================== */
+table {
+    border-collapse: collapse;
+    border-radius: 20px;
+    border: #030306 2px solid;
+    padding: 20px;
+    width: 100%;
+    position: relative;
+}
+
+thead {
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #2FA4E7;
+}
+
+td {
+    border: 1px solid;
+    padding-left: 10px;
+}
+
+/* =======================header======================== */
+
+.header {
+    padding: 36px 106px;
+    height: var(--width-header);
+}
+
+.user-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.user-wrapper .img-wrapper {
+    border: 1px solid var(--primary-color);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.user-wrapper .text {
+    font-family: Roboto;
+    font-size: 2.1rem;
+    font-weight: 500;
+}

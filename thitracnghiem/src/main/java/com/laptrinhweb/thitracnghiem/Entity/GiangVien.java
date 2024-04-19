@@ -38,6 +38,7 @@ public class GiangVien implements Serializable {
     @OneToMany(mappedBy = "giangVien", fetch = FetchType.EAGER)
     private Collection<CauHoi> cauHois;
     // ===============Constructor========================//
+    public GiangVien(){}
     public GiangVien(String maGv, String ho, String ten, boolean gioiTinh, String hocVi, String hocHam, String userName,
             String passWord, boolean trangThaiXoa, Collection<DangKyThi> dkThis, Collection<CauHoi> cauHois) {
         this.maGv = maGv;
@@ -52,6 +53,7 @@ public class GiangVien implements Serializable {
         this.dkThis = dkThis;
         this.cauHois = cauHois;
     }
+    //===============getter and setter=========================//
     public String getMaGv() {
         return maGv;
     }
