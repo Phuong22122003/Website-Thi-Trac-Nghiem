@@ -1,0 +1,128 @@
+.content {
+    /* margin-bottom: 32px; */
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-inner {
+    border-radius: 30px;
+    background: #FFF;
+    box-shadow: 0px 15px 40px 5px #EDEDED;
+    width: 60%;
+    min-height: 90%;
+    padding: 64px;
+}
+
+.content-inner .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-inner .top .left {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-inner .top .subject-name,
+.content-inner .time-left {
+    color: var(--primary-color);
+    font-size: 3.3rem;
+    font-weight: 700;
+}
+
+.content-inner .top .text {
+    margin-top: 16px;
+    color: var(--gray);
+    font-size: 2rem;
+}
+
+.question-wrapper {
+    max-width: 60%;
+    margin-top: 64px;
+}
+
+.question-wrapper .question-count {
+    color: var(--gray);
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.question-wrapper .question-desc {
+    margin-top: 25px;
+    color: var(--gray);
+    font-size: 1.8rem;
+    line-height: 1.6;
+}
+
+.question-wrapper .text {
+    display: block;
+    margin-top: 64px;
+    color: var(--gray);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.radio-wrapper:nth-of-type(1) {
+    margin-top: 23px;
+}
+
+.radio-wrapper {
+    margin-top: 30px;
+}
+
+.radio-wrapper label {
+    margin-left: 23px;
+    color: var(--gray);
+    font-family: Poppins;
+    font-size: 1.8rem;
+}
+
+.question-controller {
+    width: fit-content;
+    margin: 64px auto 0;
+    display: flex;
+    column-gap: 8px;
+}
+
+
+
+.question-controller .item,
+.question-controller .prev,
+.question-controller .next {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    padding: 5px 4px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid #DFE3E8;
+    background: #FFF;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212B36;
+    cursor: pointer;
+    transition: color ease 0.2s, background-color ease 0.2s, border ease 0.2s;
+}
+
+.question-controller .next:hover,
+.question-controller .prev:hover {
+    background-color: #919EAB;
+}
+
+.question-controller .item:hover {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-submit {
+    display: block;
+    margin-left: auto;
+    text-align: center;
+    padding: 16px;
+    border-radius: 999px;
+
+}
