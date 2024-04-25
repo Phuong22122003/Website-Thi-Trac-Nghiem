@@ -482,6 +482,9 @@ ul {
 
 .find-wrapper {
     margin: 0 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
 }
 
 .search-wrapper {
@@ -865,4 +868,15 @@ tbody .more {
 .mobile-controller.active {
     transform: translateX(0);
 
+}
+
+.btn-finding {
+    border-radius: 16px;
+    height: 47px;
+}
+
+.form-finding {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
 }

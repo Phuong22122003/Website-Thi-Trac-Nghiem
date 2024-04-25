@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 
-
-
 @Repository
 public interface MonHocRepository extends JpaRepository<MonHoc, String> {
     @Query(value = "select * from monhoc where trangthaixoa=0", nativeQuery = true)
@@ -18,4 +16,5 @@ public interface MonHocRepository extends JpaRepository<MonHoc, String> {
     @Query(value = "exec searchMonHoc @keyword = :keyword", nativeQuery = true)
     public List<MonHoc> searchMonHoc(@Param("keyword") String keyword);
 
+    public MonHoc findByMamh(String mamh);
 }

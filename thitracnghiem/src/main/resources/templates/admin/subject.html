@@ -339,26 +339,42 @@
             });
         </script>
         <div class="content">
-            <div class="content-wrapper" data-name="monhoc">
+            <div
+                class="content-wrapper"
+                data-name="monhoc"
+                style="display: block"
+            >
                 <div class="content-top">
                     <span class="text">Exams</span>
                 </div>
                 <div class="content-bottom">
                     <div class="find-wrapper">
-                        <label for="search">Entries</label>
-                        <div class="search-wrapper">
-                            <img
-                                src="../static/assets/img/search-icon.svg"
-                                th:src="@{/assets/img/search-icon.svg}"
-                                alt=""
-                            />
-                            <input
-                                type="text"
-                                name=""
-                                id="search-monhoc"
-                                placeholder="Search..."
-                            />
-                        </div>
+                        <form
+                            class="form-finding"
+                            th:action="@{/admin/searchMonHoc}"
+                            method="get"
+                        >
+                            <label for="search">Entries</label>
+                            <div class="search-wrapper">
+                                <img
+                                    src="../static/assets/img/search-icon.svg"
+                                    th:src="@{/assets/img/search-icon.svg}"
+                                    alt=""
+                                />
+                                <input
+                                    type="text"
+                                    name="keyword"
+                                    id="search-monhoc"
+                                    placeholder="Search..."
+                                />
+                            </div>
+                            <button
+                                href="/admin/findMonHoc"
+                                class="btn-trans btn-finding"
+                            >
+                                Tìm kiếm
+                            </button>
+                        </form>
                     </div>
                     <div class="table-wrapper">
                         <table class="table">
@@ -375,7 +391,37 @@
                                     <th data-name="action">Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <tr th:each="monHoc : ${monHocList}">
+                                    <td th:text="${monHoc.mamh}" class="mamh">
+                                        Mã môn học
+                                    </td>
+                                    <td th:text="${monHoc.tenmh}" class="tenmh">
+                                        Tên môn học
+                                    </td>
+                                    <td
+                                        th:text="${monHoc.soTietLt}"
+                                        class="soTietLt"
+                                    ></td>
+                                    <td
+                                        th:text="${monHoc.soTietTh}"
+                                        class="soTietTh"
+                                    ></td>
+                                    <td>
+                                        <i
+                                            class="fa-solid fa-pen-to-square edit"
+                                        ></i>
+                                        <a
+                                            th:href="@{/admin/deleteMonHoc/{mamh}(mamh=${monHoc.mamh})}"
+                                        >
+                                            <i
+                                                class="fa-solid fa-trash trash"
+                                            ></i>
+                                        </a>
+                                    </td>
+                                    <!-- Thêm các cột khác nếu cần -->
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -403,7 +449,12 @@
         <div class="modal">
             <div class="modal-container" data-name="monhoc">
                 <div class="header">Register</div>
-                <form action="" class="register-form" method="post">
+                <form
+                    th:action="@{/admin/addMonHoc}"
+                    class="register-form"
+                    method="post"
+                    th:object="${monHoc}"
+                >
                     <div class="input-wrapper">
                         <label for="mamh">Mã môn học:</label>
                         <input
@@ -411,12 +462,12 @@
                             placeholder=""
                             name="mamh"
                             id="mamh"
-                            required
                             autocomplete="nope"
+                            th:field="*{mamh}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <!-- <span class="form-message"></span> -->
                     <div class="input-wrapper">
                         <label for="tenmh">Tên môn học:</label>
                         <input
@@ -425,11 +476,11 @@
                             name="tenmh"
                             id="tenmh"
                             autocomplete="nope"
-                            required
+                            th:field="*{tenmh}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <!-- <span class="form-message"></span> -->
                     <div class="input-wrapper">
                         <label for="soTietLt">Số tiết lý thuyết:</label>
                         <input
@@ -439,12 +490,11 @@
                             id="soTietLt"
                             autocomplete="nope"
                             required
-                            min="0"
-                            oninput="validity.valid||(value='');"
+                            th:field="*{soTietLt}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <!-- <span class="form-message"></span> -->
                     <div class="input-wrapper">
                         <label for="soTietTh">Số tiết thực hành:</label>
                         <input
@@ -454,19 +504,85 @@
                             id="soTietTh"
                             autocomplete="nope"
                             required
-                            min="0"
-                            oninput="validity.valid||(value='');"
+                            th:field="*{soTietTh}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <!-- <span class="form-message"></span> -->
 
                     <div class="btn-controller">
-                        <button
-                            type="submit"
-                            href="#!"
-                            class="btn registerSubmitBtn"
-                        >
+                        <button type="submit" class="btn registerSubmitBtn">
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="m-monhoc">
+                <div class="header">Register</div>
+                <form
+                    th:action="@{/admin/editMonHoc}"
+                    class="register-form"
+                    method="post"
+                    th:object="${monHoc}"
+                >
+                    <div class="input-wrapper">
+                        <label for="mamh">Mã môn học:</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="mamh"
+                            id="mamh"
+                            required
+                            autocomplete="nope"
+                            readonly
+                            th:field="*{mamh}"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <!-- <span class="form-message"></span> -->
+                    <div class="input-wrapper">
+                        <label for="tenmh">Tên môn học:</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="tenmh"
+                            id="tenmh"
+                            autocomplete="nope"
+                            th:field="*{tenmh}"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <!-- <span class="form-message"></span> -->
+                    <div class="input-wrapper">
+                        <label for="soTietLt">Số tiết lý thuyết:</label>
+                        <input
+                            type="number"
+                            placeholder=""
+                            name="soTietLt"
+                            id="soTietLt"
+                            autocomplete="nope"
+                            th:field="*{soTietLt}"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <!-- <span class="form-message"></span> -->
+                    <div class="input-wrapper">
+                        <label for="soTietTh">Số tiết thực hành:</label>
+                        <input
+                            type="number"
+                            placeholder=""
+                            name="soTietTh"
+                            id="soTietTh"
+                            autocomplete="nope"
+                            th:field="*{soTietTh}"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <!-- <span class="form-message"></span> -->
+
+                    <div class="btn-controller">
+                        <button type="submit" class="btn registerSubmitBtn">
                             Register
                         </button>
                         <a href="#!" class="btn-trans closeBtn">Close</a>
@@ -479,13 +595,95 @@
             th:src="@{/javascript/toast.js}"
             src="../../static/javascript/toast.js"
         ></script>
+        <script th:inline="javascript">
+            var statusXoaMonHoc = /*[[${statusXoaMonHoc}]]*/ null;
+            var statusThemMonHoc = /*[[${statusThemMonHoc}]]*/ null;
+            var statusEditMonHoc = /*[[${statusEditMonHoc}]]*/ null;
+            var errorMessage = /*[[${errorMessage}]]*/ null;
+            if (
+                statusXoaMonHoc !== "null" &&
+                statusXoaMonHoc !== undefined &&
+                statusXoaMonHoc !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusXoaMonHoc === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã xóa môn học thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể xóa môn học có câu hỏi",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusThemMonHoc !== "null" &&
+                statusThemMonHoc !== undefined &&
+                statusThemMonHoc !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusThemMonHoc === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã thêm môn học thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Mã môn học đã tồn tại",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusEditMonHoc !== "null" &&
+                statusEditMonHoc !== undefined &&
+                statusEditMonHoc !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusEditMonHoc === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Sửa môn học thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể sửa môn học",
+                        duration: 3000,
+                    });
+                }
+            }
+
+            if (
+                errorMessage !== "null" &&
+                errorMessage !== undefined &&
+                errorMessage !== null
+            ) {
+                toast({
+                    type: "error",
+                    title: "Thất bại!",
+                    message: errorMessage,
+                    duration: 3000,
+                });
+            }
+        </script>
         <script
-            th:src="@{/javascript/popup.js}"
-            src="../../static/javascript/popup.js"
-        ></script>
-        <script
-            th:src="@{/javascript/XuLyTable.js}"
-            src="../../static/javascript/XuLyTable.js"
+            type="module"
+            th:src="@{/javascript/admin/QuanLyMonHoc.js}"
+            src="../../static/javascript/admin/QuanLyMonHoc.js"
         ></script>
     </body>
 </html>

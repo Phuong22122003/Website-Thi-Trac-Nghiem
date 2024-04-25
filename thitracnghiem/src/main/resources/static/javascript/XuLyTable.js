@@ -3,10 +3,6 @@ function clearFormValidation() {
     formGroups.forEach((formGroup) => {
         const input = formGroup.querySelector("input");
         if (input) input.value = "";
-        formGroup.classList.remove("invalid");
-        const formMessage = formGroup.nextElementSibling;
-        formMessage.classList.remove("invalid");
-        formMessage.textContent = "";
     });
 }
 
@@ -56,11 +52,12 @@ function handlerBtnRegister(contentWrapper) {
     });
 }
 
-function start() {
+function XuLyTable() {
     const btnRegister = document.querySelector(".btn-register");
     const modalContainer = document.querySelector(".modal-container");
     btnRegister.addEventListener("click", () => {
         openModal(modalContainer);
     });
 }
-start();
+export default XuLyTable;
+export { openModal };
