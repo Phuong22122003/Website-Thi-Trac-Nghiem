@@ -236,22 +236,34 @@
                 <div class="content-top">
                     <span class="text">Lecturers</span>
                 </div>
-                <div class="content-bottom">
+                <div class="content-bottom" style="width: 1100px">
                     <div class="find-wrapper">
-                        <label for="search">Entries</label>
-                        <div class="search-wrapper">
-                            <img
-                                src="../static/assets/img/search-icon.svg"
-                                th:src="@{/assets/img/search-icon.svg}"
-                                alt=""
-                            />
-                            <input
-                                type="text"
-                                name=""
-                                id="search-lecturer"
-                                placeholder="Search..."
-                            />
-                        </div>
+                        <form
+                            class="form-finding"
+                            th:action="@{/admin/searchGiangVien}"
+                            method="get"
+                        >
+                            <label for="search">Entries</label>
+                            <div class="search-wrapper">
+                                <img
+                                    src="../static/assets/img/search-icon.svg"
+                                    th:src="@{/assets/img/search-icon.svg}"
+                                    alt=""
+                                />
+                                <input
+                                    type="text"
+                                    name="keyword"
+                                    id="search-monhoc"
+                                    placeholder="Search..."
+                                />
+                            </div>
+                            <button
+                                href="/admin/findMonHoc"
+                                class="btn-trans btn-finding"
+                            >
+                                Tìm kiếm
+                            </button>
+                        </form>
                     </div>
                     <div class="table-wrapper">
                         <table class="table">
@@ -263,10 +275,54 @@
                                     <th data-name="gioiTinh">Giới tính</th>
                                     <th data-name="hocVi">Học vị</th>
                                     <th data-name="hocHam">Học hàm</th>
+                                    <th data-name="email">Email</th>
                                     <th data-name="action">Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <tr th:each="giangVien : ${giangVienList}">
+                                    <td
+                                        th:text="${giangVien.maGv}"
+                                        class="maGv"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.ho}"
+                                        class="ho"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.ten}"
+                                        class="ten"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.gioiTinh ? 'Nam' : 'Nữ'}"
+                                        class="gioiTinh"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.hocVi}"
+                                        class="hocVi"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.hocHam}"
+                                        class="hocHam"
+                                    ></td>
+                                    <td
+                                        th:text="${giangVien.email}"
+                                        class="email"
+                                    ></td>
+                                    <td>
+                                        <i
+                                            class="fa-solid fa-pen-to-square edit"
+                                        ></i>
+                                        <a
+                                            th:href="@{/admin/deleteGiangVien/{maGv}(maGv=${giangVien.maGv})}"
+                                        >
+                                            <i
+                                                class="fa-solid fa-trash trash"
+                                            ></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -295,9 +351,10 @@
             <div class="modal-container" data-name="lecturer">
                 <div class="header">Register</div>
                 <form
-                    action="/admin/addLecturer"
+                    th:action="@{/admin/addGiangVien}"
                     class="register-form"
                     method="post"
+                    th:object="${giangVien}"
                 >
                     <div class="form-wrapper">
                         <div class="input-wrapper">
@@ -309,10 +366,15 @@
                                 data-name="ho"
                                 id="lastname-lecturer"
                                 autocomplete="nope"
+                                th:field="*{ho}"
+                                maxlength="30"
                             />
                             <div class="bar"></div>
                         </div>
-                        <span class="form-message"></span>
+                        <span
+                            th:text="${errorAdd_ho}"
+                            class="form-message"
+                        ></span>
                         <div class="input-wrapper">
                             <label for="firstname-lecturer">Tên</label>
                             <input
@@ -322,11 +384,34 @@
                                 id="firstname-lecturer"
                                 data-name="ten"
                                 autocomplete="nope"
+                                th:field="*{ten}"
+                                maxlength="10"
                             />
                             <div class="bar"></div>
                         </div>
-                        <span class="form-message"></span>
+                        <span
+                            th:text="${errorAdd_ten}"
+                            class="form-message"
+                        ></span>
                     </div>
+                    <div class="input-wrapper" data-name="email">
+                        <label for="email">Email</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="email"
+                            id="email-lecturer"
+                            autocomplete="nope"
+                            data-name="email"
+                            th:field="*{email}"
+                            maxlength="50"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span
+                        th:text="${errorAdd_email}"
+                        class="form-message"
+                    ></span>
                     <div class="input-wrapper" data-name="username">
                         <label for="username-lecturer">User Name</label>
                         <input
@@ -336,10 +421,15 @@
                             id="username-lecturer"
                             autocomplete="nope"
                             data-name="userName"
+                            th:field="*{userName}"
+                            maxlength="50"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <span
+                        th:text="${errorAdd_userName}"
+                        class="form-message"
+                    ></span>
                     <div class="input-wrapper" data-name="password">
                         <label for="password-lecturer">Password</label>
                         <input
@@ -347,10 +437,15 @@
                             placeholder=""
                             name="password"
                             id="password-lecturer"
+                            maxlength="50"
+                            th:field="*{passWord}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
+                    <span
+                        th:text="${errorAdd_passWord}"
+                        class="form-message"
+                    ></span>
                     <div class="box-wrapper">
                         <input
                             type="radio"
@@ -358,6 +453,8 @@
                             id="male-lecturer"
                             data-name="male"
                             checked
+                            value="1"
+                            th:field="*{gioiTinh}"
                         />
                         <label for="male-lecturer" checked>Nam</label>
                         <input
@@ -365,23 +462,34 @@
                             name="gender"
                             data-name="female"
                             id="female-lecturer"
+                            value="0"
+                            th:field="*{gioiTinh}"
                         />
                         <label for="female-lecturer">Nữ</label>
                     </div>
-                    <span class="form-message"></span>
                     <div class="input-wrapper">
                         <label for="hocvi">Học vị:</label>
-                        <select id="hocvi" name="hocvi" data-name="hocvi">
-                            <option value="Thạc sĩ">Thạc sĩ</option>
-                            <option value="Tiến sĩ">Tiến sĩ</option>
+                        <select
+                            id="hocvi"
+                            name="hocvi"
+                            data-name="hocvi"
+                            th:field="*{hocVi}"
+                        >
+                            <option value="THẠC SĨ">Thạc sĩ</option>
+                            <option value="TIẾN SĨ">Tiến sĩ</option>
                         </select>
                     </div>
                     <span class="form-message"></span>
                     <div class="input-wrapper">
                         <label for="hocham">Học hàm:</label>
-                        <select id="hocham" name="hocham" data-name="hocham">
-                            <option value="Giáo sư">Giáo sư</option>
-                            <option value="Không">Không</option>
+                        <select
+                            id="hocham"
+                            name="hocham"
+                            data-name="hocham"
+                            th:field="*{hocHam}"
+                        >
+                            <option value="GIÁO SƯ">Giáo sư</option>
+                            <option value="KHÔNG">Không</option>
                         </select>
                     </div>
                     <span class="form-message"></span>
@@ -393,13 +501,172 @@
                             name="magv"
                             id="magv"
                             data-name="maGv"
+                            th:field="*{maGv}"
+                            maxlength="15"
                         />
                         <div class="bar"></div>
                     </div>
-                    <span class="form-message"></span>
-                    <div class="add-btn">
-                        <i class="fa-solid fa-plus"></i>
+                    <span
+                        th:text="${errorAdd_maGv}"
+                        class="form-message"
+                    ></span>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
                     </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="m-lecturer">
+                <div class="header">Register</div>
+                <form
+                    th:action="@{/admin/editGiangVien}"
+                    class="register-form"
+                    method="post"
+                    th:object="${giangVien}"
+                >
+                    <div class="form-wrapper">
+                        <div class="input-wrapper">
+                            <label for="lastname-lecturer">Họ</label>
+                            <input
+                                type="text"
+                                placeholder=""
+                                name="lastname"
+                                data-name="ho"
+                                id="lastname-lecturer"
+                                autocomplete="nope"
+                                th:field="*{ho}"
+                                maxlength="30"
+                                class="ho"
+                            />
+                            <div class="bar"></div>
+                        </div>
+                        <span
+                            th:text="${errorAdd_ho}"
+                            class="form-message"
+                        ></span>
+                        <div class="input-wrapper">
+                            <label for="firstname-lecturer">Tên</label>
+                            <input
+                                type="text"
+                                placeholder=""
+                                name="firstname"
+                                id="firstname-lecturer"
+                                data-name="ten"
+                                autocomplete="nope"
+                                th:field="*{ten}"
+                                maxlength="10"
+                                class="ten"
+                            />
+                            <div class="bar"></div>
+                        </div>
+                        <span
+                            th:text="${errorAdd_ten}"
+                            class="form-message"
+                        ></span>
+                    </div>
+                    <div class="input-wrapper" data-name="email">
+                        <label for="email">Email</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="email"
+                            id="email-lecturer"
+                            autocomplete="nope"
+                            data-name="email"
+                            th:field="*{email}"
+                            maxlength="50"
+                            class="email"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span
+                        th:text="${errorAdd_email}"
+                        class="form-message"
+                    ></span>
+                    <span
+                        th:text="${errorAdd_userName}"
+                        class="form-message"
+                    ></span>
+                    <span
+                        th:text="${errorAdd_passWord}"
+                        class="form-message"
+                    ></span>
+                    <div class="box-wrapper">
+                        <input
+                            type="radio"
+                            name="gender"
+                            id="male-lecturer"
+                            data-name="male"
+                            checked
+                            value="1"
+                            th:field="*{gioiTinh}"
+                            class="gioiTinh"
+                        />
+                        <label for="male-lecturer" checked>Nam</label>
+                        <input
+                            type="radio"
+                            name="gender"
+                            data-name="female"
+                            id="female-lecturer"
+                            value="0"
+                            th:field="*{gioiTinh}"
+                            class="gioiTinh"
+                        />
+                        <label for="female-lecturer">Nữ</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="hocvi">Học vị:</label>
+                        <select
+                            id="hocvi"
+                            name="hocvi"
+                            data-name="hocvi"
+                            th:field="*{hocVi}"
+                            class="hocVi"
+                        >
+                            <option value="THẠC SĨ">Thạc sĩ</option>
+                            <option value="TIẾN SĨ">Tiến sĩ</option>
+                        </select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="hocham">Học hàm:</label>
+                        <select
+                            id="hocham"
+                            name="hocham"
+                            data-name="hocham"
+                            th:field="*{hocHam}"
+                            class="hocHam"
+                        >
+                            <option value="GIÁO SƯ">Giáo sư</option>
+                            <option value="KHÔNG">Không</option>
+                        </select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper" data-name="magv">
+                        <label for="magv">Mã giảng viên</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="magv"
+                            id="magv"
+                            data-name="maGv"
+                            th:field="*{maGv}"
+                            maxlength="15"
+                            readonly
+                            class="maGv"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span
+                        th:text="${errorAdd_maGv}"
+                        class="form-message"
+                    ></span>
                     <div class="btn-controller">
                         <button
                             type="submit"
@@ -413,18 +680,154 @@
                 </form>
             </div>
         </div>
-        <!-- Script -->
-        <!-- <script
+        <script
             th:src="@{/javascript/toast.js}"
-            src="../static/javascript/toast.js"
+            src="../../static/javascript/toast.js"
         ></script>
+        <script th:inline="javascript">
+            var statusXoaGiangVien = /*[[${statusXoaGiangVien}]]*/ null;
+            var statusThemGiangVien = /*[[${statusThemGiangVien}]]*/ null;
+            var statusEditGiangVien = /*[[${statusEditGiangVien}]]*/ null;
+            var errorAdd = /*[[${errorAdd}]]*/ null;
+            var errorEdit = /*[[${errorEdit}]]*/ null;
+            if (
+                statusXoaGiangVien !== "null" &&
+                statusXoaGiangVien !== undefined &&
+                statusXoaGiangVien !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusXoaGiangVien === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã xóa giảng viên thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message:
+                            "Không thể giảng viên đã tạo câu hỏi hoặc đã đăng ký thi!",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusThemGiangVien !== "null" &&
+                statusThemGiangVien !== undefined &&
+                statusThemGiangVien !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusThemGiangVien === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã thêm giảng viên thành công",
+                        duration: 3000,
+                    });
+                } else if (statusThemGiangVien === 1) {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Mã giảng viên đã tồn tại",
+                        duration: 3000,
+                    });
+                } else if (statusThemGiangVien === 2) {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Tên tài khoản đã tồn tại",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusEditGiangVien !== "null" &&
+                statusEditGiangVien !== undefined &&
+                statusEditGiangVien !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusEditGiangVien === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Sửa giảng viên thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể sửa giảng viên",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                errorEdit !== "null" &&
+                errorEdit !== undefined &&
+                errorEdit !== null
+            ) {
+                toast({
+                    type: "error",
+                    title: "Thất bại!",
+                    message: `${errorEdit}`,
+                    duration: 3000,
+                });
+            }
+            if (
+                errorAdd !== "null" &&
+                errorAdd !== undefined &&
+                errorAdd !== null
+            ) {
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='lecturer']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+            }
+        </script>
         <script
-            th:src="@{/javascript/popup.js}"
-            src="../static/javascript/popup.js"
+            type="module"
+            th:src="@{/javascript/admin/QuanLyGiangVien.js}"
+            src="../../static/javascript/admin/QuanLyGiangVien.js"
         ></script>
-        <script
-            th:src="@{/javascript/XuLyTable.js}"
-            src="../../static/javascript/XuLyTable.js"
-        ></script> -->
     </body>
 </html>
