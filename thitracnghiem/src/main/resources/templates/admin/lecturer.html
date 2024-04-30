@@ -320,6 +320,16 @@
                                                 class="fa-solid fa-trash trash"
                                             ></i>
                                         </a>
+                                        <i
+                                            class="fa-solid fa-file-circle-question add-exam-btn"
+                                        ></i>
+                                        <a
+                                            th:href="@{/admin/resetPasswordLecturer/{maGv}(maGv=${giangVien.maGv})}"
+                                        >
+                                            <i
+                                                class="fa-solid fa-arrow-rotate-left reset-password"
+                                            ></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -452,17 +462,17 @@
                             name="gender"
                             id="male-lecturer"
                             data-name="male"
-                            checked
-                            value="1"
+                            th:value="1"
                             th:field="*{gioiTinh}"
+                            checked
                         />
-                        <label for="male-lecturer" checked>Nam</label>
+                        <label for="male-lecturer">Nam</label>
                         <input
                             type="radio"
                             name="gender"
                             data-name="female"
                             id="female-lecturer"
-                            value="0"
+                            th:value="0"
                             th:field="*{gioiTinh}"
                         />
                         <label for="female-lecturer">Nữ</label>
@@ -547,7 +557,7 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorAdd_ho}"
+                            th:text="${errorEdit_ho}"
                             class="form-message"
                         ></span>
                         <div class="input-wrapper">
@@ -566,7 +576,7 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorAdd_ten}"
+                            th:text="${errorEdit_ten}"
                             class="form-message"
                         ></span>
                     </div>
@@ -586,15 +596,15 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_email}"
+                        th:text="${errorEdit_email}"
                         class="form-message"
                     ></span>
                     <span
-                        th:text="${errorAdd_userName}"
+                        th:text="${errorEdit_userName}"
                         class="form-message"
                     ></span>
                     <span
-                        th:text="${errorAdd_passWord}"
+                        th:text="${errorEdit_passWord}"
                         class="form-message"
                     ></span>
                     <div class="box-wrapper">
@@ -664,9 +674,142 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_maGv}"
+                        th:text="${errorEdit_maGv}"
                         class="form-message"
                     ></span>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="exam">
+                <div class="header">Register</div>
+                <form
+                    th:action="@{/admin/register-exam}"
+                    class="register-form create-exam"
+                    method="post"
+                >
+                    <div class="input-wrapper">
+                        <label for="magv">Mã giảng viên :</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="maGv"
+                            id="maGv"
+                            class="maGv"
+                            autocomplete="nope"
+                            rules="required"
+                            readonly
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="maNv">Mã Nhân viên :</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            name="manv"
+                            id="maNv"
+                            class="maNv"
+                            autocomplete="nope"
+                            rules="required"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="tenmh">Tên môn học:</label>
+                        <select id="tenmh" name="mamh">
+                            <option value="" selected disabled hidden>
+                                Chọn một lựa chọn
+                            </option>
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh}"
+                                th:text="${monHoc.tenmh}"
+                            ></option>
+                        </select>
+                        <!-- <input
+                            type="text"
+                            list="monhoc"
+                            required
+                            id="mamh"
+                            autocomplete="off"
+                            name="mamh"
+                        />
+                        <datalist id="monhoc">
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh}"
+                                th:text="${monHoc.tenmh}"
+                            ></option>
+                        </datalist> -->
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="tenlop">Tên lớp: </label>
+                        <input
+                            type="text"
+                            list="tenlop"
+                            required
+                            id="malop"
+                            autocomplete="off"
+                            name="maLop"
+                        />
+                        <datalist id="tenlop">
+                            <option
+                                th:each="lop : ${lopList}"
+                                th:value="${lop.maLop}"
+                                th:text="${lop.tenLop}"
+                            ></option>
+                        </datalist>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="socau">Số câu</label>
+                        <input
+                            type="number"
+                            placeholder=""
+                            name="soCau"
+                            id="socau"
+                            min="0"
+                            autocomplete="nope"
+                            required
+                            oninput="validity.valid||(value='');"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="ngaythi">Ngày thi</label>
+                        <input
+                            type="date"
+                            name="ngayThi"
+                            id="ngaythi"
+                            required
+                        />
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="thoigianthi">Phút:</label>
+                        <input
+                            type="number"
+                            id="thoigianthi"
+                            name="thoiLuong"
+                            min="0"
+                            required
+                            oninput="validity.valid||(value='');"
+                        />
+                    </div>
+                    <span class="form-message"></span>
                     <div class="btn-controller">
                         <button
                             type="submit"
@@ -688,8 +831,13 @@
             var statusXoaGiangVien = /*[[${statusXoaGiangVien}]]*/ null;
             var statusThemGiangVien = /*[[${statusThemGiangVien}]]*/ null;
             var statusEditGiangVien = /*[[${statusEditGiangVien}]]*/ null;
+            var statusDangKyThi = /*[[${statusDangKyThi}]]*/ null;
+            var messageResetPassword = /*[[${messageResetPassword}]]*/ null;
             var errorAdd = /*[[${errorAdd}]]*/ null;
             var errorEdit = /*[[${errorEdit}]]*/ null;
+            var errorExam = /*[[${errorExam}]]*/ null;
+            var giangVienError = /*[[${giangVienError}]]*/ null;
+            console.log(giangVienError);
             if (
                 statusXoaGiangVien !== "null" &&
                 statusXoaGiangVien !== undefined &&
@@ -748,31 +896,127 @@
                 statusEditGiangVien !== null
             ) {
                 // Sử dụng dữ liệu status ở đây
-                if (statusEditGiangVien === 0) {
+                toast({
+                    type: "success",
+                    title: "Thành công!",
+                    message: "Sửa giảng viên thành công",
+                    duration: 3000,
+                });
+            }
+            if (
+                statusDangKyThi !== "null" &&
+                statusDangKyThi !== undefined &&
+                statusDangKyThi !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusDangKyThi === 0) {
                     toast({
                         type: "success",
                         title: "Thành công!",
-                        message: "Sửa giảng viên thành công",
+                        message: "Đăng ký thi thành công",
                         duration: 3000,
                     });
                 } else {
                     toast({
                         type: "error",
                         title: "Thất bại!",
-                        message: "Không thể sửa giảng viên",
+                        message: "Không thể đăng ký thi",
                         duration: 3000,
                     });
                 }
+            }
+            if (
+                messageResetPassword !== "null" &&
+                messageResetPassword !== undefined &&
+                messageResetPassword !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                toast({
+                    type: "info",
+                    title: "Thông báo!",
+                    message: `${messageResetPassword}`,
+                    duration: 3000,
+                });
             }
             if (
                 errorEdit !== "null" &&
                 errorEdit !== undefined &&
                 errorEdit !== null
             ) {
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='m-lecturer']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                for (var key in giangVienError) {
+                    if (giangVienError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                if (
+                                    input.type == "radio" &&
+                                    input.value == !!giangVienError[key]
+                                ) {
+                                    input.checked = true;
+                                } else if (
+                                    input.tagName.toLowerCase() == "select"
+                                )
+                                    input.value = giangVienError[key];
+                                else input.value = giangVienError[key];
+                            });
+                        }
+                    }
+                }
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+            }
+            if (
+                errorExam !== "null" &&
+                errorExam !== undefined &&
+                errorExam !== null
+            ) {
                 toast({
                     type: "error",
                     title: "Thất bại!",
-                    message: `${errorEdit}`,
+                    message: `${errorExam}`,
                     duration: 3000,
                 });
             }
@@ -787,6 +1031,29 @@
                 );
                 modal.classList.add("open");
                 modalContainer.classList.add("open");
+
+                for (var key in giangVienError) {
+                    if (giangVienError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                if (
+                                    input.type == "radio" &&
+                                    input.value == !!giangVienError[key]
+                                ) {
+                                    input.checked = true;
+                                } else if (
+                                    input.tagName.toLowerCase() == "select"
+                                )
+                                    input.value = giangVienError[key];
+                                else input.value = giangVienError[key];
+                            });
+                        }
+                    }
+                }
+
                 modalContainer.addEventListener("click", (event) =>
                     event.stopPropagation()
                 );
