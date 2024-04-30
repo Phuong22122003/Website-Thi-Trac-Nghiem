@@ -641,6 +641,7 @@
             var statusEditMonHoc = /*[[${statusEditMonHoc}]]*/ null;
             var errorAdd = /*[[${errorAdd}]]*/ null;
             var errorEdit = /*[[${errorEdit}]]*/ null;
+            var monHocError = /*[[${monHocError}]]*/ null;
             if (
                 statusXoaMonHoc !== "null" &&
                 statusXoaMonHoc !== undefined &&
@@ -712,11 +713,60 @@
                 errorEdit !== undefined &&
                 errorEdit !== null
             ) {
-                toast({
-                    type: "error",
-                    title: "Thất bại!",
-                    message: `${errorEdit}`,
-                    duration: 3000,
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='m-monhoc']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                for (var key in monHocError) {
+                    if (monHocError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                input.value = monHocError[key];
+                            });
+                        }
+                    }
+                }
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
                 });
             }
             if (
@@ -730,6 +780,20 @@
                 );
                 modal.classList.add("open");
                 modalContainer.classList.add("open");
+
+                for (var key in monHocError) {
+                    if (monHocError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                input.value = monHocError[key];
+                            });
+                        }
+                    }
+                }
+
                 modalContainer.addEventListener("click", (event) =>
                     event.stopPropagation()
                 );
