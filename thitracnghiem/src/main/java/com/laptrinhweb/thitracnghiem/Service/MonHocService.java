@@ -65,4 +65,8 @@ public class MonHocService {
         List<MonHoc> list = monHocRepository.searchMonHoc(keyword);
         return list;
     }
+
+    public MonHoc findByMamh(String mamh) {
+        return monHocRepository.findByMamh(mamh);
+    }
 }
