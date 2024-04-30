@@ -7,6 +7,7 @@ const modalContainer = document.querySelector(
 );
 listGiangVien.forEach((row) => {
     const editBtn = row.querySelector(".edit");
+    const addExamBtn = row.querySelector(".add-exam-btn");
     editBtn.onclick = function () {
         const ho = row.querySelector(".ho").textContent;
         const ten = row.querySelector(".ten").textContent;
@@ -34,6 +35,15 @@ listGiangVien.forEach((row) => {
         inputGioiTinh.checked = true;
         inputHocVi.value = hocVi.toUpperCase();
         inpuHocHam.value = hocHam.toUpperCase();
+        inputMaGv.value = maGv;
+    };
+    addExamBtn.onclick = function () {
+        const maGv = row.querySelector(".maGv").textContent;
+        const modalContainerExam = document.querySelector(
+            ".modal-container[data-name='exam']"
+        );
+        openModal(modalContainerExam);
+        const inputMaGv = modalContainerExam.querySelector(".maGv");
         inputMaGv.value = maGv;
     };
 });
