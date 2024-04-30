@@ -1,6 +1,7 @@
 package com.laptrinhweb.thitracnghiem.Service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
 public class GiangVienService {
     @Autowired
     GiangVienRepository giangVienRepository;
+    @Autowired
+    EmailService emailService;
 
     public List<GiangVien> findAllGiangVien() {
         return giangVienRepository.findAllGiangVien();
@@ -82,5 +85,27 @@ public class GiangVienService {
     public List<GiangVien> searchGiangVien(String keyword) {
         List<GiangVien> list = giangVienRepository.searchGiangVien(keyword);
         return list;
+    }
+
+    public GiangVien findByMaGv(String maGv) {
+        return giangVienRepository.findByMaGv(maGv);
+    }
+
+    public String resetPasswordLecturer(String maGv) {
+        GiangVien gv = giangVienRepository.findByMaGv(maGv);
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(10);
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+        gv.setPassWord(sb.toString());
+        giangVienRepository.save(gv);
+        String message = emailService.sendMessage(gv.getEmail(), "Reset Password",
+                "Password của bạn được reset thành: " + sb.toString(), "Reset password thành công");
+        return message;
+
     }
 }

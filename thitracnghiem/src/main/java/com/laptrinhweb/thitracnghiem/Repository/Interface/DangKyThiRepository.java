@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.laptrinhweb.thitracnghiem.Entity.DangKyThi;
+import com.laptrinhweb.thitracnghiem.Entity.Lop;
+import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 
 @Repository
 public interface DangKyThiRepository extends JpaRepository<DangKyThi, Integer> {
-    // List<DangKyThi> findByMagvAndMaLop(String magv, String maLop);
+    List<DangKyThi> findByLopAndMonHoc(Lop lop, MonHoc monHoc);
 
-    // @Query(value = "SELECT DISTINCT maLop from DangKyThi WHERE UPPER(magv) = UPPER(:maGv)", nativeQuery = true)
+    // @Query(value = "SELECT DISTINCT maLop from DangKyThi WHERE UPPER(magv) =
+    // UPPER(:maGv)", nativeQuery = true)
     // List<String> findMaLopByMaGv(String maGv);
 
     // List<DangKyThi> findByMaLopAndMamh(String maLop, String mamh);
@@ -20,5 +23,7 @@ public interface DangKyThiRepository extends JpaRepository<DangKyThi, Integer> {
 
     // long countByMagvAndTrangThaiXoa(String magv, boolean trangThaiXoa);
 
-    // long countByMamhAndMagvAndTrangThaiXoa(String mamh, String magv, boolean trangThaiXoa);
+    // long countByMamhAndMagvAndTrangThaiXoa(String mamh, String magv, boolean
+    // trangThaiXoa);
+
 }
