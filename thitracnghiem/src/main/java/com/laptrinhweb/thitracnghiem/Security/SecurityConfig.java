@@ -44,7 +44,7 @@ public class SecurityConfig {
                                     response.sendRedirect("/student/home");
                                     return;
                                 } else if (authority.getAuthority().equals("ROLE_TEACHER")) {
-                                    response.sendRedirect("/teacher");
+                                    response.sendRedirect("/lecturer/question");
                                     return;
                                 }
                             }
@@ -75,7 +75,7 @@ public class SecurityConfig {
         UserDetails user = User
                 .withUsername("user")
                 .password(passwordEncoder().encode("password"))
-                .roles("ADMIN")
+                .roles("TEACHER")
                 .build();
 
         return new InMemoryUserDetailsManager(user);

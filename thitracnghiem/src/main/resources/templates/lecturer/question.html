@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <html xmlns:th="http://www.thymeleaf.org"></html>
+        <link
+            rel="stylesheet"
+            href="../static/assets/css/reset.css"
+            th:href="@{/assets/css/reset.css}"
+        />
+        <link
+            rel="stylesheet"
+            href="../static/assets/css/common.css"
+            th:href="@{/assets/css/common.css}"
+        />
+        <link
+            rel="stylesheet"
+            href="../static/assets/css/lecturer-style.css"
+            th:href="@{/assets/css/lecturer-style.css}"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="../static/assets/css/reponsive.css"
+            th:href="@{/assets/css/reponsive.css}"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+    </head>
+    <body>
+        <!-- <div class="popup-wrapper">
+            <div class="popup">
+                <div class="top">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-check check"></i>
+                    </div>
+                    <i class="fa-solid fa-xmark close"></i>
+                </div>
+                <span class="title">Blog post published</span>
+                <div class="desc">
+                    This blog post has been published. Team members will be able
+                    to edit this post and republish changes.
+                </div>
+                <div class="btn-group">
+                    <a href="#!" class="cancel-btn">Cancel</a>
+                    <a href="#!" class="confirm-btn">Confirm</a>
+                </div>
+            </div>
+        </div> -->
+        <div class="mobile-controller-wrapper">
+            <div class="mobile-overlay"></div>
+            <div class="mobile-controller">
+                <div class="logo-wrapper">
+                    <img
+                        src="../static/assets/img/multi-dot.svg"
+                        alt=""
+                        th:src="@{/assets/img/multi-dot.svg}"
+                    />
+                    <span class="admin-text">Lecturer</span>
+                </div>
+                <ul class="feature-list">
+                    <li data-name="question">
+                        <a
+                            class="item"
+                            href="/lecturer/question"
+                            style="color: white"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="28"
+                                viewBox="0 0 24 28"
+                                fill="none"
+                                class="icon"
+                            >
+                                <path
+                                    d="M12 21.4073C11.59 21.4073 11.25 21.0363 11.25 20.5889V17.3156C11.25 16.8682 11.59 16.4973 12 16.4973C12.41 16.4973 12.75 16.8682 12.75 17.3156V20.5889C12.75 21.0363 12.41 21.4073 12 21.4073Z"
+                                    fill="currentColor"
+                                />
+                                <path
+                                    d="M17.6 25.5644H6.39996C4.57996 25.5644 2.91996 24.0368 2.61996 22.0837L1.28996 13.3876C1.06996 12.0346 1.67996 10.2997 2.66996 9.43775L9.59996 3.38209C10.94 2.20369 13.05 2.2146 14.4 3.393L21.33 9.43775C22.31 10.2997 22.91 12.0346 22.71 13.3876L21.38 22.0728C21.08 24.0041 19.38 25.5644 17.6 25.5644ZM11.99 4.14586C11.46 4.14586 10.93 4.32044 10.54 4.65869L3.60996 10.7253C3.04996 11.2163 2.64996 12.351 2.76996 13.1257L4.09996 21.811C4.27996 22.9566 5.32996 23.9277 6.39996 23.9277H17.6C18.67 23.9277 19.72 22.9566 19.9 21.8L21.23 13.1148C21.34 12.351 20.94 11.1944 20.39 10.7144L13.46 4.6696C13.06 4.32044 12.52 4.14586 11.99 4.14586Z"
+                                    fill="currentColor"
+                                />
+                            </svg>
+                            <span class="text">Quản lý câu hỏi</span>
+                        </a>
+                    </li>
+                    <li data-name="score">
+                        <a class="item" href="/lecturer/score">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="27"
+                                viewBox="0 0 24 27"
+                                fill="none"
+                                class="icon"
+                            >
+                                <path
+                                    d="M18 9.14014H17.87C15.98 9.07467 14.57 7.48165 14.57 5.51765C14.57 3.51 16.07 1.88425 17.9 1.88425C19.73 1.88425 21.23 3.52091 21.23 5.51765C21.2312 6.46109 20.8958 7.368 20.2947 8.04622C19.6937 8.72445 18.8742 9.12071 18.01 9.15105C18.01 9.14014 18.01 9.14014 18 9.14014ZM17.9 3.51C16.89 3.51 16.07 4.40471 16.07 5.50674C16.07 6.58694 16.84 7.45983 17.83 7.50347C17.84 7.49256 17.92 7.49256 18.01 7.50347C18.4835 7.4694 18.9264 7.2362 19.2455 6.85297C19.5646 6.46973 19.7349 5.96636 19.7206 5.44884C19.7064 4.93131 19.5086 4.44001 19.1691 4.07837C18.8295 3.71674 18.3745 3.51298 17.9 3.51ZM18.009 17.1794C17.619 17.1794 17.229 17.1467 16.839 17.0703C16.7417 17.0519 16.6488 17.0127 16.5654 16.9549C16.4821 16.8972 16.41 16.8221 16.3534 16.7339C16.2967 16.6457 16.2565 16.5462 16.2352 16.441C16.2139 16.3358 16.2117 16.2271 16.229 16.1211C16.2459 16.0149 16.2818 15.9135 16.3348 15.8226C16.3877 15.7317 16.4565 15.653 16.5373 15.5912C16.6182 15.5293 16.7094 15.4855 16.8058 15.4622C16.9022 15.439 17.0018 15.4367 17.099 15.4555C18.329 15.6846 19.629 15.4337 20.499 14.8008C20.969 14.4626 21.219 14.037 21.219 13.6115C21.219 13.186 20.959 12.7714 20.499 12.4331C19.629 11.8003 18.309 11.5493 17.069 11.7894C16.659 11.8766 16.269 11.5711 16.199 11.1238C16.129 10.6764 16.399 10.2509 16.809 10.1745C18.439 9.85809 20.129 10.1963 21.329 11.0692C22.209 11.713 22.719 12.6295 22.719 13.6115C22.719 14.5826 22.219 15.51 21.329 16.1647C20.419 16.8194 19.239 17.1794 18.009 17.1794ZM5.97 9.13795H5.95C5.08726 9.10849 4.26886 8.714 3.66792 8.03794C3.06697 7.36188 2.73062 6.45727 2.73 5.51547C2.73 3.50782 4.23 1.87115 6.06 1.87115C7.89 1.87115 9.39 3.50782 9.39 5.50455C9.39 7.47947 7.98 9.07249 6.18 9.13795L5.97 8.31962L6.04 9.13795H5.97ZM6.07 7.50129C6.13 7.50129 6.18 7.50129 6.24 7.5122C7.13 7.46855 7.91 6.59567 7.91 5.51547C7.90947 5.12532 7.80419 4.7439 7.60719 4.41832C7.41018 4.09273 7.13007 3.83725 6.80147 3.68344C6.47287 3.52963 6.11017 3.48422 5.75818 3.55284C5.40618 3.62145 5.08033 3.80107 4.82086 4.06951C4.56139 4.33795 4.37968 4.68344 4.29818 5.06332C4.21667 5.44319 4.23895 5.84079 4.36225 6.207C4.48555 6.57321 4.70448 6.89199 4.99198 7.12395C5.27949 7.3559 5.62297 7.49088 5.98 7.5122C5.99 7.50129 6.03 7.50129 6.07 7.50129ZM5.96 17.1794C4.73 17.1794 3.55 16.8194 2.64 16.1647C1.76 15.521 1.25 14.5935 1.25 13.6115C1.25 12.6404 1.76 11.713 2.64 11.0692C3.84 10.1963 5.53 9.85809 7.16 10.1745C7.57 10.2509 7.84 10.6764 7.77 11.1238C7.7 11.5711 7.31 11.8766 6.9 11.7894C5.66 11.5493 4.35 11.8003 3.47 12.4331C3 12.7714 2.75 13.186 2.75 13.6115C2.75 14.037 3.01 14.4626 3.47 14.8008C4.34 15.4337 5.64 15.6846 6.87 15.4555C7.28 15.3791 7.67 15.6846 7.74 16.1211C7.81 16.5684 7.54 16.994 7.13 17.0703C6.74 17.1467 6.35 17.1794 5.96 17.1794ZM12 17.2886H11.87C9.98 17.2231 8.57 15.6301 8.57 13.6661C8.57 11.6584 10.07 10.0327 11.9 10.0327C13.73 10.0327 15.23 11.6693 15.23 13.6661C15.2312 14.6095 14.8958 15.5164 14.2947 16.1946C13.6937 16.8729 12.8742 17.2691 12.01 17.2995C12.01 17.2886 12.01 17.2886 12 17.2886ZM11.9 11.6584C10.89 11.6584 10.07 12.5531 10.07 13.6552C10.07 14.7354 10.84 15.6082 11.83 15.6519C11.84 15.641 11.92 15.641 12.01 15.6519C12.98 15.5973 13.73 14.7244 13.74 13.6552C13.74 12.564 12.92 11.6584 11.9 11.6584ZM12.001 25.3399C10.801 25.3399 9.601 25.0016 8.671 24.3142C7.791 23.6705 7.281 22.7539 7.281 21.7719C7.281 20.8008 7.781 19.8625 8.671 19.2187C10.541 17.8658 13.471 17.8658 15.331 19.2187C16.211 19.8625 16.721 20.779 16.721 21.761C16.721 22.7321 16.221 23.6705 15.331 24.3142C14.401 24.9907 13.201 25.3399 12.001 25.3399ZM9.501 20.5935C9.031 20.9318 8.781 21.3573 8.781 21.7828C8.781 22.2084 9.041 22.623 9.501 22.9612C10.851 23.9542 13.141 23.9542 14.491 22.9612C14.961 22.623 15.211 22.1975 15.211 21.7719C15.211 21.3464 14.951 20.9318 14.491 20.5935C13.151 19.6006 10.861 19.6115 9.501 20.5935Z"
+                                    fill="currentColor"
+                                />
+                            </svg>
+                            <span class="text">Xem điểm</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="controller-wrapper">
+            <div class="logo-wrapper">
+                <img
+                    src="../static/assets/img/multi-dot.svg"
+                    alt=""
+                    th:src="@{/assets/img/multi-dot.svg}"
+                />
+                <span class="admin-text">Lecturer</span>
+            </div>
+            <ul class="feature-list"></ul>
+        </div>
+        <div class="header">
+            <div class="user-wrapper">
+                <i class="fa-solid fa-bars menu"></i>
+                <span class="text">Hello, Quang!</span>
+                <div class="img-wrapper">
+                    <img
+                        src="../static/assets/img/icon.svg"
+                        th:src="@{/assets/img/icon.svg}"
+                        alt=""
+                    />
+                    <ul class="setting-wrapper">
+                        <li>
+                            <a class="item" href="/lecturer/profile">Profile</a>
+                        </li>
+                        <li><a class="item" href="/logout">Sign Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            const mobileController =
+                document.querySelector(".mobile-controller");
+            const mobileOverlay = document.querySelector(".mobile-overlay");
+            document.querySelector(".mobile-controller");
+            const menuBtn = document.querySelector(".user-wrapper .menu");
+            const featureListMobile =
+                mobileController.querySelector(".feature-list");
+            console.log(featureListMobile);
+            const featureListPc = document.querySelector(
+                ".controller-wrapper .feature-list"
+            );
+            const featureItems = document.querySelectorAll(
+                ".mobile-controller .feature-list .item"
+            );
+            featureListPc.innerHTML = featureListMobile.innerHTML;
+            menuBtn.addEventListener("click", () => {
+                mobileController.classList.add("active");
+                mobileOverlay.classList.add("active");
+            });
+            mobileOverlay.addEventListener("click", () => {
+                mobileController.classList.remove("active");
+                mobileOverlay.classList.remove("active");
+            });
+            featureItems.forEach((item) => {
+                item.onclick = function () {
+                    mobileController.classList.remove("active");
+                    mobileOverlay.classList.remove("active");
+                };
+            });
+        </script>
+        <div class="content">
+            <div class="content-wrapper content-cauhoi" data-name="cauhoi">
+                <div class="content-top">
+                    <span class="text">Question Management</span>
+                </div>
+                <div class="content-bottom">
+                    <div class="filter-wrapper">
+                        <div class="find-wrapper">
+                            <label for="search">Entries</label>
+                            <div class="search-wrapper">
+                                <img
+                                    src="../static/assets/img/search-icon.svg"
+                                    th:src="@{/assets/img/search-icon.svg}"
+                                    alt=""
+                                />
+                                <input
+                                    type="text"
+                                    name=""
+                                    id="search-cauhoi"
+                                    placeholder="Search..."
+                                />
+                            </div>
+                        </div>
+                        <div class="sort-wrapper sort-wrapper-monhoc">
+                            <label for="sort-monhoc">Môn học</label>
+                            <select id="sort-monhoc"></select>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mã câu hỏi</th>
+                                <th>Môn học</th>
+                                <th>Hình thức</th>
+                                <th>Nội dung</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <a href="#!" class="btn-trans btn-register">
+                    <div class="circle">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="17"
+                            height="17"
+                            viewBox="0 0 17 17"
+                            fill="none"
+                        >
+                            <path
+                                d="M15.7857 6.67857H10.3214V1.21429C10.3214 0.543772 9.77766 0 9.10714 0H7.89286C7.22234 0 6.67857 0.543772 6.67857 1.21429V6.67857H1.21429C0.543772 6.67857 0 7.22234 0 7.89286V9.10714C0 9.77766 0.543772 10.3214 1.21429 10.3214H6.67857V15.7857C6.67857 16.4562 7.22234 17 7.89286 17H9.10714C9.77766 17 10.3214 16.4562 10.3214 15.7857V10.3214H15.7857C16.4562 10.3214 17 9.77766 17 9.10714V7.89286C17 7.22234 16.4562 6.67857 15.7857 6.67857Z"
+                                fill="currentColor"
+                            ></path>
+                        </svg>
+                    </div>
+                    <span>Thêm câu hỏi</span>
+                </a>
+            </div>
+        </div>
+        <div class="modal">
+            <div class="modal-container" data-name="cauhoi">
+                <div class="type-wrapper">
+                    <label for="type-question" class="text-type"
+                        >Vui lòng chọn hình thức câu hỏi</label
+                    >
+                    <select name="" id="type-question" class="type-selection">
+                        <option value="ĐIỀN KHUYẾT">Điền khuyết</option>
+                        <option value="CHỌN 1 TRONG NHIỀU LỰA CHỌN">
+                            Chọn một trong nhiều lựa chọn
+                        </option>
+                        <option value="YES/NO">Yes/No</option>
+                    </select>
+                    <div class="btn-controller">
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn next-btn"
+                        >
+                            next
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-container" data-name="create-cauhoi">
+                <div class="header">Tạo câu hỏi</div>
+                <form action="" class="register-form" method="post">
+                    <div class="input-wrapper">
+                        <label for="monHoc">Chọn môn học:</label>
+                        <select id="monHoc" name="monHoc"></select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="noiDungCauHoi">Nội dung câu hỏi</label>
+                        <textarea
+                            name="noiDungCauHoi"
+                            id="noiDungCauHoi"
+                            cols="30"
+                            rows="2"
+                            rules="required"
+                        ></textarea>
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="question-detail">
+                <div class="question-detail-wrapper">
+                    <div class="top">
+                        <span class="question-id"
+                            >Mã câu hỏi: <span></span
+                        ></span>
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <span class="text">Nội dung câu hỏi:</span>
+                    <p class="question-content"></p>
+                    <div class="selection-wrapper"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Script -->
+        <script
+            th:src="@{/javascript/toast.js}"
+            src="../static/javascript/toast.js"
+        ></script>
+        <!-- <script
+            th:src="@{/javascript/XuLyLecturer.js}"
+            src="../static/javascript/XuLyLecturer.js"
+        ></script> -->
+        <!-- <script>
+            popup(
+                {
+                    type: "remove",
+                    title: "Thêm lựa chọn",
+                    desc: "Vui lòng nhập nội dung lựa chọn",
+                },
+                true,
+                console.log,
+                "Hello"
+            );
+        </script> -->
+    </body>
+</html>
