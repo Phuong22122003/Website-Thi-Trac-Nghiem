@@ -6,9 +6,13 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.laptrinhweb.thitracnghiem.DTO.DangKyThiDTO;
+import com.laptrinhweb.thitracnghiem.DTO.ThiDTO;
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.DangKyThiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.ThiRepository;
 
 @Service
 public class GiangVienService {
@@ -16,6 +20,10 @@ public class GiangVienService {
     GiangVienRepository giangVienRepository;
     @Autowired
     EmailService emailService;
+    @Autowired
+    DangKyThiRepository dangKyThiRepository;
+    @Autowired
+    ThiRepository thiRepository;
 
     public List<GiangVien> findAllGiangVien() {
         return giangVienRepository.findAllGiangVien();
@@ -107,5 +115,18 @@ public class GiangVienService {
                 "Password của bạn được reset thành: " + sb.toString(), "Reset password thành công");
         return message;
 
+    }
+
+    public void changeProfile(GiangVien giangVien) {
+        giangVienRepository.save(giangVien);
+    }
+
+    public List<DangKyThiDTO> findDangKyThiByGiangVien(String magv) {
+        List<DangKyThiDTO> list = dangKyThiRepository.findDangKyThiByMagv(magv);
+        return list;
+    }
+
+    public List<ThiDTO> findThiFromIddk(int iddk) {
+        return thiRepository.findThiFromIddk(iddk);
     }
 }
