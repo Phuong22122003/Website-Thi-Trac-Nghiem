@@ -1,12 +1,18 @@
 package com.laptrinhweb.thitracnghiem.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.laptrinhweb.thitracnghiem.DTO.DangKyThiDTO;
 import com.laptrinhweb.thitracnghiem.Entity.DangKyThi;
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.CauHoiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.DangKyThiRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.ThiRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class DangKyThiService {
@@ -14,26 +20,31 @@ public class DangKyThiService {
     DangKyThiRepository dangKyThiRepository;
     @Autowired
     CauHoiRepository cauHoiRepository;
+    @Autowired
+    ThiRepository thiRepository;
 
+    @Transactional(rollbackOn = Exception.class)
     public int registerExam(DangKyThi dangKyThi) {
-        int lanThi = (dangKyThiRepository.findByLopAndMonHoc(dangKyThi.getLop(),
-                dangKyThi.getMonHoc()).size()) + 1;
-        dangKyThi.setLan(lanThi);
-        System.out.println(dangKyThi.getLan());
-        System.out.println(dangKyThi.getSoCau());
-        System.out.println(dangKyThi.getThoiLuong());
-        System.out.println(dangKyThi.getGiangVien());
-        System.out.println(dangKyThi.getLop().getMaLop());
-        System.out.println(dangKyThi.getMonHoc().getMamh());
-        System.out.println(dangKyThi.getNgayThi());
-        System.out.println(dangKyThi.getNhanVien().getManv());
-        System.out.println(dangKyThi.isTrangThaiXoa());
-        dangKyThiRepository.save(dangKyThi);
-        return 0;
+        try {
+            int lanThi = (dangKyThiRepository.findByLopAndMonHoc(dangKyThi.getLop(),
+                    dangKyThi.getMonHoc()).size()) + 1;
+            dangKyThi.setLan(lanThi);
+            DangKyThi dkt = dangKyThiRepository.save(dangKyThi);
+            thiRepository.insertThiByIddk(dkt.getIddk());
+            return 0; // Trả về giá trị thành công nếu không có lỗi
+        } catch (Exception e) {
+            System.out.println("=====================================================");
+            System.out.println("Lỗi khi đăng ký thi");
+            System.out.println(e.toString());
+            return 1;
+        }
     }
 
     public int countCauHoiByMonHoc(MonHoc monHoc) {
         return cauHoiRepository.findByMonHocAndTrangThaiXoa(monHoc, false).size();
     }
 
+    public List<DangKyThiDTO> searchDangKyThi(String keyword, String magv) {
+        return dangKyThiRepository.searchDangKyThi(keyword, magv);
+    }
 }
