@@ -30,4 +30,5 @@ function bodyClick() {
 // ====================Main==============================
 // ==================biến======================
 // ================gắn sự kiện==========================
+main_container = document.querySelector("body")
 main_container.addEventListener("click", bodyClick);

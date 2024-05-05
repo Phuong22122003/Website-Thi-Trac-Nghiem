@@ -32,7 +32,7 @@ public class Thi {
     @ManyToOne
     @JoinColumn(name = "IDDK")
     private DangKyThi dkThi;
-    @OneToMany(mappedBy = "thi", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "thi", fetch = FetchType.LAZY)
     private Collection<CTBaiThi> dkThis;
 
     public int getIdThi() {

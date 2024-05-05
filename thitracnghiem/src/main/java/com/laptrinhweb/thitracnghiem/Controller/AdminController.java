@@ -24,10 +24,10 @@ public class AdminController {
     @Autowired
     MonHocService monHocService;
 
-    @GetMapping("/student")
-    public String student() {
-        return "/admin/student";
-    }
+    // @GetMapping("/student")
+    // public String student() {
+    //     return "/admin/student";
+    // }
 
     @GetMapping("/class")
     public String lophoc() {

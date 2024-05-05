@@ -10,28 +10,45 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+
 import java.util.Collection;
 
 @Entity
 @Table(name = "SINHVIEN")
 public class SinhVien {
     @Id
+    @NotBlank(message = "Mã sinh viên không được trống!")
     @Column(name = "MASV")
     private String masv;
+    @NotBlank(message = "Họ không được trống!")
     @Column(name = "HO")
     private String ho;
+    @NotBlank(message = "Tên không được trống!")
     @Column(name = "TEN")
     private String ten;
     @Column(name = "GIOITINH")
     private boolean gioiTinh;
+    @NotBlank(message = "Địa chỉ không được trống!")
     @Column(name = "DIACHI")
     private String diaChi;
+    @NotNull(message = "Ngày sinh không được trống!")
+    @Past(message = "Ngày sinh không được trống!")
     @Column(name = "NGAYSINH")
     private Date ngaySinh;
+    @NotBlank(message = "Username không được trống!")
     @Column(name = "USERNAME")
     private String userName;
+    @NotBlank(message = "Password không được trống!")
     @Column(name = "PASSWORD")
     private String passWord;
+    @Email(message = "Email không hợp lệ!")
+    @NotBlank(message = "Email không được trống!")
+    @Column(name = "EMAIL")
+    private String email;
     // @Column(name = "MALOP")
     // private String maLop;
     @Column(name = "TRANGTHAIXOA")
@@ -146,6 +163,14 @@ public class SinhVien {
         this.lop = lop;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     // public String getMaLop() {
     // return maLop;
     // }

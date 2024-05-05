@@ -7,6 +7,8 @@
     <title>sinh viên</title>
     <link rel="stylesheet" href="../../static/assets/css/student/home.css"
         th:href="@{/assets/css/student/home.css}" />
+    <link rel="stylesheet" href="../../static/assets/css/student/toast.css"
+        th:href="@{/assets/css/student/toast.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,6 +17,12 @@
 </head>
 
 <body>
+    <!-- <div class="toast-container">
+        <div class="toast">
+            <h3 class="toast-title">Thông báo</h3>
+            <span class="toast-message">Thông báo của bạn ở đây</span>
+        </div>
+    </div> -->
     <div class="main-container">
         <!-- thanh chọn các chức năng -->
         <div class="left-container child-container">
@@ -155,61 +163,64 @@
             </div>
             <!-- 3 sửa thông tin -->
             <div class="right-child-container-bottom" id="sua-thong-tin" style="display: none;">
-                <form action="" class="form" id="modify-info" onsubmit="saveInfo(event)" >
+                <form th:action="@{/student/changeinfo}" th:object = "${sinhvien}" class="form" id="modify-info" method="post">
                     <p style="color: blue; padding-left: 150px;" id = "info-message"></p> 
-                    <input type="hidden" name="" id="masv" th:value = "${sinhvien.getMasv()}">
+                    <input type="text" name="" id="masv" th:field = "${sinhvien.masv}" readonly>
 
                     <label for="ho" class="label">Họ</label>
-                    <input type="text" name="" id="ho" th:value = "${sinhvien.getHo()}">
+                    <input type="text" name="" id="ho" th:field = "${sinhvien.ho}">
                     <!-- error 1 -->
-                    <p class="error" ></p>
+                    <span class="error-message" th:if="${#fields.hasErrors('ho')}" th:errors="*{ho}"style="color:red; font-style: italic;"></span>
 
                     <label for="ten">Tên</label>
-                    <input type="text" name="" id="ten" th:value = "${sinhvien.getTen()}">
+                    <input type="text" name="" id="ten" th:field = "${sinhvien.ten}">
                     <!-- error 2 -->
-                    <p class="error"></p>
+                    <span class="error-message" th:if="${#fields.hasErrors('ten')}" th:errors="*{ten}"style="color:red; font-style: italic;"></span>
 
                     <label for="gioitinh">Giới tính</label>
-                    <select id="gioitinh" name="gioitinh">
-                        <option th:if ="${sinhvien.isGioiTinh() == false}" selected = "selected" value="0">Nam</option>
-                        <option th:if ="${sinhvien.isGioiTinh() == false}" value="1">Nữ</option>
-                        <option th:if ="${sinhvien.isGioiTinh() == true}" value="0">Nam</option>
-                        <option th:if ="${sinhvien.isGioiTinh() == true}" selected = "selected"  value="1">Nữ</option>
+                    <select id="gioitinh" name="gioitinh" th:field="*{gioiTinh}">
+                        <option  value="false" th:if ="${sinhvien.isGioiTinh() == false}" selected = "selected">Nam</option>
+                        <option  value="true" th:if ="${sinhvien.isGioiTinh() == false}">Nữ</option>
+                        <option  value="true" th:if ="${sinhvien.isGioiTinh() == true}">Nam</option>
+                        <option  value="true" th:if ="${sinhvien.isGioiTinh() == true}"  selected = "selected" >Nữ</option>
                     </select>
-                    <p class="error" ></p>
-                    <!-- error 3 -->
-
 
                     <label for="diachi">Địa chỉ</label>
-                    <input type="text" name="" id="diachi" th:value = "${sinhvien.getDiaChi()}">
-                    <p class="error"></p>
+                    <input type="text" name="" id="diachi" th:field = "${sinhvien.diaChi}">
+                    <span class="error-message" th:if="${#fields.hasErrors('diaChi')}" th:errors="*{diaChi}"style="color:red; font-style: italic;"></span>
                     <!-- error 4 -->
 
                     <label for="ngaysinh">Ngày sinh</label>
-                    <input type="date" id = "ngaysinh" th:value = "${sinhvien.getNgaySinh()}">
-                    <p class="error"></p>
+                    <input type="date" id = "ngaysinh" th:field = "${sinhvien.ngaySinh}">
+                    <span class="error-message" th:if="${#fields.hasErrors('ngaySinh')}" th:errors="*{ngaySinh}"style="color:red; font-style: italic;"></span>
                     <!-- error 5 -->
-
+                    
+                    <label for="email">Email</label>
+                    <input type="email" id = "email" th:field = "${sinhvien.email}">
+                    <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"style="color:red; font-style: italic;"></span>
+                    <!-- error 5 -->
                     <button type="submit" id = "infoBtn" class="btn">Lưu</button>
                 </form>
             </div>
             <!-- 4 đổi mật khẩu -->
             <div class="right-child-container-bottom" id="doi-mat-khau" style="display: none;">
-                <form action="" class="form" id = "change-password" onsubmit="changePassword(event)" >
+                <form th:action="@{/student/changepass}" class="form" th:object="${Password}" id = "change-password" method="post">
                     <p style="color: cyan;" id="message"></p>
-                    <label for="password">Mật khẩu</label>
-                    <input type="password" id = "password">
-                    <p class="error"></p>
+                    <label for="oldPassword">Mật khẩu</label>
+                    <input type="password" id = "oldPassword" th:field="*{oldPassword}">
+                    <span class="error-message" th:if="${#fields.hasErrors('oldPassword')}" th:errors="*{oldPassword}"style="color:red; font-style: italic;"></span>
                     <!-- error 1 -->
 
-                    <label for="new-password">Mật khẩu mới</label>
-                    <input type="password" id = "new-password">
-                    <p class="error"></p>
+                    <label for="newPassword">Mật khẩu mới</label>
+                    <input type="password" id = "newPassword" th:field = "*{newPassword}">
+                    <span class="error-message" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"style="color:red; font-style: italic;"></span>
+
                     <!-- error 2 -->
                     
-                    <label for="confirm-password">Nhập lại mật khẩu mới</label>
-                    <input type="password" id = "confirm-password">
-                    <p class="error"></p>
+                    <label for="confirmNewPassword">Nhập lại mật khẩu mới</label>
+                    <input type="password" id = "confirmNewPassword" th:field = "*{confirmNewPassword}">
+                    <span class="error-message" th:if="${#fields.hasErrors('confirmNewPassword')}" th:errors="*{confirmNewPassword}"style="color:red; font-style: italic;"></span>
+
                     <!-- error 3 -->
 
                     <button type="submit" id = "passInfoBtn" class="btn">Lưu</button>
@@ -217,8 +228,29 @@
             </div>
         </div>
     </div>
+    <script src="./../../static/javascript/student/toast.js"
+        th:src="@{/javascript/student/toast.js}">
+    </script>
     <script src="./../../static/javascript/student/home.js"
-        th:src="@{/javascript/student/home.js}"></script>
+        th:src="@{/javascript/student/home.js}">
+    </script>
+    <script th:inline="javascript"> 
+    var message = /*[[${message}]]*/ null;
+    // window.alert(message)
+    if(message!=null){
+        if(message.includes("Thay đổi thông tin thất bại")){
+            showToast("Thất bại!",message)
+            switchView(2)
+        }
+        if(message.includes("Thay đổi mật khẩu thất bại")){
+            showToast("Thất bại!",message)
+            switchView(3)
+        }
+        if(message.includes("thành công")){
+            showToast("Thành công",message)
+        }
+    }
+    </script>
 </body>
 
 </html>
