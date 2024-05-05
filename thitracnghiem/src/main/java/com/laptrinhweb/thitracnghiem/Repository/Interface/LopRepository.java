@@ -32,10 +32,6 @@ public interface LopRepository extends JpaRepository<Lop, String> {
     @Modifying
     @Query(value = "UPDATE Lop SET trangThaiXoa = 1 WHERE maLop = :maLop", nativeQuery = true)
     public void deleteClass(@Param("maLop") String malop);
-    // @Modifying
-    // @Query(value = "UPDATE Lop SET trangThaiXoa = 1 WHERE maLop = :maLop",
-    // nativeQuery = true)
-    // public void deleteClass(@Param("maLop") String malop);
     @Query(value = "select * from lop where trangthaixoa = 0", nativeQuery = true)
     public List<Lop> findAllLop();
 
