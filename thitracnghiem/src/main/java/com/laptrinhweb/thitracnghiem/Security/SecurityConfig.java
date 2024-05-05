@@ -1,6 +1,5 @@
 package com.laptrinhweb.thitracnghiem.Security;
 
-
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
     // @Autowired
     // private UserDetailsService userDetailsService;
     @Bean
@@ -71,15 +70,8 @@ public class SecurityConfig{
     public PasswordEncoder passwordEncoder() { 
         return new BCryptPasswordEncoder(); 
     }
-    @Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User
-				.withUsername("user")
-				.password(passwordEncoder().encode("password"))
-				.roles("STUDENT")
-				.build();
-
-		return new InMemoryUserDetailsManager(user);
-	}
+    // @Bean
+	// public UserDetailsService userDetailsService() {
+	// 	return userDetailsService;
+	// }
 }

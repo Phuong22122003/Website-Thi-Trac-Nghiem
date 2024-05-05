@@ -1,0 +1,354 @@
+.content-profile {
+    display: none;
+    background-color: rebeccapurple;
+    background: #fff;
+    /* box-shadow: 0px 8px 24px 0px rgba(149, 157, 165, 0.20); */
+    align-items: center;
+    padding: 100px 100px;
+    column-gap: 100px;
+}
+
+.profile-left {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-left .profile {
+    color: #6C6C6C;
+    font-size: 3rem;
+}
+
+.profile-left .img-wrapper {
+    margin-top: 47px;
+    width: 150px;
+    height: 150px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-left .img-wrapper svg {
+    padding: 24px;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-left .name {
+    margin-top: 40px;
+    color: #000;
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+.profile-left .role {
+    margin-top: 4px;
+    color: #6C6C6C;
+    font-size: 2.4rem;
+    font-weight: 300;
+}
+
+.profile-left .separate {
+    height: 68.772px;
+    width: 1.5px;
+    background: #6C6C6C;
+}
+
+.profile-left .attribute-wrapper {
+    margin-top: 50px;
+    display: flex;
+    column-gap: 50px;
+    align-items: center;
+}
+
+.profile-left .item .number {
+    color: #000;
+    font-size: 3.3rem;
+}
+
+.profile-left .item .text {
+    margin-top: 10px;
+    color: #6C6C6C;
+    font-size: 1.6rem;
+    font-weight: 300;
+}
+
+.profile-right {
+    width: 60%;
+}
+
+.content-profile>.separate {
+    height: 100%;
+    width: 1.5px;
+    background: #E6E6E6;
+}
+
+.config-form .save-btn {
+    display: block;
+    width: 100%;
+}
+
+.error-message {
+    display: block;
+    margin: 0 auto 16px;
+    color: red;
+    width: fit-content;
+}
+
+.filter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+table .question-content {
+    white-space: nowrap;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.sort-wrapper-monhoc {
+    margin-right: 16px;
+}
+
+tbody .icon-wrapper {
+    display: flex;
+    column-gap: 16px;
+    justify-content: center;
+}
+
+tbody .icon-wrapper i {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+tbody .icon-wrapper i:hover {
+    opacity: 0.8;
+}
+
+.fa-trash {
+    color: #A30D11;
+}
+
+tbody .edit {
+    color: var(--primary-color);
+}
+
+tbody .more {
+    color: #5AEF9F;
+}
+
+.modal-container {
+    border-radius: 16px;
+}
+
+.question-detail-wrapper {
+    padding: 32px 32px;
+    max-width: 700px;
+}
+
+.question-detail-wrapper .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal .question-detail-wrapper .question-id {
+    font-weight: 600;
+    font-size: 2.2rem;
+    color: var(--primary-color);
+}
+
+.question-detail-wrapper i:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.question-detail-wrapper i {
+    font-size: 1.8rem;
+}
+
+.question-detail-wrapper .question-content {
+    margin-top: 12px;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.6;
+    /* text-align: center; */
+}
+
+.question-detail-wrapper .text {
+    display: inline-block;
+    font-weight: 600;
+    color: #000;
+    margin-top: 24px;
+}
+
+.question-detail-wrapper .selection-wrapper {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.selection.correct {
+    color: var(--primary-color);
+}
+
+/* modal config */
+.modal_container[data-name="cauhoi"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.type-wrapper {
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+}
+
+.text-type {
+    font-family: Roboto;
+    font-size: 2.1rem;
+    font-weight: 500;
+}
+
+.type-selection {
+    padding: 12px;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    font-size: 1.8rem;
+}
+
+#noiDungCauHoi {
+    border: none;
+    resize: none;
+}
+
+#noiDungCauHoi:focus {
+    outline: none;
+}
+
+.radio-luachon+label {
+    display: flex;
+    align-items: center;
+    position: relative;
+    column-gap: 6px;
+}
+
+.radio-luachon+label::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    /* background-color: antiquewhite; */
+    border: 1px solid var(--primary-color);
+    border-radius: 50%;
+}
+
+.radio-luachon:checked+label::before {
+    background-color: var(--primary-color);
+}
+
+.radio-luachon:checked+label::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 3px;
+    background-color: transparent;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    position: absolute;
+    rotate: -45deg;
+    left: 3px;
+    bottom: 6.5px;
+}
+
+
+
+.input-selection {
+    position: relative;
+    padding-right: 48px;
+}
+
+.input-selection i {
+    font-size: 1.8rem;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.input-selection i:hover {
+    opacity: 0.9;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.modal-container[data-name='add-selection'] .modal-wrapper {
+    padding: 36px;
+    width: 700px;
+}
+
+.modal-container[data-name='add-selection'] .top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-container[data-name='add-selection'] .top i:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.modal-container[data-name='add-selection'] {
+    position: fixed;
+
+}
+
+.fa-solid {
+    cursor: pointer;
+}
+
+.fa-solid:hover {
+    opacity: 0.8;
+}
+
+.content[data-name="xemdiem"] table {
+    overflow-y: scroll;
+}
+
+.modal-container[data-name="xemdiem"] {
+    padding: 16px;
+    height: 500px;
+}
+
+.modal-container[data-name="xemdiem"] .closeBtn {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.modal-container .table {
+    min-width: 700px;
+    overflow-y: scroll;
+    border-radius: 16px;
+    height: 60px;
+}
+
+.modal-container[data-name="xemdiem"] .table-wrapper {
+    overflow-y: scroll;
+    width: 100%;
+    flex-grow: 1;
+}
