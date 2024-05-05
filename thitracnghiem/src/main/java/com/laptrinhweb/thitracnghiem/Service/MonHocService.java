@@ -39,6 +39,9 @@ public class MonHocService {
             monHocRepository.save(newMonHoc);
             return 0;
         } else if (existingMonHoc.isTrangThaiXoa()) {
+            existingMonHoc.setSoTietLt(monHoc.getSoTietLt());
+            existingMonHoc.setSoTietTh(monHoc.getSoTietTh());
+            existingMonHoc.setTenmh(monHoc.getTenmh());
             existingMonHoc.setTrangThaiXoa(false);
             monHocRepository.save(existingMonHoc);
             return 0;
@@ -61,5 +64,9 @@ public class MonHocService {
     public List<MonHoc> searchMonHoc(String keyword) {
         List<MonHoc> list = monHocRepository.searchMonHoc(keyword);
         return list;
+    }
+
+    public MonHoc findByMamh(String mamh) {
+        return monHocRepository.findByMamh(mamh);
     }
 }

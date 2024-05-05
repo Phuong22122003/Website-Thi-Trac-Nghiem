@@ -444,7 +444,14 @@
                 </a>
             </div>
         </div>
-
+        <div th:if="${errorsAdd}">
+            <ul>
+                <li
+                    th:each="error : ${errorsAdd}"
+                    th:text="${error.defaultMessage}"
+                ></li>
+            </ul>
+        </div>
         <!-- Modal -->
         <div class="modal">
             <div class="modal-container" data-name="monhoc">
@@ -464,10 +471,15 @@
                             id="mamh"
                             autocomplete="nope"
                             th:field="*{mamh}"
+                            maxlength="10"
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorAdd_mamh}"
+                        class="form-message"
+                    ></span>
+
                     <div class="input-wrapper">
                         <label for="tenmh">Tên môn học:</label>
                         <input
@@ -477,10 +489,15 @@
                             id="tenmh"
                             autocomplete="nope"
                             th:field="*{tenmh}"
+                            maxlength="50"
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorAdd_tenmh}"
+                        class="form-message"
+                    ></span>
+
                     <div class="input-wrapper">
                         <label for="soTietLt">Số tiết lý thuyết:</label>
                         <input
@@ -494,7 +511,11 @@
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorAdd_soTietLt}"
+                        class="form-message"
+                    ></span>
+
                     <div class="input-wrapper">
                         <label for="soTietTh">Số tiết thực hành:</label>
                         <input
@@ -508,7 +529,10 @@
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorAdd_soTietTh}"
+                        class="form-message"
+                    ></span>
 
                     <div class="btn-controller">
                         <button type="submit" class="btn registerSubmitBtn">
@@ -537,10 +561,14 @@
                             autocomplete="nope"
                             readonly
                             th:field="*{mamh}"
+                            maxlength="10"
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorEdit_mamh}"
+                        class="form-message"
+                    ></span>
                     <div class="input-wrapper">
                         <label for="tenmh">Tên môn học:</label>
                         <input
@@ -550,10 +578,14 @@
                             id="tenmh"
                             autocomplete="nope"
                             th:field="*{tenmh}"
+                            maxlength="50"
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorEdit_tenmh}"
+                        class="form-message"
+                    ></span>
                     <div class="input-wrapper">
                         <label for="soTietLt">Số tiết lý thuyết:</label>
                         <input
@@ -563,10 +595,14 @@
                             id="soTietLt"
                             autocomplete="nope"
                             th:field="*{soTietLt}"
+                            required
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorEdit_soTietLt}"
+                        class="form-message"
+                    ></span>
                     <div class="input-wrapper">
                         <label for="soTietTh">Số tiết thực hành:</label>
                         <input
@@ -576,10 +612,14 @@
                             id="soTietTh"
                             autocomplete="nope"
                             th:field="*{soTietTh}"
+                            required
                         />
                         <div class="bar"></div>
                     </div>
-                    <!-- <span class="form-message"></span> -->
+                    <span
+                        th:text="${errorEdit_soTietTh}"
+                        class="form-message"
+                    ></span>
 
                     <div class="btn-controller">
                         <button type="submit" class="btn registerSubmitBtn">
@@ -599,7 +639,9 @@
             var statusXoaMonHoc = /*[[${statusXoaMonHoc}]]*/ null;
             var statusThemMonHoc = /*[[${statusThemMonHoc}]]*/ null;
             var statusEditMonHoc = /*[[${statusEditMonHoc}]]*/ null;
-            var errorMessage = /*[[${errorMessage}]]*/ null;
+            var errorAdd = /*[[${errorAdd}]]*/ null;
+            var errorEdit = /*[[${errorEdit}]]*/ null;
+            var monHocError = /*[[${monHocError}]]*/ null;
             if (
                 statusXoaMonHoc !== "null" &&
                 statusXoaMonHoc !== undefined &&
@@ -666,17 +708,126 @@
                     });
                 }
             }
-
             if (
-                errorMessage !== "null" &&
-                errorMessage !== undefined &&
-                errorMessage !== null
+                errorEdit !== "null" &&
+                errorEdit !== undefined &&
+                errorEdit !== null
             ) {
-                toast({
-                    type: "error",
-                    title: "Thất bại!",
-                    message: errorMessage,
-                    duration: 3000,
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='m-monhoc']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                for (var key in monHocError) {
+                    if (monHocError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                input.value = monHocError[key];
+                            });
+                        }
+                    }
+                }
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+            }
+            if (
+                errorAdd !== "null" &&
+                errorAdd !== undefined &&
+                errorAdd !== null
+            ) {
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='monhoc']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                for (var key in monHocError) {
+                    if (monHocError.hasOwnProperty(key)) {
+                        const inputList = modalContainer.querySelectorAll(
+                            `[name='${key}']`
+                        );
+                        if (inputList) {
+                            inputList.forEach((input) => {
+                                input.value = monHocError[key];
+                            });
+                        }
+                    }
+                }
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
                 });
             }
         </script>

@@ -14,10 +14,12 @@ function toast({
     const icon = {
         success: "fa-solid fa-check",
         error: "fa-solid fa-xmark",
+        info: "fa-solid fa-info",
     };
     const background = {
         success: "#48B16E",
         error: "#FB3836",
+        info: "#DCA048",
     };
 
     // Convert duration to seconds with two decimal places

@@ -99,6 +99,21 @@
     tr td:last-child {
         display: flex;
     }
+
+    .content-profile {
+        width: 100%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .profile-left {
+        display: none;
+    }
+
+    .content-profile .separate {
+        display: none;
+    }
 }
 
 /* Tablet */
@@ -133,6 +148,7 @@
         flex-grow: 1;
     }
 
+
 }
 
 /* Mobile */
@@ -160,5 +176,15 @@
 
     .login-form {
         width: 100%;
+    }
+
+
+
+    .config-form .form-wrapper {
+        display: initial;
+    }
+
+    .config-form .form-wrapper .input-wrapper {
+        margin: 16px 0;
     }
 }

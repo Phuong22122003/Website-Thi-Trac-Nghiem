@@ -880,3 +880,7 @@ tbody .more {
     align-items: center;
     column-gap: 16px;
 }
+
+.form-message {
+    color: red;
+}

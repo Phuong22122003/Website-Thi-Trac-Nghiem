@@ -23,7 +23,7 @@ public class MonHoc {
     private int soTietTh;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
-    @OneToMany(mappedBy = "monHoc", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "monHoc", fetch = FetchType.LAZY)
     private Collection<CauHoi> cauHois;
 
     public MonHoc(String mamh, String tenmh, int soTietLt, int soTietTh, boolean trangThaiXoa) {
