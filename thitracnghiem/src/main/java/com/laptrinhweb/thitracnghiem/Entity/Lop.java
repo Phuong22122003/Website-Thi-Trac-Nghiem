@@ -30,7 +30,7 @@ public class Lop implements Serializable {
     private Date nam_nhap_hoc;
     @Column(name = "TRANGTHAIXOA")
     private boolean trang_thai_xoa;
-    @OneToMany(mappedBy = "lop", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "lop", fetch = FetchType.LAZY)
     private Collection<SinhVien> sinhviens;
     @OneToMany(mappedBy = "lop", fetch = FetchType.LAZY)
     private Collection<DangKyThi> dkThis;

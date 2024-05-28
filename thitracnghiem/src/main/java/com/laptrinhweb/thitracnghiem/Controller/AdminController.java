@@ -64,7 +64,7 @@ public class AdminController {
 
     // @GetMapping("/student")
     // public String student() {
-    //     return "/admin/student";
+    // return "/admin/student";
     // }
 
     // @GetMapping("/class")

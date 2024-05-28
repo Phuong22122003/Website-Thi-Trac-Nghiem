@@ -1,6 +1,5 @@
 package com.laptrinhweb.thitracnghiem.Service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,40 +22,42 @@ import com.laptrinhweb.thitracnghiem.Repository.Implement.SinhVienRepositoryImpl
 
 @Service
 public class AuthenticationService implements UserDetailsService {
-    @Autowired private SinhVienRepositoryImplt sinhVienRepositoryImplt;
-    @Autowired private GiangVienRepositoryImplt giangVienRepositoryImplt;
-    @Autowired private NhanVienRepositoryImplt nhanVienRepositoryImplt;
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired
+    private SinhVienRepositoryImplt sinhVienRepositoryImplt;
+    @Autowired
+    private GiangVienRepositoryImplt giangVienRepositoryImplt;
+    @Autowired
+    private NhanVienRepositoryImplt nhanVienRepositoryImplt;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         boolean check = false;
-        Object user= null;
-        String password ="";
-        if((user = sinhVienRepositoryImplt.getStudentByUserName(username))!=null) {
+        Object user = null;
+        String password = "";
+        if ((user = sinhVienRepositoryImplt.getStudentByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("STUDENT");
             grantList.add(authority);
-            password = ((SinhVien)user).getPassWord();
-            check =true;
-        }
-        else if( (user = giangVienRepositoryImplt.getTeacherInfoByUserName(username))!= null){
+            password = ((SinhVien) user).getPassWord();
+            check = true;
+        } else if ((user = giangVienRepositoryImplt.getTeacherInfoByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("TEACHER");
             grantList.add(authority);
-            password = ((GiangVien)user).getPassWord();
-            check =true;
-        }
-        else if((user = nhanVienRepositoryImplt.getStudentByUserName(username))!=null){
+            password = ((GiangVien) user).getPassWord();
+            check = true;
+        } else if ((user = nhanVienRepositoryImplt.getStudentByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("EMPLOYEE");
             grantList.add(authority);
-            password = ((NhanVien)user).getPassWord();
-            check =true;
+            password = ((NhanVien) user).getPassWord();
+            check = true;
         }
-        if(check){
-            UserDetails userDetails = new User(username,passwordEncoder.encode(password),grantList);
+        if (check) {
+            UserDetails userDetails = new User(username, passwordEncoder.encode(password), grantList);
             return userDetails;
-        }
-        else 
-        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
+        } else
+            throw new UnsupportedOperationException("Unimplemented method'loadUserByUsername'");
     }
-    
+
 }

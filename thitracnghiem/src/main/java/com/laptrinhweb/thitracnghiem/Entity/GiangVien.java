@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import java.util.Collection;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,9 +37,13 @@ public class GiangVien implements Serializable {
     private boolean trangThaiXoa;
     @Column(name = "EMAIL")
     private String email;
+
     @OneToMany(mappedBy = "giangVien", fetch = FetchType.LAZY)
+    @SQLRestriction("trangThaiXoa = 0")
     private Collection<DangKyThi> dkThis;
-    @OneToMany(mappedBy = "giangVien", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "giangVien", fetch = FetchType.LAZY)
+    @SQLRestriction("trangThaiXoa = 0")
     private Collection<CauHoi> cauHois;
 
     // ===============Constructor========================//

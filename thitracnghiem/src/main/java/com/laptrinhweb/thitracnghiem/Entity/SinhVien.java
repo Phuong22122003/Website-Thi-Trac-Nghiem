@@ -56,7 +56,7 @@ public class SinhVien {
     @ManyToOne
     @JoinColumn(name = "MALOP")
     private Lop lop;
-    @OneToMany(mappedBy = "sinhVien", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sinhVien", fetch = FetchType.EAGER)
     private Collection<Thi> _this;
 
     public SinhVien() {

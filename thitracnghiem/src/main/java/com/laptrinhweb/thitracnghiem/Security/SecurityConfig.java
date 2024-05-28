@@ -66,7 +66,7 @@ public class SecurityConfig {
                             // Chuyển hướng mặc định nếu không phát hiện vai trò nào
                             response.sendRedirect("/login");
                         }))
-                .logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll());
+                .logout((logout) -> logout.permitAll());
         return http.build();
     }
 

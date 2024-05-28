@@ -18,7 +18,9 @@ function openModal(modalContainer) {
     modalContainer.addEventListener("click", (event) =>
         event.stopPropagation()
     );
-    modal.addEventListener("click", () => closeModal(modalContainer));
+    modal.onclick = function () {
+        closeModal(modalContainer);
+    };
     const closeBtn = modalContainer.querySelector(`.closeBtn`);
     if (!closeBtn) return;
     closeBtn.addEventListener("click", () => closeModal(modalContainer));
@@ -60,4 +62,4 @@ function XuLyTable() {
     });
 }
 export default XuLyTable;
-export { openModal };
+export { openModal, closeModal };

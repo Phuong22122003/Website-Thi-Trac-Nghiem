@@ -243,11 +243,17 @@ tbody .more {
     column-gap: 6px;
 }
 
+.box-wrapper-yesno-question {
+    display: flex;
+    justify-content: center;
+    column-gap: 24px;
+}
+
 .radio-luachon+label::before {
     content: "";
     display: inline-block;
-    width: 14px;
-    height: 14px;
+    width: 24px;
+    height: 24px;
     border-radius: 4px;
     /* background-color: antiquewhite; */
     border: 1px solid var(--primary-color);
@@ -261,15 +267,15 @@ tbody .more {
 .radio-luachon:checked+label::after {
     content: "";
     display: inline-block;
-    width: 8px;
-    height: 3px;
+    width: 12px;
+    height: 6px;
     background-color: transparent;
     border-left: 2px solid #fff;
     border-bottom: 2px solid #fff;
     position: absolute;
     rotate: -45deg;
-    left: 3px;
-    bottom: 6.5px;
+    left: 6.5px;
+    bottom: 10.5px;
 }
 
 
@@ -340,6 +346,7 @@ tbody .more {
     margin-left: auto;
 }
 
+
 .modal-container .table {
     min-width: 700px;
     overflow-y: scroll;
@@ -351,4 +358,38 @@ tbody .more {
     overflow-y: scroll;
     width: 100%;
     flex-grow: 1;
+}
+
+.input-option {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-selection {
+    font-size: 20px;
+}
+
+.dap-an-dung::after {
+
+    left: 6.5px !important;
+    bottom: 9.5px !important;
+    width: 8px !important;
+    height: 5px !important;
+}
+
+.dap-an-dung::before {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.interact-option-wrapper {
+    display: flex;
+    column-gap: 16px;
+}
+
+.option-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
 }

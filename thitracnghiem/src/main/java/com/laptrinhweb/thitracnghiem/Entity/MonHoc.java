@@ -2,6 +2,8 @@ package com.laptrinhweb.thitracnghiem.Entity;
 
 import java.util.Collection;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,6 +26,7 @@ public class MonHoc {
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
     @OneToMany(mappedBy = "monHoc", fetch = FetchType.LAZY)
+    @SQLRestriction("trangThaiXoa = 0")
     private Collection<CauHoi> cauHois;
 
     public MonHoc(String mamh, String tenmh, int soTietLt, int soTietTh, boolean trangThaiXoa) {
