@@ -64,13 +64,13 @@ public class AdminController {
 
     // @GetMapping("/student")
     // public String student() {
-    //     return "/admin/student";
+    // return "/admin/student";
     // }
 
-    @GetMapping("/class")
-    public String lophoc() {
-        return "/admin/class";
-    }
+    // @GetMapping("/class")
+    // public String lophoc() {
+    // return "/admin/class";
+    // }
 
     @GetMapping("/subject")
     public String subject(ModelMap model) {
