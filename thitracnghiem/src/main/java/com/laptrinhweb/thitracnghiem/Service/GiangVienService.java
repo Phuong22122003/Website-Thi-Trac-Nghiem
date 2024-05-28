@@ -31,7 +31,8 @@ public class GiangVienService {
 
     public int deleteByMaGv(String maGv) {
         GiangVien gv = giangVienRepository.findByMaGv(maGv);
-        if (gv == null && gv.getCauHois().size() > 0) {
+        System.out.println(gv.getCauHois().size());
+        if (gv == null || gv.getCauHois().size() > 0 && gv.getDkThis().size() > 0) {
             return 1;
         }
         gv.setTrangThaiXoa(true);
@@ -50,7 +51,7 @@ public class GiangVienService {
             newGiangVien.setHo(giangVien.getHo());
             newGiangVien.setHocHam(giangVien.getHocHam());
             newGiangVien.setHocVi(giangVien.getHocVi());
-            newGiangVien.setMaGv(giangVien.getMaGv());
+            newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
             newGiangVien.setPassWord(giangVien.getPassWord());
             newGiangVien.setTen(giangVien.getTen());
             newGiangVien.setUserName(giangVien.getUserName());
@@ -128,5 +129,18 @@ public class GiangVienService {
 
     public List<ThiDTO> findThiFromIddk(int iddk) {
         return thiRepository.findThiFromIddk(iddk);
+    }
+
+    public int changePassword(String newPassword, String maGv) {
+        try {
+            GiangVien gv = giangVienRepository.findByMaGv(maGv);
+            gv.setPassWord(newPassword);
+            giangVienRepository.save(gv);
+            return 0;
+        } catch (Exception e) {
+            System.out.println("=================");
+            System.out.println(e.toString());
+            return 1;
+        }
     }
 }

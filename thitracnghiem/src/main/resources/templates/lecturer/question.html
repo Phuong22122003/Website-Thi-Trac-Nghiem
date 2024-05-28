@@ -33,8 +33,8 @@
         />
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+            integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
@@ -143,6 +143,11 @@
                         <li>
                             <a class="item" href="/lecturer/profile">Profile</a>
                         </li>
+                        <li>
+                            <a class="item" href="/lecturer/change-password"
+                                >Change Password</a
+                            >
+                        </li>
                         <li><a class="item" href="/logout">Sign Out</a></li>
                     </ul>
                 </div>
@@ -187,38 +192,105 @@
                 <div class="content-bottom">
                     <div class="filter-wrapper">
                         <div class="find-wrapper">
-                            <label for="search">Entries</label>
-                            <div class="search-wrapper">
-                                <img
-                                    src="../static/assets/img/search-icon.svg"
-                                    th:src="@{/assets/img/search-icon.svg}"
-                                    alt=""
-                                />
-                                <input
-                                    type="text"
-                                    name=""
-                                    id="search-cauhoi"
-                                    placeholder="Search..."
-                                />
-                            </div>
+                            <form
+                                class="form-finding"
+                                th:action="@{/lecturer/searchQuestion/{maGv}(maGv=${giangVien.maGv})}"
+                                method="get"
+                            >
+                                <label for="search">Entries</label>
+                                <div class="search-wrapper">
+                                    <img
+                                        src="../static/assets/img/search-icon.svg"
+                                        th:src="@{/assets/img/search-icon.svg}"
+                                        alt=""
+                                    />
+                                    <input
+                                        type="text"
+                                        name="keyword"
+                                        id="search-question"
+                                        placeholder="Search..."
+                                    />
+                                </div>
+                                <button
+                                    href="/admin/findMonHoc"
+                                    class="btn-trans btn-finding"
+                                >
+                                    Tìm kiếm
+                                </button>
+                            </form>
                         </div>
                         <div class="sort-wrapper sort-wrapper-monhoc">
                             <label for="sort-monhoc">Môn học</label>
-                            <select id="sort-monhoc"></select>
+                            <select
+                                id="sort-monhoc"
+                                onchange="sortQuestionBySubject()"
+                            >
+                                <option value="all">All</option>
+                                <option
+                                    th:each="monHoc : ${monHocList}"
+                                    th:value="${monHoc.tenmh}"
+                                    th:text="${monHoc.tenmh}"
+                                ></option>
+                            </select>
                         </div>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Mã câu hỏi</th>
-                                <th>Môn học</th>
-                                <th>Hình thức</th>
-                                <th>Nội dung</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã câu hỏi</th>
+                                    <th>Môn học</th>
+                                    <th>Hình thức</th>
+                                    <th>Nội dung</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    th:class="question"
+                                    th:each="question : ${questionList}"
+                                >
+                                    <td
+                                        th:text="${question.idch}"
+                                        class="idch"
+                                    ></td>
+                                    <td
+                                        class="tenMh"
+                                        th:text="${question.tenMh}"
+                                    ></td>
+                                    <td
+                                        th:text="${question.hinhThuc}"
+                                        class="hinhThuc"
+                                    ></td>
+                                    <td
+                                        class="question-content noiDung"
+                                        th:text="${question.noiDung}"
+                                    ></td>
+                                    <td>
+                                        <div class="icon-wrapper">
+                                            <i
+                                                class="fa-solid fa-circle-info more"
+                                            ></i>
+                                            <a
+                                                th:href="@{/lecturer/get-info-luachon/{idch}(idch=${question.idch})}"
+                                            >
+                                                <i
+                                                    class="fa-solid fa-pen-to-square edit"
+                                                ></i>
+                                            </a>
+                                            <a
+                                                th:href="@{/lecturer/delete-question/{idch}(idch=${question.idch})}"
+                                            >
+                                                <i
+                                                    class="fa-solid fa-trash trash"
+                                                ></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <a href="#!" class="btn-trans btn-register">
                     <div class="circle">
@@ -264,12 +336,22 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-container" data-name="create-cauhoi">
+            <div class="modal-container" data-name="create-cauhoi-yes/no">
                 <div class="header">Tạo câu hỏi</div>
-                <form action="" class="register-form" method="post">
+                <form
+                    th:action="@{/lecturer/create-yesno-question/{maGv}(maGv=${giangVien.maGv})}"
+                    class="register-form"
+                    method="post"
+                >
                     <div class="input-wrapper">
                         <label for="monHoc">Chọn môn học:</label>
-                        <select id="monHoc" name="monHoc"></select>
+                        <select id="monHoc" name="monHoc">
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh}"
+                                th:text="${monHoc.tenmh}"
+                            ></option>
+                        </select>
                     </div>
                     <span class="form-message"></span>
                     <div class="input-wrapper">
@@ -279,11 +361,129 @@
                             id="noiDungCauHoi"
                             cols="30"
                             rows="2"
-                            rules="required"
+                            required
+                            autofocus
                         ></textarea>
                         <div class="bar"></div>
                     </div>
                     <span class="form-message"></span>
+                    <div class="box-wrapper box-wrapper-yesno-question">
+                        <input
+                            type="radio"
+                            name="yes/no"
+                            id="yes"
+                            checked
+                            class="radio-luachon"
+                            hidden
+                            data-name="Yes"
+                            value="1"
+                        />
+                        <label for="yes">Yes</label>
+                        <input
+                            type="radio"
+                            name="yes/no"
+                            id="no"
+                            class="radio-luachon"
+                            hidden
+                            data-name="No"
+                            value="2"
+                        />
+                        <label for="no">No</label>
+                    </div>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="create-cauhoi-others">
+                <div class="header">Tạo câu hỏi</div>
+                <form
+                    th:action="@{/lecturer/create-others-question/{maGv}(maGv=${giangVien.maGv})}"
+                    class="register-form"
+                    method="post"
+                >
+                    <div class="input-wrapper">
+                        <label for="hinhThuc">Hình thức câu hỏi:</label>
+                        <input
+                            type="text"
+                            placeholder=""
+                            readonly
+                            name="hinhThuc"
+                            id="hinhThuc"
+                        />
+                        <div class="bar"></div>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="monHoc">Chọn môn học:</label>
+                        <select id="monHoc" name="monHoc">
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh}"
+                                th:text="${monHoc.tenmh}"
+                            ></option>
+                        </select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="noiDungCauHoi">Nội dung câu hỏi</label>
+                        <textarea
+                            name="noiDungCauHoi"
+                            id="noiDungCauHoi"
+                            cols="30"
+                            rows="2"
+                            required
+                            autofocus
+                        ></textarea>
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="option-wrapper">
+                        <div class="input-wrapper input-option">
+                            <div class="wrapper-option">
+                                <label for="option1">Lựa chọn</label>
+                                <input
+                                    type="text"
+                                    placeholder=""
+                                    name="luachon"
+                                    id="option1"
+                                    autocomplete="nope"
+                                    rules="required"
+                                    maxlength="100"
+                                    required
+                                />
+                                <div class="bar"></div>
+                            </div>
+
+                            <div class="interact-option-wrapper">
+                                <input
+                                    type="radio"
+                                    name="dapAnDung"
+                                    id="dapAnDung"
+                                    class="radio-luachon"
+                                    hidden
+                                    data-name="No"
+                                    value="1"
+                                    checked
+                                />
+                                <label
+                                    for="dapAnDung"
+                                    class="dap-an-dung"
+                                ></label>
+
+                                <i
+                                    class="fa-solid fa-trash trash delete-selection"
+                                ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-btn"><i class="fa-solid fa-plus"></i></div>
                     <div class="btn-controller">
                         <button
                             type="submit"
@@ -309,27 +509,416 @@
                     <div class="selection-wrapper"></div>
                 </div>
             </div>
+            <div class="modal-container" data-name="edit-cauhoi-yes/no">
+                <div class="header">Chỉnh sửa câu hỏi</div>
+                <form
+                    th:action="@{/lecturer/edit-yesno-question/{idchEdited}(idchEdited=${idchEdited})}"
+                    class="register-form"
+                    method="post"
+                    th:if="${listLuaChon!=null && listLuaChon[0].hinhThuc.toLowerCase() == 'yes/no'}"
+                >
+                    <div class="input-wrapper">
+                        <label for="monHoc">Chọn môn học:</label>
+                        <select id="monHoc" name="mamh">
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh.toLowerCase()}"
+                                th:text="${monHoc.tenmh}"
+                                th:selected="${listLuaChon[0].maMh.toLowerCase() == monHoc.mamh.toLowerCase()}"
+                            ></option>
+                        </select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="noiDungCauHoi">Nội dung câu hỏi</label>
+                        <textarea
+                            name="noiDungCauHoi"
+                            id="noiDungCauHoi"
+                            required
+                            autofocus
+                            style="overflow: auto"
+                            th:text="${listLuaChon[0].noiDungCauHoi}"
+                        ></textarea>
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="box-wrapper box-wrapper-yesno-question">
+                        <input
+                            type="radio"
+                            name="dapAnDung"
+                            id="yes-edit"
+                            class="radio-luachon"
+                            hidden
+                            data-name="Yes"
+                            value="1"
+                            th:checked="${listLuaChon[0].dapAnDung == 1}"
+                        />
+                        <label for="yes-edit">Yes</label>
+                        <input
+                            type="radio"
+                            name="dapAnDung"
+                            id="no-edit"
+                            class="radio-luachon"
+                            hidden
+                            checked
+                            data-name="No"
+                            value="2"
+                            th:checked="${listLuaChon[0].dapAnDung == 2}"
+                        />
+                        <label for="no-edit">No</label>
+                    </div>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Register
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-container" data-name="edit-cauhoi-others">
+                <div class="header">Chỉnh sửa câu hỏi</div>
+                <form
+                    th:action="@{/lecturer/edit-others-question/{idchEdited}(idchEdited=${idchEdited})}"
+                    class="register-form"
+                    method="post"
+                    th:if="${listLuaChon!=null && listLuaChon[0].hinhThuc.toLowerCase() != 'yes/no'}"
+                >
+                    <div class="input-wrapper">
+                        <label for="monHoc">Chọn môn học:</label>
+                        <select id="monHoc" name="mamh">
+                            <option
+                                th:each="monHoc : ${monHocList}"
+                                th:value="${monHoc.mamh.toLowerCase()}"
+                                th:text="${monHoc.tenmh}"
+                                th:selected="${listLuaChon[0].maMh.toLowerCase() == monHoc.mamh.toLowerCase()}"
+                            >
+                                >
+                            </option>
+                        </select>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="input-wrapper">
+                        <label for="noiDungCauHoi">Nội dung câu hỏi</label>
+                        <textarea
+                            name="noiDungCauHoi"
+                            id="noiDungCauHoi"
+                            cols="30"
+                            rows="2"
+                            required
+                            autofocus
+                            th:text="${listLuaChon[0].noiDungCauHoi}"
+                        ></textarea>
+                        <div class="bar"></div>
+                    </div>
+                    <span class="form-message"></span>
+                    <div class="option-wrapper">
+                        <div
+                            class="input-wrapper input-option"
+                            th:each="luaChon : ${listLuaChon}"
+                        >
+                            <div class="wrapper-option">
+                                <input
+                                    type="text"
+                                    name="idlcEditQuestionList"
+                                    th:value="${luaChon.idlc}"
+                                    hidden
+                                />
+                                <label for="option1">Lựa chọn</label>
+                                <input
+                                    type="text"
+                                    placeholder=""
+                                    name="luachonEdited"
+                                    id="option1"
+                                    autocomplete="nope"
+                                    rules="required"
+                                    maxlength="100"
+                                    required
+                                    th:value="${luaChon.noiDungLuaChon}"
+                                />
+                                <div class="bar"></div>
+                            </div>
+
+                            <div class="interact-option-wrapper">
+                                <input
+                                    type="radio"
+                                    name="dapAnDung"
+                                    th:id="'dapAnDung_' + ${luaChon.idlc}"
+                                    class="radio-luachon"
+                                    hidden
+                                    data-name="No"
+                                    th:value="${luaChon.thuTu}"
+                                    th:checked="${luaChon.dapAnDung == luaChon.thuTu}"
+                                />
+                                <label
+                                    th:for="'dapAnDung_' + ${luaChon.idlc}"
+                                    class="dap-an-dung"
+                                ></label>
+                                <a
+                                    th:href="@{/lecturer/delete-luachon/{idch}/{idlc}(idlc=${luaChon.idlc}, idch=${idchEdited})}"
+                                >
+                                    <i
+                                        class="fa-solid fa-trash trash delete-selection"
+                                    ></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-btn"><i class="fa-solid fa-plus"></i></div>
+                    <div class="btn-controller">
+                        <button
+                            type="submit"
+                            href="#!"
+                            class="btn registerSubmitBtn"
+                        >
+                            Save
+                        </button>
+                        <a href="#!" class="btn-trans closeBtn">Close</a>
+                    </div>
+                </form>
+            </div>
         </div>
         <!-- Script -->
         <script
             th:src="@{/javascript/toast.js}"
             src="../static/javascript/toast.js"
         ></script>
-        <!-- <script
-            th:src="@{/javascript/XuLyLecturer.js}"
-            src="../static/javascript/XuLyLecturer.js"
-        ></script> -->
-        <!-- <script>
-            popup(
-                {
-                    type: "remove",
-                    title: "Thêm lựa chọn",
-                    desc: "Vui lòng nhập nội dung lựa chọn",
-                },
-                true,
-                console.log,
-                "Hello"
-            );
-        </script> -->
+        <script th:inline="javascript">
+            var statusCreateCauHoi = /*[[${statusCreateCauHoi}]]*/ null;
+            var statusDeleteCauHoi = /*[[${statusDeleteCauHoi}]]*/ null;
+            var statusEditCauHoi = /*[[${statusEditCauHoi}]]*/ null;
+            var listLuaChon = /*[[${listLuaChon}]]*/ null;
+            let optionAddedList = [];
+            console.log(listLuaChon);
+            let rowQuestions = document.querySelectorAll(".question");
+            const tbody = document.querySelector("tbody");
+            if (
+                statusCreateCauHoi !== "null" &&
+                statusCreateCauHoi !== undefined &&
+                statusCreateCauHoi !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusCreateCauHoi === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã thêm câu hỏi thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể thêm câu hỏi",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusDeleteCauHoi !== "null" &&
+                statusDeleteCauHoi !== undefined &&
+                statusDeleteCauHoi !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusDeleteCauHoi === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã xóa câu hỏi thành công",
+                        duration: 3000,
+                    });
+                } else if (statusDeleteCauHoi === 1) {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể xóa câu hỏi đã thi",
+                        duration: 3000,
+                    });
+                } else if (statusDeleteCauHoi === 2) {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể xóa lựa chọn duy nhất còn lại",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (
+                statusEditCauHoi !== "null" &&
+                statusEditCauHoi !== undefined &&
+                statusEditCauHoi !== null
+            ) {
+                // Sử dụng dữ liệu status ở đây
+                if (statusEditCauHoi === 0) {
+                    toast({
+                        type: "success",
+                        title: "Thành công!",
+                        message: "Đã sửa câu hỏi thành công",
+                        duration: 3000,
+                    });
+                } else {
+                    toast({
+                        type: "error",
+                        title: "Thất bại!",
+                        message: "Không thể sửa câu hỏi đã thi",
+                        duration: 3000,
+                    });
+                }
+            }
+            if (listLuaChon !== null) {
+                let hinhThuc = listLuaChon[0]["hinhThuc"];
+                console.log(hinhThuc);
+                // Sử dụng dữ liệu status ở đây
+                const modal = document.querySelector(".modal");
+                let modalContainer;
+                if (hinhThuc.toLowerCase() === "yes/no") {
+                    modalContainer = modal.querySelector(
+                        ".modal-container[data-name='edit-cauhoi-yes/no']"
+                    );
+                } else {
+                    modalContainer = modal.querySelector(
+                        ".modal-container[data-name='edit-cauhoi-others']"
+                    );
+                    const addBtn = modalContainer.querySelector(".add-btn");
+                    let numOption =
+                        modalContainer.querySelectorAll(
+                            '[name="luachonEdited"]'
+                        ).length + 1;
+                    addBtn.onclick = function () {
+                        const inputOption = addSelectionForEditedYesNoQuestion(
+                            numOption++,
+                            modalContainer
+                        );
+                        optionAddedList.push(...inputOption);
+                        console.log(optionAddedList);
+                    };
+                }
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+                });
+                const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                    const formGroups =
+                        document.querySelectorAll(".input-wrapper");
+                    formGroups.forEach((formGroup) => {
+                        const input = formGroup.querySelector("input");
+                        if (input) input.value = "";
+                    });
+                    const formMessages =
+                        document.querySelectorAll(".form-message");
+                    formMessages.forEach((formMessage) => {
+                        formMessage.remove();
+                    });
+
+                    if (optionAddedList) {
+                        optionAddedList.forEach((option) => {
+                            console.log(option);
+                            option.remove();
+                        });
+                    }
+                });
+            }
+            function sortQuestionBySubject() {
+                tbody.innerHTML = "";
+                const selectedOption =
+                    document.querySelector("#sort-monhoc").value;
+                rowQuestions.forEach((row) => {
+                    const tdMonHoc = row.querySelector(".tenMh");
+                    if (
+                        tdMonHoc.textContent === selectedOption ||
+                        selectedOption === "all"
+                    ) {
+                        tbody.appendChild(row);
+                    }
+                });
+            }
+
+            function addSelectionForEditedYesNoQuestion(stt, modalContainer) {
+                const optionWrapper =
+                    modalContainer.querySelector(".option-wrapper");
+                const template = `<div class="input-wrapper input-option" data-name=${stt}>
+                <div class="wrapper-option">
+                    <label for="option${stt}">Lựa chọn
+                </label>
+                    <input
+                        type="text"
+                        placeholder=""
+                        name="luachonAdded"
+                        id="luachon"
+                        autocomplete="nope"
+                        rules="required"
+                        maxlength="100"
+                        required
+                        autofocus
+                    />
+                    <div class="bar"></div>
+                </div>
+
+                <div class="interact-option-wrapper">
+                    <input
+                        type="radio"
+                        name="dapAnDung"
+                        id="option${stt}"
+                        class="radio-luachon"
+                        hidden
+                        data-name="option${stt}"
+                        value="${stt}"
+
+                    />
+                    <label for="option${stt}" class="dap-an-dung"></label>
+                    <i
+                        class="fa-solid fa-trash trash delete-selection"
+                    ></i>
+                </div>
+
+                </div> <span
+                        class="form-message" data-name="${stt}"
+                    >Lựa chọn chưa được lưu, vui lòng bấm save để lưu</span>
+                `;
+                optionWrapper.insertAdjacentHTML("beforeend", template);
+                const inputOption = document.querySelector(
+                    `.input-option[data-name="${stt}"]`
+                );
+                const formMessage = document.querySelector(
+                    `.form-message[data-name="${stt}"]`
+                );
+                inputOption.focus();
+                const deleteInputOptionBtn =
+                    inputOption.querySelector(".delete-selection");
+                deleteInputOptionBtn.onclick = function () {
+                    inputOption.remove();
+                    formMessage.remove();
+                };
+                return [inputOption, formMessage];
+            }
+        </script>
+        <script
+            type="module"
+            th:src="@{/javascript/lecturer/QuanLyCauHoi.js}"
+        ></script>
     </body>
 </html>

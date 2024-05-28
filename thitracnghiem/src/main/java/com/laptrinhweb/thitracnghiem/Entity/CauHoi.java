@@ -1,12 +1,19 @@
 package com.laptrinhweb.thitracnghiem.Entity;
 
+import java.util.Collection;
+
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,11 +36,20 @@ public class CauHoi {
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
 
+    @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
+    @SQLRestriction("trangThaiXoa = 0")
+    private Collection<LuaChon> luaChons;
+
+    @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
+    @SQLRestriction("trangThaiXoa = 0")
+    private Collection<CTBaiThi> ctBaiThis;
+
     @ManyToOne
     @JoinColumn(name = "MAGV")
     private GiangVien giangVien;
 
     @ManyToOne
+    // @SQLRestriction("trangThaiXoa = 0")
     @JoinColumn(name = "MAMH")
     private MonHoc monHoc;
 
@@ -48,8 +64,10 @@ public class CauHoi {
         this.giangVien = giangvien;
         this.monHoc = monhoc;
     }
-    public CauHoi(){}
-    // =================getter and setter===================//
+
+    public CauHoi() {
+    }
+
     public Integer getIdch() {
         return idch;
     }
@@ -90,23 +108,38 @@ public class CauHoi {
         this.trangThaiXoa = trangThaiXoa;
     }
 
-    public GiangVien getGiangvien() {
+    public Collection<LuaChon> getLuaChons() {
+        return luaChons;
+    }
+
+    public void setLuaChons(Collection<LuaChon> luaChons) {
+        this.luaChons = luaChons;
+    }
+
+    public GiangVien getGiangVien() {
         return giangVien;
     }
 
-    public void setGiangvien(GiangVien giangvien) {
-        this.giangVien = giangvien;
+    public void setGiangVien(GiangVien giangVien) {
+        this.giangVien = giangVien;
     }
 
-    public MonHoc getMonhoc() {
+    public MonHoc getMonHoc() {
         return monHoc;
     }
 
-    public void setMonhoc(MonHoc monhoc) {
-        this.monHoc = monhoc;
+    public void setMonHoc(MonHoc monHoc) {
+        this.monHoc = monHoc;
     }
 
-    
-    // ======Getter and setter===============================//
-    
+    public Collection<CTBaiThi> getCtBaiThis() {
+        return ctBaiThis;
+    }
+
+    public void setCtBaiThis(Collection<CTBaiThi> ctBaiThis) {
+        this.ctBaiThis = ctBaiThis;
+    }
+
+    // =================getter and setter===================//
+
 }

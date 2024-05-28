@@ -62,6 +62,7 @@ public class SecurityConfig {
         // .defaultSuccessUrl("/student/home", true)
         // )
         // .logout((logout) -> logout.permitAll());
+
         return http.build();
     }
 

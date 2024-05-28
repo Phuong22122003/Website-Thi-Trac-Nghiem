@@ -1,5 +1,7 @@
 package com.laptrinhweb.thitracnghiem.Entity;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,12 +15,12 @@ import jakarta.persistence.Table;
 @Table(name = "CTBAITHI")
 @IdClass(IDCTBaiThi.class)
 public class CTBaiThi {
-    @Id
-    @Column(name = "IDTHI")
-    private Integer idThi;
 	@Id
-    @Column(name = "IDCH")
-    private Integer idch;
+	@Column(name = "IDTHI")
+	private Integer idThi;
+	@Id
+	@Column(name = "IDCH")
+	private Integer idch;
 
 	@Column(name = "DAPANSV")
 	private Integer dapAnSv;
@@ -27,7 +29,6 @@ public class CTBaiThi {
 	@Column(name = "TRANGTHAIXOA")
 	private boolean trangThaiXoa;
 
-
 	@ManyToOne
 	@MapsId
 	@JoinColumn(name = "IDTHI")
@@ -35,10 +36,11 @@ public class CTBaiThi {
 
 	@ManyToOne
 	@MapsId
+	@SQLRestriction("TRANGTHAIXOA = 0")
 	@JoinColumn(name = "IDCH")
 	private CauHoi cauHoi;
-	
-	//============Constructor=====================//
+
+	// ============Constructor=====================//
 	public CTBaiThi(Integer idThi, Integer idch, Integer dapAnSv, Integer thuTuChon, boolean trangThaiXoa, Thi thi,
 			CauHoi cauHoi) {
 		this.idThi = idThi;
@@ -49,6 +51,7 @@ public class CTBaiThi {
 		this.thi = thi;
 		this.cauHoi = cauHoi;
 	}
+
 	public CTBaiThi(Integer idThi, Integer idch, Integer dapAnSv, Integer thuTuChon, boolean trangThaiXoa) {
 		this.idThi = idThi;
 		this.idch = idch;
@@ -56,7 +59,10 @@ public class CTBaiThi {
 		this.thuTuChon = thuTuChon;
 		this.trangThaiXoa = trangThaiXoa;
 	}
-	public CTBaiThi(){}
+
+	public CTBaiThi() {
+	}
+
 	// =================================getter and setter================//
 	public Integer getIdThi() {
 		return idThi;
@@ -113,7 +119,5 @@ public class CTBaiThi {
 	public void setCauHoi(CauHoi cauHoi) {
 		this.cauHoi = cauHoi;
 	}
-
-	
 
 }
