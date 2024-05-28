@@ -251,7 +251,7 @@
             >
                 <div class="content-top">
                     <span class="text">Students</span>
-                    <select id="classSelect" name="classes" style="width: 30%">
+                    <select id="classSelect" name="classes" style="width: 30%;">
                         <option value="" selected disabled>Chọn lớp</option>
                         <div th:each="class:${listOfClass}">
                             <option
@@ -268,7 +268,7 @@
                         </div>
                     </select>
                 </div>
-                <div class="content-bottom" style="width: 120%">
+                <div class="content-bottom" style=" width: 120%;"> 
                     <div class="find-wrapper">
                         <label for="search">Entries</label>
                         <div class="search-wrapper">
@@ -398,8 +398,8 @@
                 <a
                     href="#!"
                     class="btn-trans btn-register"
-                    style="position: sticky; bottom: 0"
-                >
+                    >
+                    <!-- style="position: sticky; bottom: 0" -->
                     <div class="circle">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -419,8 +419,8 @@
                 <a
                     href="#!"
                     class="btn-trans btn-register"
-                    style="position: sticky; bottom: 0; margin: 100px"
-                >
+                    >
+                    <!-- style="position: sticky; bottom: 0; margin: 100px" -->
                     <div class="circle">
                         <svg
                             fill="#000000"
@@ -849,7 +849,7 @@
                             name="m-email"
                             id="m-email"
                             rules="required"
-                            th:field="*{email}"
+                            th:field = "*{email}"
                             readonly
                         />
                     </div>
@@ -906,15 +906,16 @@
                 modalContainer.classList.remove("open");
             }
             var message = /*[[${message}]]*/ null;
+            var emailsError = /*[[${emailsError}]]*/ null;
             const modalContainer = document.querySelector(
                 ".modal-container[data-name='m-student']"
             );
             const formAddNewStudent = document.querySelector(
                 ".modal-container[data-name='student']"
             );
-
-            if (message != null) {
-                if (message === "Sinh viên đã đăng ký thi không thể xóa") {
+            
+            if(message!=null){
+                if(message === "Sinh viên đã đăng ký thi không thể xóa"){
                     toast({
                         type: "error",
                         title: "Thất bại!",
@@ -922,11 +923,7 @@
                         duration: 3000,
                     });
                 }
-                if (
-                    message == "Xóa thành công" ||
-                    message == "Sửa thông tin thành công" ||
-                    message == "Thêm thành công"
-                ) {
+                if(message == "Xóa thành công" || message == "Sửa thông tin thành công"||message == "Thêm thành công"){
                     toast({
                         type: "success",
                         title: "Thành công!",

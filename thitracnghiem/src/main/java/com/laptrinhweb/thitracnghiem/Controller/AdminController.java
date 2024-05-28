@@ -69,7 +69,7 @@ public class AdminController {
 
     // @GetMapping("/class")
     // public String lophoc() {
-    // return "/admin/class";
+    //     return "/admin/class";
     // }
 
     @GetMapping("/subject")
