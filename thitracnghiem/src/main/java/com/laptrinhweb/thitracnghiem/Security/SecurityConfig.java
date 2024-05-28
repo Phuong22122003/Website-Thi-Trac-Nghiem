@@ -25,9 +25,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/login", "/javascript/**", "/assets/**").permitAll()
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/student").hasRole("STUDENT")
-                .requestMatchers("/teacher").hasRole("TEACHER")
+                .requestMatchers("/admin/**").hasAuthority("EMPLOYEE")
+                .requestMatchers("/student/**").hasAuthority("STUDENT")
+                .requestMatchers("/teacher/**").hasAuthority("TEACHER")
                 .anyRequest().authenticated()).formLogin((form) -> form
                         // .loginPage(null)
                         .permitAll()
@@ -37,14 +37,14 @@ public class SecurityConfig {
                             for (GrantedAuthority authority : authorities) {
                                 System.out.println(authority.getAuthority());
                                 // Kiểm tra vai trò và chuyển hướng tương ứng
-                                if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                                    response.sendRedirect("/admin/class");
+                                if (authority.getAuthority().equals("EMPLOYEE")) {
+                                    response.sendRedirect("/admin/student");
                                     return;
-                                } else if (authority.getAuthority().equals("ROLE_STUDENT")) {
+                                } else if (authority.getAuthority().equals("STUDENT")) {
                                     response.sendRedirect("/student/home");
                                     return;
-                                } else if (authority.getAuthority().equals("ROLE_TEACHER")) {
-                                    response.sendRedirect("/lecturer/question");
+                                } else if (authority.getAuthority().equals("TEACHER")) {
+                                    response.sendRedirect("/teacher");
                                     return;
                                 }
                             }
@@ -62,7 +62,6 @@ public class SecurityConfig {
         // .defaultSuccessUrl("/student/home", true)
         // )
         // .logout((logout) -> logout.permitAll());
-
         return http.build();
     }
 
@@ -70,15 +69,15 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    // UserDetails user =
+    // User
+    // .withUsername("user")
+    // .password(passwordEncoder().encode("password"))
+    // .roles("STUDENT")
+    // .build();
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("TEACHER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+    // return new InMemoryUserDetailsManager(user);
+    // }
 }

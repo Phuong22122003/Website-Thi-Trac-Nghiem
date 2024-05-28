@@ -15,14 +15,12 @@ import java.util.List;
 
 @Repository
 public interface LopRepository extends JpaRepository<Lop, String> {
-    // @Query(value = "SELECT * FROM Lop WHERE trangThaiXoa = 'false'", nativeQuery
-    // = true)
-    // public List<Lop> getAllClass();
+    @Query(value = "SELECT * FROM Lop WHERE trangThaiXoa = 'false'", nativeQuery = true)
+    public List<Lop> getAllClass();
 
-    // @Query(value = "SELECT * FROM Lop WHERE maLop =:malop and trangThaiXoa =
-    // 'false'", nativeQuery = true)
-    // public Lop getClassById(@Param("malop") String malop);
-    // @Query(value = "exec searchClass :keyword" , nativeQuery = true)
+    @Query(value = "SELECT * FROM Lop WHERE maLop =:malop and trangThaiXoa = 'false'", nativeQuery = true)
+    public Lop getClassById(@Param("malop") String malop);
+    // @Query(value =  "exec searchClass :keyword" , nativeQuery = true)
     // public List<Lop> getAllClassByKeyword(@Param("keyword") String keyword);
     // @Modifying
     // @Query(value = "UPDATE Lop SET tenLop =:tenLop,namNhapHoc=:namNhapHoc WHERE
@@ -31,10 +29,9 @@ public interface LopRepository extends JpaRepository<Lop, String> {
     // tenLop,
     // @Param("namNhapHoc") Date namNhapHoc);
 
-    // @Modifying
-    // @Query(value = "UPDATE Lop SET trangThaiXoa = 1 WHERE maLop = :maLop",
-    // nativeQuery = true)
-    // public void deleteClass(@Param("maLop") String malop);
+    @Modifying
+    @Query(value = "UPDATE Lop SET trangThaiXoa = 1 WHERE maLop = :maLop", nativeQuery = true)
+    public void deleteClass(@Param("maLop") String malop);
     @Query(value = "select * from lop where trangthaixoa = 0", nativeQuery = true)
     public List<Lop> findAllLop();
 

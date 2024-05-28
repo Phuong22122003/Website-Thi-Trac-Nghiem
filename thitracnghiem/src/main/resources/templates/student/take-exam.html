@@ -59,6 +59,12 @@
             <button class="submit" id = "submitbtn" onclick="subMit()"><a>SUBMIT</a></button>
         </div>
     </div>
+    <script>
+        window.addEventListener('beforeun   load', function (event) {
+            window.alert('Tải lại trang có thể làm mất dữ liệu')
+            event.preventDefault();
+        });
+    </script>
     <script src="./../../static/javascript/student/take-exam.js" th:src="@{/javascript/student/take-exam.js}"></script>
 </body>
 

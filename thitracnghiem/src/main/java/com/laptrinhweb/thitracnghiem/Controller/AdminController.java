@@ -62,10 +62,10 @@ public class AdminController {
     @Autowired
     EmailService emailService;
 
-    @GetMapping("/student")
-    public String student() {
-        return "/admin/student";
-    }
+    // @GetMapping("/student")
+    // public String student() {
+    //     return "/admin/student";
+    // }
 
     @GetMapping("/class")
     public String lophoc() {

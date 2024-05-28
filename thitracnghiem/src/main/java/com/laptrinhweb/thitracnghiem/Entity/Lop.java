@@ -8,6 +8,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Date;
 
 import java.util.Collection;
@@ -17,10 +20,13 @@ import java.util.Collection;
 public class Lop implements Serializable {
     @Id
     @Column(name = "MALOP")
+    @NotBlank(message = "Mã lớp không được trống")
     private String maLop;
     @Column(name = "TENLOP")
+    @NotBlank(message = "Tên lớp không được trống")
     private String tenLop;
     @Column(name = "NAMNHAPHOC")
+    @NotNull(message = "Năm nhập học không được trống")
     private Date nam_nhap_hoc;
     @Column(name = "TRANGTHAIXOA")
     private boolean trang_thai_xoa;

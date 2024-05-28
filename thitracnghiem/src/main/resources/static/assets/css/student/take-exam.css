@@ -63,6 +63,7 @@ html {
     display: none;
 }
 .exam-view .form .question-answer .question {
+    word-break: break-all;
     flex-grow: 1;
     border: solid 1px;
     border-radius: 10px;
@@ -84,7 +85,7 @@ html {
 
 .exam-view .form .question-answer .box-answer .answer {
     flex-grow: 1;
-    
+    word-break: break-all;
 }
 
 /* ======================previous and next========================= */
