@@ -30,9 +30,8 @@ public class GiangVienService {
     }
 
     public int deleteByMaGv(String maGv) {
-        GiangVien gv = giangVienRepository.findByMaGv(maGv);
-        System.out.println(gv.getCauHois().size());
-        if (gv == null || gv.getCauHois().size() > 0 && gv.getDkThis().size() > 0) {
+        GiangVien gv = giangVienRepository.findByMaGvAndTrangThaiXoa(maGv, false);
+        if (gv == null || gv.getCauHois().size() > 0 || gv.getDkThis().size() > 0) {
             return 1;
         }
         gv.setTrangThaiXoa(true);
@@ -43,36 +42,59 @@ public class GiangVienService {
     public int addGiangVien(GiangVien giangVien) {
         GiangVien existingGiangVien = giangVienRepository.findByMaGv(giangVien.getMaGv());
         GiangVien existingUserName = giangVienRepository.findByUserName(giangVien.getUserName());
-        if (existingUserName != null) {
-            return 2;
-        } else if (existingGiangVien == null) {
-            GiangVien newGiangVien = new GiangVien();
-            newGiangVien.setGioiTinh(giangVien.isGioiTinh());
-            newGiangVien.setHo(giangVien.getHo());
-            newGiangVien.setHocHam(giangVien.getHocHam());
-            newGiangVien.setHocVi(giangVien.getHocVi());
-            newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
-            newGiangVien.setPassWord(giangVien.getPassWord());
-            newGiangVien.setTen(giangVien.getTen());
-            newGiangVien.setUserName(giangVien.getUserName());
-            newGiangVien.setTrangThaiXoa(false);
-            newGiangVien.setEmail(giangVien.getEmail());
-            giangVienRepository.save(newGiangVien);
-            return 0;
-        } else if (existingGiangVien.isTrangThaiXoa()) {
-            existingGiangVien.setEmail(giangVien.getEmail());
-            existingGiangVien.setGioiTinh(giangVien.isGioiTinh());
-            existingGiangVien.setHo(giangVien.getHo());
-            existingGiangVien.setHocHam(giangVien.getHocHam());
-            existingGiangVien.setHocVi(giangVien.getHocVi());
-            existingGiangVien.setPassWord(giangVien.getPassWord());
-            existingGiangVien.setTen(giangVien.getTen());
-            existingGiangVien.setUserName(giangVien.getUserName());
-            existingGiangVien.setTrangThaiXoa(false);
-            giangVienRepository.save(existingGiangVien);
-            return 0;
+        if (existingGiangVien != null && existingGiangVien.isTrangThaiXoa() == false) {
+            return 1;
         }
-        return 1;
+        if (existingUserName != null && existingUserName.isTrangThaiXoa() == false) {
+            return 2;
+        }
+        if (existingUserName != null && existingUserName.isTrangThaiXoa() == true) {
+            giangVienRepository.delete(existingUserName);
+        }
+        if (existingGiangVien != null && existingGiangVien.isTrangThaiXoa() == true) {
+            giangVienRepository.delete(existingGiangVien);
+        }
+        GiangVien newGiangVien = new GiangVien();
+        newGiangVien.setGioiTinh(giangVien.isGioiTinh());
+        newGiangVien.setHo(giangVien.getHo());
+        newGiangVien.setHocHam(giangVien.getHocHam());
+        newGiangVien.setHocVi(giangVien.getHocVi());
+        newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
+        newGiangVien.setPassWord(giangVien.getPassWord());
+        newGiangVien.setTen(giangVien.getTen());
+        newGiangVien.setUserName(giangVien.getUserName());
+        newGiangVien.setTrangThaiXoa(false);
+        newGiangVien.setEmail(giangVien.getEmail());
+        giangVienRepository.save(newGiangVien);
+        return 0;
+        // else if (existingGiangVien == null && existingUserName) {
+        // GiangVien newGiangVien = new GiangVien();
+        // newGiangVien.setGioiTinh(giangVien.isGioiTinh());
+        // newGiangVien.setHo(giangVien.getHo());
+        // newGiangVien.setHocHam(giangVien.getHocHam());
+        // newGiangVien.setHocVi(giangVien.getHocVi());
+        // newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
+        // newGiangVien.setPassWord(giangVien.getPassWord());
+        // newGiangVien.setTen(giangVien.getTen());
+        // newGiangVien.setUserName(giangVien.getUserName());
+        // newGiangVien.setTrangThaiXoa(false);
+        // newGiangVien.setEmail(giangVien.getEmail());
+        // giangVienRepository.save(newGiangVien);
+        // return 0;
+        // } else if (existingGiangVien.isTrangThaiXoa()) {
+        // existingGiangVien.setEmail(giangVien.getEmail());
+        // existingGiangVien.setGioiTinh(giangVien.isGioiTinh());
+        // existingGiangVien.setHo(giangVien.getHo());
+        // existingGiangVien.setHocHam(giangVien.getHocHam());
+        // existingGiangVien.setHocVi(giangVien.getHocVi());
+        // existingGiangVien.setPassWord(giangVien.getPassWord());
+        // existingGiangVien.setTen(giangVien.getTen());
+        // existingGiangVien.setUserName(giangVien.getUserName());
+        // existingGiangVien.setTrangThaiXoa(false);
+        // giangVienRepository.save(existingGiangVien);
+        // return 0;
+        // }
+        // return 1;
     }
 
     public int editGiangVien(String ho, String ten, String email, String hocVi, String hocHam, boolean gioiTinh,

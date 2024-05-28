@@ -71,7 +71,7 @@ public class CauHoiService {
         try {
             CauHoi cauHoi = new CauHoi();
             cauHoi.setDapAnDung(dapAnDung);
-            cauHoi.setGiangVien(giangVienRepository.findByMaGv(maGv));
+            cauHoi.setGiangVien(giangVienRepository.findByMaGvAndTrangThaiXoa(maGv, false));
             cauHoi.setMonHoc(monHocRepository.findByMamh(maMh));
             cauHoi.setNoiDung(noiDungCauhoi);
             cauHoi.setTrangThaiXoa(false);
@@ -105,7 +105,7 @@ public class CauHoiService {
         try {
             CauHoi cauHoi = new CauHoi();
             cauHoi.setDapAnDung(dapAnDung);
-            cauHoi.setGiangVien(giangVienRepository.findByMaGv(maGv));
+            cauHoi.setGiangVien(giangVienRepository.findByMaGvAndTrangThaiXoa(maGv, false));
             cauHoi.setMonHoc(monHocRepository.findByMamh(maMh));
             cauHoi.setNoiDung(noiDungCauhoi);
             cauHoi.setTrangThaiXoa(false);

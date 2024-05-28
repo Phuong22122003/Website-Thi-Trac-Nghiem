@@ -106,7 +106,9 @@ public class AdminController {
         if (monHoc.getSoTietTh() < 0) {
             errors.rejectValue("soTietTh", "monHoc", "Số tiết thực hành không thể < 0");
         }
-
+        if (monHoc.getSoTietLt() + monHoc.getSoTietTh() <= 0) {
+            errors.rejectValue("soTietTh", "monHoc", "Số tiết LT và Số tiết TH không thể <= 0");
+        }
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorAdd", true);
             for (FieldError error : errors.getFieldErrors()) {
@@ -235,8 +237,16 @@ public class AdminController {
 
         giangVien.setTrangThaiXoa(false);
         int statusThemGiangVien = giangVienService.addGiangVien(giangVien);
-        if (statusThemGiangVien != 0) {
+        if (statusThemGiangVien == 1) {
             errors.rejectValue("maGv", "giangVien", "Mã giáo viên đã tồn tại");
+            redirectAttributes.addFlashAttribute("errorAdd", true);
+            for (FieldError error : errors.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
+            }
+            redirectAttributes.addFlashAttribute("giangVienError", giangVien);
+            return "redirect:/admin/lecturer";
+        } else if (statusThemGiangVien == 2) {
+            errors.rejectValue("userName", "giangVien", "Tên tài khoản đã tồn tại");
             redirectAttributes.addFlashAttribute("errorAdd", true);
             for (FieldError error : errors.getFieldErrors()) {
                 redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
