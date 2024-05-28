@@ -1,6 +1,8 @@
 package com.laptrinhweb.thitracnghiem.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class SinhVienService {
     @Autowired private SinhVienRepositoryImplt sinhVienRepositoryImplt;
     @Autowired private SinhVienRepository sinhVienRepository;
     @Autowired private LopRepository lopRepository;
+    @Autowired private EmailService emailService;
     public SinhVien getStudentInfo(String masv){
         if(masv == null || masv =="")return null;
         return sinhVienRepositoryImplt.getStudentInfo(masv);
@@ -78,5 +81,27 @@ public class SinhVienService {
     public void updatePassword(String masv,String newPassword){
             sinhVienRepository.updatePassword(masv, newPassword);
 
+    }
+    public String randomPassword(){
+
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(10);
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+        return sb.toString();
+    }
+    public List<String> sendNewPasswordToStudent(List<String> emails){
+        String newPassword,status;
+        List<String> listEmailError = new ArrayList<>();
+        for (String email : emails) {
+            newPassword = randomPassword();
+            status = emailService.sendMessage(email,"New Password","Password: " +  newPassword, "");
+            if(status == "Gửi mail thất bại, vui lòng thử lại!")listEmailError.add(email);
+        }
+        return listEmailError;
     }
 }

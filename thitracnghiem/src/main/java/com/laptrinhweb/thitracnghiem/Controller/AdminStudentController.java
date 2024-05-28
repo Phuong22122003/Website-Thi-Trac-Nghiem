@@ -130,10 +130,15 @@ public class AdminStudentController {
         return "redirect:student/"+classID;
     }
     @PostMapping("/sendemail")
-    public String sendMail(EmailDTO emails){
-        for(int i=0;i<emails.getListEmail().size() && emails.getListEmail().get(i)!="";i++){
-            //sendemail here
+    public String sendMail(EmailDTO emails,RedirectAttributes redirectAttributes){
+        String maLop = emails.getListEmail().get(0).trim();
+        emails.getListEmail().removeIf(email->email.length() == 0);
+        List<String> emailsError = sinhVienService.sendNewPasswordToStudent(emails.getListEmail().subList(1, emails.getListEmail().size()));
+        if(emailsError.size() !=0){
+            redirectAttributes.addFlashAttribute("message","Gửi email gặp lỗi");
+            redirectAttributes.addFlashAttribute("emailsError", emailsError);   
         }
-        return "redirect:student/"+emails.getListEmail().get(0);
+        else redirectAttributes.addFlashAttribute("message","Gửi email thành công");
+        return "redirect:student/"+maLop;
     }
 }

@@ -71,7 +71,7 @@
                 </div>
                 <ul class="feature-list">
                     <li data-name="lophoc">
-                        <a class="item" href="/admin/class">
+                        <a class="item" href="/admin/classes">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -251,7 +251,7 @@
             >
                 <div class="content-top">
                     <span class="text">Students</span>
-                    <select id="classSelect" name="classes" style="width: 30%;">
+                    <select id="classSelect" name="classes" style="width: 40%;">
                         <option value="" selected disabled>Chọn lớp</option>
                         <div th:each = "class:${listOfClass}" >
                             <option
@@ -268,7 +268,7 @@
                         </div>
                     </select>
                 </div>
-                <div class="content-bottom" style=" width: 120%;"> 
+                <div class="content-bottom" style=" width: 128%;"> 
                     <div class="find-wrapper">
                         <label for="search">Entries</label>
                         <div class="search-wrapper" >
@@ -694,8 +694,8 @@
                             id="m-email"
                             rules="required"
                             th:field = "*{email}"
-                            readonly
-                        />
+                            />
+                            <!-- readonly -->
                     </div>
                     <!-- <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">cccc</span> -->
                     <span class="form-message"></span>
@@ -746,13 +746,33 @@
                 modalContainer.classList.remove("open");
             }   
             var message = /*[[${message}]]*/ null;
+            var emailsError = /*[[${emailsError}]]*/ null;
             const modalContainer = document.querySelector(
                 ".modal-container[data-name='m-student']"
             );
             const formAddNewStudent = document.querySelector(
                 ".modal-container[data-name='student']"
             );
-            
+            if(emailsError!=null){
+                toast({
+                        type: "error",
+                        title: "Lỗi gửi mail!",
+                        message: message,
+                        duration: 3000,
+                    });
+                console.log("email "+emailsError);
+                const listSinhVien = document.querySelectorAll("tbody tr");
+                listSinhVien.forEach((row) => {
+                    const editBtn = row.querySelector(".edit");
+                    const colums = row.querySelectorAll("td");
+                    console.log(colums[6].textContent)
+                    if(emailsError.includes(colums[6].textContent)){
+                        console.log("có")
+                        row.style.background = "#ffadad";
+
+                    }
+                });
+            }
             if(message!=null){
                 if(message === "Sinh viên đã đăng ký thi không thể xóa"){
                     toast({
@@ -762,7 +782,7 @@
                             duration: 3000,
                         });
                 }
-                if(message == "Xóa thành công" || message == "Sửa thông tin thành công"||message == "Thêm thành công"){
+                if(message.includes("thành công")){
                     toast({
                         type: "success",
                         title: "Thành công!",
