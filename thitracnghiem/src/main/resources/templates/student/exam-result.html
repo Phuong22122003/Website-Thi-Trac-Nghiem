@@ -1,80 +1,181 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Thi</title>
+        <link
+            rel="stylesheet"
+            href="../../static/assets/css/student/take-exam.css"
+            th:href="@{/assets/css/student/take-exam.css}"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
 
-<head>
-    <title>Thi</title>
-    <link rel="stylesheet" href="../../static/assets/css/student/take-exam.css" th:href="@{/assets/css/student/take-exam.css}">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
-        rel="stylesheet" />
-</head>
-
-<body th:onload="'showQuestion(0);moveQuestion(' + ${resultInfo.getSoCau()}+ ');'">
-    <div class="main-container">
-        <div class="question-index-bar">
-            <div th:each="i: ${#numbers.sequence(1, resultInfo.getSoCau())}">
-                <a th:text="'Câu '+ ${i}" th:onclick="'showQuestion(' + ${i-1} +');'"></a>
+    <body
+        th:onload="'showQuestion(0);moveQuestion(' + ${resultInfo.getSoCau()}+ ');'"
+    >
+        <div class="main-container">
+            <div class="question-index-bar">
+                <div
+                    th:each="i: ${#numbers.sequence(1, resultInfo.getSoCau())}"
+                    style="width: 100%"
+                >
+                    <a
+                        class="index-question"
+                        th:text="'Câu '+ ${i}"
+                        th:onclick="'showQuestion(' + ${i-1} +');'"
+                    ></a>
+                </div>
             </div>
-        </div>
-        <div class="exam-view">
-            <div class="subject-name" th:text="${resultInfo.getTenMH()}"></div>
-            <!-- <form th:object="${listQuestions}" class="form" id = "form"> -->
-            <form th:object="${listQuestions}" class="form" id = "form">
-                <div th:each="cauhoi,itemStat : *{listCauHoi}" class="question-answer">
-                    <div class="question" th:text="${cauhoi.getNoiDung()}"></div>
-                    <div class="box-answer">
-                        <div class="answer" th:each="luachon,stat : ${cauhoi.getLuaChons()}">
-                            <div th:if="${cauhoi.getDapAnSV()} == ${stat.index + 1}">
-                                <div th:if="${cauhoi.getDapAnSV()} == ${cauhoi.getDapAnDung()}" style="background-color: chartreuse;">
-                                    <input type="radio"  th:value="${stat.index + 1}"  disabled checked/>
-                                    <label  th:text="${luachon.getNoiDung()}"></label>
+            <div class="exam-view">
+                <div
+                    class="subject-name"
+                    th:text="${resultInfo.getTenMH()}"
+                ></div>
+                <!-- <form th:object="${listQuestions}" class="form" id = "form"> -->
+                <form th:object="${listQuestions}" class="form" id="form">
+                    <div
+                        th:each="cauhoi,itemStat : *{listCauHoi}"
+                        class="question-answer"
+                    >
+                        <div
+                            class="question"
+                            th:text="'Câu ' +${itemStat.index +1 } + ': '+ ${cauhoi.getNoiDung()}"
+                        ></div>
+                        <div class="box-answer">
+                            <div
+                                class="answer"
+                                th:each="luachon,stat : ${cauhoi.getLuaChons()}"
+                            >
+                                <div
+                                    th:if="${cauhoi.getDapAnSV()} == ${stat.index + 1}"
+                                >
+                                    <div
+                                        th:if="${cauhoi.getDapAnSV()} == ${cauhoi.getDapAnDung()}"
+                                        style="
+                                            background-color: #039855;
+                                            border-radius: 8px;
+                                        "
+                                    >
+                                        <input
+                                            type="radio"
+                                            th:value="${stat.index + 1}"
+                                            disabled
+                                            checked
+                                        />
+                                        <label
+                                            th:text="${luachon.getNoiDung()}"
+                                            style="color: white"
+                                        ></label>
+                                    </div>
+                                    <div
+                                        th:unless="${cauhoi.getDapAnSV()} == ${cauhoi.getDapAnDung()}"
+                                        style="
+                                            background-color: #d92d20;
+                                            border-radius: 8px;
+                                        "
+                                    >
+                                        <input
+                                            type="radio"
+                                            th:value="${stat.index + 1}"
+                                            disabled
+                                            checked
+                                        />
+                                        <label
+                                            th:text="${luachon.getNoiDung()}"
+                                            style="color: white"
+                                        ></label>
+                                    </div>
                                 </div>
-                                <div th:unless="${cauhoi.getDapAnSV()} == ${cauhoi.getDapAnDung()}" style="background-color: rgb(227, 5, 5);">
-                                    <input type="radio" th:value="${stat.index + 1}"  disabled checked/>
-                                    <label  th:text="${luachon.getNoiDung()}"></label>
-                                </div>
-                            </div>
-                            <div th:unless="${cauhoi.getDapAnSV()} == ${stat.index + 1}">
-                                <div th:if="${stat.index + 1} == ${cauhoi.getDapAnDung()}" style="background-color: chartreuse;">
-                                    <input type="radio"  th:value="${stat.index + 1}"  disabled/>
-                                    <label  th:text="${luachon.getNoiDung()}"></label>
-                                </div>
-                                <div th:unless="${stat.index + 1} == ${cauhoi.getDapAnDung()}">
-                                    <input type="radio" th:value="${stat.index + 1}"  disabled/>
-                                    <label th:text="${luachon.getNoiDung()}"></label>
+                                <div
+                                    th:unless="${cauhoi.getDapAnSV()} == ${stat.index + 1}"
+                                >
+                                    <div
+                                        class="wrapper-answer"
+                                        th:if="${stat.index + 1} == ${cauhoi.getDapAnDung()}"
+                                        style="
+                                            background-color: #039855;
+                                            border-radius: 8px;
+                                        "
+                                    >
+                                        <input
+                                            type="radio"
+                                            th:value="${stat.index + 1}"
+                                            disabled
+                                        />
+                                        <label
+                                            th:text="${luachon.getNoiDung()}"
+                                            style="color: white"
+                                        ></label>
+                                    </div>
+                                    <div
+                                        th:unless="${stat.index + 1} == ${cauhoi.getDapAnDung()}"
+                                    >
+                                        <input
+                                            type="radio"
+                                            th:value="${stat.index + 1}"
+                                            disabled
+                                        />
+                                        <label
+                                            th:text="${luachon.getNoiDung()}"
+                                        ></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </form>
+                <div class="navigation">
+                    <button id="previous" class="previous btn-trans">
+                        &laquo; Previous
+                    </button>
+                    <button id="next" class="next btn">Next &raquo;</button>
                 </div>
-            </form>
-            <div class="navigation">
-                <button id  = "previous" class="previous">&laquo; Previous</button>
-                <button id = "next" class="next">Next &raquo;</button>
+            </div>
+            <div class="info-view">
+                <div class="time-left" id="time" style="display: none">
+                    <p
+                        th:text="'Thời gian: ' + ${resultInfo.getThoiLuong()}+' phút'"
+                    >
+                        Thời gian: 60:00 phút
+                    </p>
+                </div>
+                <div class="candidate-info">
+                    <div>THÔNG TIN</div>
+                    <div th:text="'MASV: '+${sinhvien.getMasv()}">
+                        MASV: masv
+                    </div>
+                    <div th:text="'Họ và tên: '+${sinhvien.getTen()}">
+                        Họ và tên: Nguyễn Bình Phương
+                    </div>
+                    <div th:text="'Lần thi: '+${resultInfo.getLanThi()}">
+                        Lần thi: 1
+                    </div>
+                    <div th:text="'Ngày thi: '+${resultInfo.getNgayThi()}">
+                        Ngày thi: 1/1/2024
+                    </div>
+                </div>
+                <hr style="color: black; width: 80%" />
+                <div class="score">
+                    <div>ĐIỂM</div>
+                    <div th:text="${resultInfo.getDiem()}"></div>
+                </div>
+                <button class="submit btn" id="submitbtn" onclick="reload()">
+                    Quay lại
+                </button>
             </div>
         </div>
-        <div class="info-view" >
-            <div class="time-left" id = "time" style="display: none;">
-                <p th:text = "'Thời gian: ' + ${resultInfo.getThoiLuong()}+' phút'">Thời gian: 60:00 phút</p>
-            </div>
-            <div class="candidate-info">
-                <div>THÔNG TIN</div>
-                <div th:text = "'MASV: '+${sinhvien.getMasv()}">MASV: masv</div>
-                <div th:text = "'Họ và tên: '+${sinhvien.getTen()}">Họ và tên: Nguyễn Bình Phương</div>
-                <div th:text = "'Lần thi: '+${resultInfo.getLanThi()}">Lần thi: 1</div>
-                <div th:text = "'Ngày thi: '+${resultInfo.getNgayThi()}">Ngày thi: 1/1/2024</div>
-            </div>
-            <div class="score">
-                <div>ĐIỂM</div>
-                <div th:text = "${resultInfo.getDiem()}"></div>
-            </div>
-            <button class="submit" id = "submitbtn" onclick="exit()">QUAY LẠI</button>
-        </div>
-    </div>
-    <script src="./../../static/javascript/student/take-exam.js" th:src="@{/javascript/student/take-exam.js}"></script>
-    <script src="./../../static/javascript/student/result.js" th:src="@{/javascript/student/result.js}"></script>
-</body>
-
+        <script
+            src="./../../static/javascript/student/take-exam.js"
+            th:src="@{/javascript/student/take-exam.js}"
+        ></script>
+        <script
+            src="./../../static/javascript/student/result.js"
+            th:src="@{/javascript/student/result.js}"
+        ></script>
+    </body>
 </html>

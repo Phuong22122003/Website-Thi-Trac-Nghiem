@@ -16,4 +16,6 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, String> {
     // List<NhanVien> findByUserName(String userName);
 
     public NhanVien findByManv(String manv);
+
+    public NhanVien findByUserNameAndTrangThaiXoa(String userName, boolean trangThaiXoa);
 }

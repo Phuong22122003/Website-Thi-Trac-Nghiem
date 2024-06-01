@@ -30,6 +30,10 @@ public class SecurityConfig {
                             // Lấy danh sách các vai trò của người dùng
                             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
                             HttpSession session = request.getSession();
+                            // Lấy tên đăng nhập (username)
+                            String username = authentication.getName();
+                            // Đưa tên đăng nhập vào session
+                            session.setAttribute("username", username);
                             DefaultSavedRequest savedRequest = (DefaultSavedRequest) session
                                     .getAttribute("SPRING_SECURITY_SAVED_REQUEST");
                             String redirectUrl = null;
@@ -59,14 +63,15 @@ public class SecurityConfig {
                                         redirectUrl = savedRequest.getRedirectUrl();
                                         response.sendRedirect(redirectUrl);
                                     } else
-                                        response.sendRedirect("/teacher");
+                                        response.sendRedirect("/lecturer/question");
                                     return;
                                 }
                             }
                             // Chuyển hướng mặc định nếu không phát hiện vai trò nào
                             response.sendRedirect("/login");
                         }))
-                .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll())
+                .csrf(csrf -> csrf.disable());
         return http.build();
     }
 

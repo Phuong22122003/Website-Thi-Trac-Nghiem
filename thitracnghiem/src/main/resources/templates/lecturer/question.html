@@ -132,7 +132,9 @@
         <div class="header">
             <div class="user-wrapper">
                 <i class="fa-solid fa-bars menu"></i>
-                <span class="text">Hello, Quang!</span>
+                <span class="text" th:text="'Hello, ' + ${giangVien.ten}"
+                    >Hello, Quang!</span
+                >
                 <div class="img-wrapper">
                     <img
                         src="../static/assets/img/icon.svg"
@@ -268,9 +270,13 @@
                                     ></td>
                                     <td>
                                         <div class="icon-wrapper">
-                                            <i
-                                                class="fa-solid fa-circle-info more"
-                                            ></i>
+                                            <a
+                                                th:href="@{/lecturer/view-info-question/{idch}(idch=${question.idch})}"
+                                            >
+                                                <i
+                                                    class="fa-solid fa-circle-info more"
+                                                ></i>
+                                            </a>
                                             <a
                                                 th:href="@{/lecturer/get-info-luachon/{idch}(idch=${question.idch})}"
                                             >
@@ -497,16 +503,30 @@
                 </form>
             </div>
             <div class="modal-container" data-name="question-detail">
-                <div class="question-detail-wrapper">
+                <div
+                    class="question-detail-wrapper"
+                    th:if="${infoCauhoi!=null}"
+                >
                     <div class="top">
                         <span class="question-id"
-                            >Mã câu hỏi: <span></span
+                            >Mã môn học:
+                            <span th:text="${infoCauhoi[0].maMh}"></span
                         ></span>
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                     <span class="text">Nội dung câu hỏi:</span>
-                    <p class="question-content"></p>
-                    <div class="selection-wrapper"></div>
+                    <p
+                        class="question-content"
+                        th:text="${infoCauhoi[0].noiDungCauHoi}"
+                    ></p>
+                    <div class="selection-wrapper">
+                        <span
+                            class="selection"
+                            th:each="luachon: ${infoCauhoi}"
+                            th:text="${luachon.noiDungLuaChon}"
+                            th:classappend="${luachon.thuTu} == ${luachon.dapAnDung} ? correct"
+                        ></span>
+                    </div>
                 </div>
             </div>
             <div class="modal-container" data-name="edit-cauhoi-yes/no">
@@ -691,8 +711,9 @@
             var statusDeleteCauHoi = /*[[${statusDeleteCauHoi}]]*/ null;
             var statusEditCauHoi = /*[[${statusEditCauHoi}]]*/ null;
             var listLuaChon = /*[[${listLuaChon}]]*/ null;
+            var infoCauhoi = /*[[${infoCauhoi}]]*/ null;
             let optionAddedList = [];
-            console.log(listLuaChon);
+            console.log(infoCauhoi);
             let rowQuestions = document.querySelectorAll(".question");
             const tbody = document.querySelector("tbody");
             if (
@@ -717,6 +738,7 @@
                     });
                 }
             }
+
             if (
                 statusDeleteCauHoi !== "null" &&
                 statusDeleteCauHoi !== undefined &&
@@ -842,6 +864,55 @@
                     }
                 });
             }
+            if (infoCauhoi !== null) {
+                const modal = document.querySelector(".modal");
+                const modalContainer = modal.querySelector(
+                    ".modal-container[data-name='question-detail']"
+                );
+                modal.classList.add("open");
+                modalContainer.classList.add("open");
+
+                modalContainer.addEventListener("click", (event) =>
+                    event.stopPropagation()
+                );
+                modal.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                });
+                const closeBtn = modalContainer.querySelector(".top i");
+
+                closeBtn.addEventListener("click", () => {
+                    modal.classList.remove("open");
+                    modalContainer.classList.remove("open");
+                });
+            }
+            // if (
+            //     statusEditCauHoi !== "null" &&
+            //     statusEditCauHoi !== undefined &&
+            //     statusEditCauHoi !== null
+            // ) {
+            //     const modal = document.querySelector(".modal");
+            //     const modalContainer = modal.querySelector(
+            //         ".modal-container[data-name='xemdiem']"
+            //     );
+            //     modal.classList.add("open");
+            //     modalContainer.classList.add("open");
+
+            //     modalContainer.addEventListener("click", (event) =>
+            //         event.stopPropagation()
+            //     );
+            //     modal.addEventListener("click", () => {
+            //         modal.classList.remove("open");
+            //         modalContainer.classList.remove("open");
+            //     });
+            //     const closeBtn = modalContainer.querySelector(`.closeBtn`);
+
+            //     closeBtn.addEventListener("click", () => {
+            //         modal.classList.remove("open");
+            //         modalContainer.classList.remove("open");
+            //     });
+            // }
+
             function sortQuestionBySubject() {
                 tbody.innerHTML = "";
                 const selectedOption =

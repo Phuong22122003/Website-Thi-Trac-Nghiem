@@ -13,6 +13,7 @@ import javax.print.attribute.standard.MediaSize.NA;
 import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,7 +39,7 @@ import com.laptrinhweb.thitracnghiem.Service.LopService;
 import com.laptrinhweb.thitracnghiem.Service.MonHocService;
 import com.laptrinhweb.thitracnghiem.Service.NhanVienService;
 
-import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 
@@ -69,8 +70,15 @@ public class AdminController {
 
     // @GetMapping("/class")
     // public String lophoc() {
-    //     return "/admin/class";
+    // return "/admin/class";
     // }
+
+    @ModelAttribute("nhanvien")
+    public NhanVien nhanVienLogin(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        NhanVien nv = nhanVienService.findByUsername(username);
+        return nhanVienService.findByUsername(username);
+    }
 
     @GetMapping("/subject")
     public String subject(ModelMap model) {
@@ -313,7 +321,7 @@ public class AdminController {
             @RequestParam(name = "maLop") String maLop,
             @RequestParam(name = "ngayThi") String ngayThi,
             @RequestParam(name = "thoiLuong") int thoiLuong, @RequestParam(name = "soCau") int soCau,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, Model model) {
         GiangVien gv = giangVienService.findByMaGv(maGv);
         MonHoc mh = monHocService.findByMamh(mamh);
         Lop lop = lopService.findByMaLop(maLop);
@@ -358,6 +366,7 @@ public class AdminController {
         dangKyThi.setTrangThaiXoa(false);
         int statusDangKyThi = dangKyThiService.registerExam(dangKyThi);
         redirectAttributes.addFlashAttribute("statusDangKyThi", statusDangKyThi);
+
         return "redirect:/admin/lecturer";
     }
 

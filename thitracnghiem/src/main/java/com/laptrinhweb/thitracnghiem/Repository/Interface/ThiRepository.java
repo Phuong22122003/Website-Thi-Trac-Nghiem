@@ -22,9 +22,8 @@ public interface ThiRepository extends JpaRepository<Thi, Integer> {
     // @Query(value = "EXEC insertThiByIddk @iddk = :iddk", nativeQuery = true)
     // public void insertThiByIddk(@Param("iddk") int iddk);
 
-    // @Query(value = "SELECT * FROM Thi t where t.masv = :masv and t.trangThaiXoa =
-    // 0", nativeQuery = true)
-    // public List<Thi> checkExsitsThi(@Param("masv") String masv);
+    @Query(value = "SELECT * FROM Thi t where t.idThi = :idThi and t.trangThaiXoa = 0", nativeQuery = true)
+    public Thi checkExsitsThi(@Param("idThi") int idThi);
 
     @Transactional
     @Modifying

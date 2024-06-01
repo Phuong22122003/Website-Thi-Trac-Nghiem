@@ -288,7 +288,9 @@
         <div class="header">
             <div class="user-wrapper">
                 <i class="fa-solid fa-bars menu"></i>
-                <span class="text">Hello, Quang!</span>
+                <span class="text"
+                    >Hello, <span th:text="${nhanvien.ten}"></span
+                ></span>
                 <div class="img-wrapper">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -411,13 +413,17 @@
                                         <i
                                             class="fa-solid fa-pen-to-square edit"
                                         ></i>
-                                        <a
+                                        <!-- <a
                                             th:href="@{/admin/deleteMonHoc/{mamh}(mamh=${monHoc.mamh})}"
                                         >
                                             <i
                                                 class="fa-solid fa-trash trash"
                                             ></i>
-                                        </a>
+                                        </a> -->
+                                        <i
+                                            class="fa-solid fa-trash trash"
+                                            th:attr="onclick=|popup({type: `remove`, title: `Bạn có chắc chắc`, desc: `Xóa môn học này?`}, `deleteMonHoc/` + `${monHoc.mamh}`)|"
+                                        ></i>
                                     </td>
                                     <!-- Thêm các cột khác nếu cần -->
                                 </tr>
@@ -590,6 +596,7 @@
                         <label for="soTietLt">Số tiết lý thuyết:</label>
                         <input
                             type="number"
+                            min="0"
                             placeholder=""
                             name="soTietLt"
                             id="soTietLt"
@@ -608,6 +615,7 @@
                         <input
                             type="number"
                             placeholder=""
+                            min="0"
                             name="soTietTh"
                             id="soTietTh"
                             autocomplete="nope"
@@ -634,6 +642,10 @@
         <script
             th:src="@{/javascript/toast.js}"
             src="../../static/javascript/toast.js"
+        ></script>
+        <script
+            src="../../static/javascript/popup.js"
+            th:src="@{/javascript/popup.js}"
         ></script>
         <script th:inline="javascript">
             var statusXoaMonHoc = /*[[${statusXoaMonHoc}]]*/ null;

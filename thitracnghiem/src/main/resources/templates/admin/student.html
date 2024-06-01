@@ -193,7 +193,9 @@
         <div class="header">
             <div class="user-wrapper">
                 <i class="fa-solid fa-bars menu"></i>
-                <span class="text">Hello, Quang!</span>
+                <span class="text"
+                    >Hello, <span th:text="${nhanvien.ten}"></span
+                ></span>
                 <div class="img-wrapper">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +253,7 @@
             >
                 <div class="content-top">
                     <span class="text">Students</span>
-                    <select id="classSelect" name="classes" style="width: 30%;">
+                    <select id="classSelect" name="classes" style="width: 30%">
                         <option value="" selected disabled>Chọn lớp</option>
                         <div th:each="class:${listOfClass}">
                             <option
@@ -268,7 +270,7 @@
                         </div>
                     </select>
                 </div>
-                <div class="content-bottom" style=" width: 120%;"> 
+                <div class="content-bottom" style="width: 120%">
                     <div class="find-wrapper">
                         <label for="search">Entries</label>
                         <div class="search-wrapper">
@@ -287,104 +289,126 @@
                         <!-- Button tìm kiếm -->
                         <!-- <button id = "search-button" class="search-button">Tìm kiếm</button> -->
                     </div>
-                    <table class="table">
-                        <thead style="position: sticky; top: 0">
-                            <tr>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="maGv"
-                                >
-                                    Mã sinh viên
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="ho"
-                                >
-                                    Họ
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="ten"
-                                >
-                                    Tên
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="gioiTinh"
-                                >
-                                    Giới tính
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="diaChi"
-                                >
-                                    Địa chỉ
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="ngaySinh"
-                                >
-                                    Ngày sinh
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="email"
-                                >
-                                    Email
-                                </th>
-                                <th
-                                    style="background-color: rgb(49, 200, 246)"
-                                    data-name="action"
-                                >
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="student: ${listOfStudent}">
-                                <td th:text="${student.masv}"></td>
-                                <td th:text="${student.ho}"></td>
-                                <td th:text="${student.ten}"></td>
-                                <td th:if="${student.isGioiTinh() == false}">
-                                    Nam
-                                </td>
-                                <td
-                                    th:unless="${student.isGioiTinh() == false}"
-                                >
-                                    Nữ
-                                </td>
-                                <td th:text="${student.diaChi}"></td>
-                                <td th:text="${student.ngaySinh}"></td>
-                                <td th:text="${student.email}"></td>
-                                <td>
-                                    <i
-                                        class="fa-solid fa-pen-to-square edit"
-                                    ></i>
-                                    <!-- th:href="@{/admin/deleteMonHoc/{mamh}(mamh=${monHoc.mamh})}" -->
-                                    <form
-                                        th:action="@{/admin/deleteStudent}"
-                                        method="post"
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead style="position: sticky; top: 0">
+                                <tr>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="maGv"
                                     >
-                                        <input
-                                            type="hidden"
-                                            th:name="masv"
-                                            th:value="${student.masv}"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            th:name="maLop"
-                                            th:value="${selectedMaLop}"
-                                        />
-                                        <button>
-                                            <i
-                                                class="fa-solid fa-trash trash"
-                                            ></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        Mã sinh viên
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="ho"
+                                    >
+                                        Họ
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="ten"
+                                    >
+                                        Tên
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="gioiTinh"
+                                    >
+                                        Giới tính
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="diaChi"
+                                    >
+                                        Địa chỉ
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="ngaySinh"
+                                    >
+                                        Ngày sinh
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="email"
+                                    >
+                                        Email
+                                    </th>
+                                    <th
+                                        style="
+                                            background-color: rgb(49, 200, 246);
+                                        "
+                                        data-name="action"
+                                    >
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="student: ${listOfStudent}">
+                                    <td th:text="${student.masv}"></td>
+                                    <td th:text="${student.ho}"></td>
+                                    <td th:text="${student.ten}"></td>
+                                    <td
+                                        th:if="${student.isGioiTinh() == false}"
+                                    >
+                                        Nam
+                                    </td>
+                                    <td
+                                        th:unless="${student.isGioiTinh() == false}"
+                                    >
+                                        Nữ
+                                    </td>
+                                    <td th:text="${student.diaChi}"></td>
+                                    <td th:text="${student.ngaySinh}"></td>
+                                    <td th:text="${student.email}"></td>
+                                    <td>
+                                        <i
+                                            class="fa-solid fa-pen-to-square edit"
+                                        ></i>
+                                        <!-- th:href="@{/admin/deleteMonHoc/{mamh}(mamh=${monHoc.mamh})}" -->
+
+                                        <i
+                                            class="fa-solid fa-trash trash"
+                                            th:attr="onclick=|popup({type: `remove`, title: `Bạn có chắc chắc`, desc: `Xóa sinh viên này?`}, `.${student.masv}`)|"
+                                        >
+                                            <form
+                                                th:action="@{/admin/deleteStudent}"
+                                                method="post"
+                                                th:class="${student.masv}"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    th:name="masv"
+                                                    th:value="${student.masv}"
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    th:name="maLop"
+                                                    th:value="${selectedMaLop}"
+                                                />
+                                            </form>
+                                        </i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- <div class="table-controller">
                         <span class="text">Previous</span>
                         <div class="page-number">
@@ -395,10 +419,7 @@
                         <span class="text"> Next</span>
                     </div> -->
                 </div>
-                <a
-                    href="#!"
-                    class="btn-trans btn-register"
-                    >
+                <a href="#!" class="btn-trans btn-register">
                     <!-- style="position: sticky; bottom: 0" -->
                     <div class="circle">
                         <svg
@@ -416,10 +437,7 @@
                     </div>
                     <span>Thêm sinh viên</span>
                 </a>
-                <a
-                    href="#!"
-                    class="btn-trans btn-register"
-                    >
+                <a href="#!" class="btn-trans btn-register">
                     <!-- style="position: sticky; bottom: 0; margin: 100px" -->
                     <div class="circle">
                         <svg
@@ -849,7 +867,7 @@
                             name="m-email"
                             id="m-email"
                             rules="required"
-                            th:field = "*{email}"
+                            th:field="*{email}"
                             readonly
                         />
                     </div>
@@ -872,6 +890,10 @@
         <script
             th:src="@{/javascript/toast.js}"
             src="../../static/javascript/toast.js"
+        ></script>
+        <script
+            th:src="@{/javascript/popup-form.js}"
+            src="../../static/javascript/popup-form.js"
         ></script>
         <script
             th:src="@{/javascript/XuLyTable.js}"
@@ -913,9 +935,9 @@
             const formAddNewStudent = document.querySelector(
                 ".modal-container[data-name='student']"
             );
-            
-            if(message!=null){
-                if(message === "Sinh viên đã đăng ký thi không thể xóa"){
+
+            if (message != null) {
+                if (message === "Sinh viên đã đăng ký thi không thể xóa") {
                     toast({
                         type: "error",
                         title: "Thất bại!",
@@ -923,7 +945,12 @@
                         duration: 3000,
                     });
                 }
-                if(message == "Xóa thành công" || message == "Sửa thông tin thành công"||message == "Thêm thành công"){
+                if (
+                    message == "Xóa thành công" ||
+                    message == "Sửa thông tin thành công" ||
+                    message == "Thêm thành công" ||
+                    message.includes("thành công")
+                ) {
                     toast({
                         type: "success",
                         title: "Thành công!",

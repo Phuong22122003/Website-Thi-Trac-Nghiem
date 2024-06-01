@@ -1,47 +1,49 @@
 import { openModal } from "../XuLyTable.js";
-var innerHTMLOfBtnEmail = ""
-var currentIndexOfEmail = 2
+var innerHTMLOfBtnEmail = "";
+var currentIndexOfEmail = 1;
 function openFormCreateNewAccount() {
     const btnRegister = document.querySelectorAll(".btn-register")[0];
-    const modalContainer =  document.querySelector(".modal-container[data-name='student']");
-    const inputMaLop = modalContainer.querySelector("#class")
-    const maLop = document.getElementById("classSelect")
-    inputMaLop.value = maLop.value
     btnRegister.addEventListener("click", () => {
-        clearErrorMessage()
+        const modalContainer = document.querySelector(
+            ".modal-container[data-name='student']"
+        );
+        const inputMaLop = modalContainer.querySelector("#class");
+        const maLop = document.getElementById("classSelect");
+        inputMaLop.value = maLop.value;
+        clearErrorMessage();
         openModal(modalContainer);
     });
 }
-function sendEmail(listSinhVien){
+function sendEmail(listSinhVien) {
     const btnCreateNewForm = document.querySelectorAll(".btn-register")[0];
     const btnChooseEmail = document.querySelectorAll(".btn-register")[1];
     const btnSend = document.querySelectorAll(".btn-register")[2];
-    if(btnChooseEmail.innerHTML == "Hủy"){
-        currentIndexOfEmail = 2
-        btnSend.style.display = "none"
-        btnCreateNewForm.style.display = "inline-flex"
-        btnChooseEmail.innerHTML = innerHTMLOfBtnEmail
+    if (btnChooseEmail.innerHTML == "Hủy") {
+        currentIndexOfEmail = 2;
+        btnSend.style.display = "none";
+        btnCreateNewForm.style.display = "inline-flex";
+        btnChooseEmail.innerHTML = innerHTMLOfBtnEmail;
         btnChooseEmail.style.background = "white";
-        btnChooseEmail.style.color = "var(--primary-color)"
-        listSinhVien.forEach((row)=>{
-            row.onclick = null
-            if(row.style.color === "white"){
+        btnChooseEmail.style.color = "var(--primary-color)";
+        listSinhVien.forEach((row) => {
+            row.onclick = null;
+            if (row.style.color === "white") {
                 row.style.color = "black";
                 row.style.background = "white";
                 currentIndexOfEmail--;
             }
-        })
-        return
+        });
+        return;
     }
-    btnCreateNewForm.style.display = "none"
-    innerHTMLOfBtnEmail=btnChooseEmail.innerHTML
+    btnCreateNewForm.style.display = "none";
+    innerHTMLOfBtnEmail = btnChooseEmail.innerHTML;
     btnChooseEmail.style.background = "var(--primary-color)";
-    btnChooseEmail.style.color = "white"
-    btnChooseEmail.innerHTML = "Hủy"
-    btnSend.style.display = "inline-flex" 
+    btnChooseEmail.style.color = "white";
+    btnChooseEmail.innerHTML = "Hủy";
+    btnSend.style.display = "inline-flex";
 
-    btnSend.onclick=function(){
-        if(currentIndexOfEmail<=2){
+    btnSend.onclick = function () {
+        if (currentIndexOfEmail <= 1) {
             toast({
                 type: "error",
                 title: "Không thể gửi!",
@@ -50,62 +52,63 @@ function sendEmail(listSinhVien){
             });
             return;
         }
-        const formEmail = document.querySelector("#sendemail")
+        const formEmail = document.querySelector("#sendemail");
         formEmail.submit();
-    }
-        
+    };
 }
-function setValueBeforSend(listSinhVien){
-    const maLop = document.getElementById("classSelect")
-    const listOfEmail = document.querySelector("#sendemail")
-    const inputEmails = listOfEmail.querySelectorAll("input")
-    inputEmails[1].value = maLop.value
+function setValueBeforSend(listSinhVien) {
+    const maLop = document.getElementById("classSelect");
+    const listOfEmail = document.querySelector("#sendemail");
+    const inputEmails = listOfEmail.querySelectorAll("input");
+    inputEmails[0].value = maLop.value;
     const btnSend = document.querySelectorAll(".btn-register")[2];
 
-    listSinhVien.forEach((row)=>{
-        row.onclick = function(){
-            if(row.style.color === "white"){
+    listSinhVien.forEach((row) => {
+        row.onclick = function () {
+            if (row.style.color === "white") {
                 row.style.color = "black";
                 row.style.background = "white";
                 currentIndexOfEmail--;
                 return;
             }
-            inputEmails[currentIndexOfEmail].value = row.querySelectorAll("td")[6].textContent
+            inputEmails[currentIndexOfEmail].value =
+                row.querySelectorAll("td")[6].textContent;
             currentIndexOfEmail++;
             row.style.color = "white";
             row.style.background = "#1187ad";
-        }
-    })
+        };
+    });
 }
-function clearErrorMessage(){
-    document.querySelectorAll('.error-message').forEach(function(element) {
+function clearErrorMessage() {
+    document.querySelectorAll(".error-message").forEach(function (element) {
         element.remove();
     });
 }
 
-function inputSearchTyping(listSinhVien){
-    const search =document.getElementById("search").value.toUpperCase()
-    listSinhVien.forEach((row)=>{
-        const colums = row.querySelectorAll("td")
-        if(!colums[0].textContent.includes(search.trim())&&
-        !(colums[1].textContent.trim()+' '+colums[2].textContent.trim()).toUpperCase().includes(search.trim())&&
-        !colums[6].textContent.includes(search.trim())
-    ){
-        row.style.display = "none";
-        
-    }
-    else row.style.display = "table-row";
-})
+function inputSearchTyping(listSinhVien) {
+    const search = document.getElementById("search").value.toUpperCase();
+    listSinhVien.forEach((row) => {
+        const colums = row.querySelectorAll("td");
+        if (
+            !colums[0].textContent.includes(search.trim()) &&
+            !(colums[1].textContent.trim() + " " + colums[2].textContent.trim())
+                .toUpperCase()
+                .includes(search.trim()) &&
+            !colums[6].textContent.includes(search.trim())
+        ) {
+            row.style.display = "none";
+        } else row.style.display = "table-row";
+    });
 }
 
 // Hàm debounce
 function debounce(func, delay) {
     let timeoutId;
-    return function() {
+    return function () {
         const context = this;
         const args = arguments;
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(function() {
+        timeoutId = setTimeout(function () {
             func.apply(context, args);
         }, delay);
     };
@@ -116,24 +119,26 @@ function debounce(func, delay) {
 // const btnSearch = document.getElementById("search-button")
 
 const listSinhVien = document.querySelectorAll("tbody tr");
-const search =document.getElementById("search")
-const maLop = document.getElementById("classSelect")
-const delaySearch = debounce(inputSearchTyping,1000)
-search.addEventListener("keyup",()=>{
-    delaySearch(listSinhVien)
-})
-const modalContainer = document.querySelector(".modal-container[data-name='m-student']");
+const search = document.getElementById("search");
+const maLop = document.getElementById("classSelect");
+const delaySearch = debounce(inputSearchTyping, 1000);
+search.addEventListener("keyup", () => {
+    delaySearch(listSinhVien);
+});
+const modalContainer = document.querySelector(
+    ".modal-container[data-name='m-student']"
+);
 const btnSendEmail = document.querySelectorAll(".btn-register")[1];
-btnSendEmail.onclick = function(){
-    setValueBeforSend(listSinhVien)
-    sendEmail(listSinhVien)
-}
+btnSendEmail.onclick = function () {
+    setValueBeforSend(listSinhVien);
+    sendEmail(listSinhVien);
+};
 
-openFormCreateNewAccount()
+openFormCreateNewAccount();
 
 listSinhVien.forEach((row) => {
     const editBtn = row.querySelector(".edit");
-    const colums = row.querySelectorAll("td")
+    const colums = row.querySelectorAll("td");
     editBtn.onclick = function () {
         const masv = colums[0].textContent;
         const ho = colums[1].textContent;
@@ -146,23 +151,22 @@ listSinhVien.forEach((row) => {
         clearErrorMessage();
         const inputLastname = modalContainer.querySelector("#m-lastname");
         const inputFirstname = modalContainer.querySelector("#m-firstname");
-        const inputMale =  modalContainer.querySelector("#m-male");
-        const inputFemale =  modalContainer.querySelector("#m-female");
-        const inputAddress =  modalContainer.querySelector("#m-address");
-        const inputStudentID =  modalContainer.querySelector("#m-masv");
-        const inputClassID =  modalContainer.querySelector("#m-class");
-        const inputBirthday =  modalContainer.querySelector("#m-birthday");
-        const inputEmail =  modalContainer.querySelector("#m-email");
+        const inputMale = modalContainer.querySelector("#m-male");
+        const inputFemale = modalContainer.querySelector("#m-female");
+        const inputAddress = modalContainer.querySelector("#m-address");
+        const inputStudentID = modalContainer.querySelector("#m-masv");
+        const inputClassID = modalContainer.querySelector("#m-class");
+        const inputBirthday = modalContainer.querySelector("#m-birthday");
+        const inputEmail = modalContainer.querySelector("#m-email");
 
-
-        inputLastname.value = ho; 
-        inputFirstname.value = ten; 
-        if(gioiTinh==='Nam')inputMale.checked = true
-        else inputFemale.checked = true
-        inputAddress.value = diaChi
-        inputStudentID.value = masv
-        inputClassID.value = maLop.value
-        inputBirthday.value = ngaySinh
-        inputEmail.value = email
+        inputLastname.value = ho;
+        inputFirstname.value = ten;
+        if (gioiTinh === "Nam") inputMale.checked = true;
+        else inputFemale.checked = true;
+        inputAddress.value = diaChi;
+        inputStudentID.value = masv;
+        inputClassID.value = maLop.value;
+        inputBirthday.value = ngaySinh;
+        inputEmail.value = email;
     };
 });

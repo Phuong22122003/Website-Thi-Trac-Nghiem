@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.laptrinhweb.thitracnghiem.DTO.DangKyThiDTO;
@@ -24,6 +25,8 @@ public class GiangVienService {
     DangKyThiRepository dangKyThiRepository;
     @Autowired
     ThiRepository thiRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public List<GiangVien> findAllGiangVien() {
         return giangVienRepository.findAllGiangVien();
@@ -60,7 +63,7 @@ public class GiangVienService {
         newGiangVien.setHocHam(giangVien.getHocHam());
         newGiangVien.setHocVi(giangVien.getHocVi());
         newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
-        newGiangVien.setPassWord(giangVien.getPassWord());
+        newGiangVien.setPassWord(passwordEncoder.encode((giangVien.getPassWord())));
         newGiangVien.setTen(giangVien.getTen());
         newGiangVien.setUserName(giangVien.getUserName());
         newGiangVien.setTrangThaiXoa(false);
@@ -132,7 +135,7 @@ public class GiangVienService {
             char randomChar = characters.charAt(randomIndex);
             sb.append(randomChar);
         }
-        gv.setPassWord(sb.toString());
+        gv.setPassWord(passwordEncoder.encode((sb.toString())));
         giangVienRepository.save(gv);
         String message = emailService.sendMessage(gv.getEmail(), "Reset Password",
                 "Password của bạn được reset thành: " + sb.toString(), "Reset password thành công");
@@ -156,7 +159,7 @@ public class GiangVienService {
     public int changePassword(String newPassword, String maGv) {
         try {
             GiangVien gv = giangVienRepository.findByMaGv(maGv);
-            gv.setPassWord(newPassword);
+            gv.setPassWord(passwordEncoder.encode(newPassword));
             giangVienRepository.save(gv);
             return 0;
         } catch (Exception e) {
@@ -164,5 +167,9 @@ public class GiangVienService {
             System.out.println(e.toString());
             return 1;
         }
+    }
+
+    public GiangVien findByUsername(String username) {
+        return giangVienRepository.findByUserNameAndTrangThaiXoa(username, false);
     }
 }

@@ -177,7 +177,9 @@
         <div class="header">
             <div class="user-wrapper">
                 <i class="fa-solid fa-bars menu"></i>
-                <span class="text">Hello, Quang!</span>
+                <span class="text"
+                    >Hello, <span th:text="${nhanvien.ten}"></span
+                ></span>
                 <div class="img-wrapper">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -313,13 +315,17 @@
                                         <i
                                             class="fa-solid fa-pen-to-square edit"
                                         ></i>
-                                        <a
+                                        <!-- <a
                                             th:href="@{/admin/deleteGiangVien/{maGv}(maGv=${giangVien.maGv})}"
                                         >
                                             <i
                                                 class="fa-solid fa-trash trash"
                                             ></i>
-                                        </a>
+                                        </a> -->
+                                        <i
+                                            class="fa-solid fa-trash trash"
+                                            th:attr="onclick=|popup({type: `remove`, title: `Bạn có chắc chắc`, desc: `Xóa giảng viên này?`}, `deleteGiangVien/` + `${giangVien.maGv}`)|"
+                                        ></i>
                                         <i
                                             class="fa-solid fa-file-circle-question add-exam-btn"
                                         ></i>
@@ -721,6 +727,8 @@
                             class="maNv"
                             autocomplete="nope"
                             rules="required"
+                            th:value="${nhanvien.manv}"
+                            readonly
                         />
                         <div class="bar"></div>
                     </div>
@@ -827,6 +835,10 @@
             th:src="@{/javascript/toast.js}"
             src="../../static/javascript/toast.js"
         ></script>
+        <script
+            th:src="@{/javascript/popup.js}"
+            src="../../static/javascript/popup.js"
+        ></script>
         <script th:inline="javascript">
             var statusXoaGiangVien = /*[[${statusXoaGiangVien}]]*/ null;
             var statusThemGiangVien = /*[[${statusThemGiangVien}]]*/ null;
@@ -837,7 +849,7 @@
             var errorEdit = /*[[${errorEdit}]]*/ null;
             var errorExam = /*[[${errorExam}]]*/ null;
             var giangVienError = /*[[${giangVienError}]]*/ null;
-            console.log(giangVienError);
+
             if (
                 statusXoaGiangVien !== "null" &&
                 statusXoaGiangVien !== undefined &&

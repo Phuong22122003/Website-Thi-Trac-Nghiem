@@ -9,15 +9,18 @@ import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
 
 @Repository
 public class NhanVienRepositoryImplt {
-    @Autowired private SessionFactory sessionFactory;
-    public NhanVien getStudentByUserName(String userName){
-        NhanVien nv =null;
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public NhanVien getStudentByUserName(String userName) {
+        NhanVien nv = null;
         Session session = sessionFactory.openSession();
         String hql = "From NhanVien where userName =:userName";
         Query<NhanVien> query = session.createQuery(hql, NhanVien.class);
-        query.setParameter("userName",userName);
+        query.setParameter("userName", userName);
         nv = (NhanVien) query.uniqueResult();
         session.close();
-        return  nv;
+        return nv;
     }
+
 }

@@ -1,6 +1,6 @@
 function popup(
     { type = "error", title = "Thông báo", desc = "This is a desc" },
-    href
+    queryForm
 ) {
     const color = {
         success: "#039855",
@@ -10,7 +10,7 @@ function popup(
         success: "fa-solid fa-check check",
         remove: "fa-solid fa-trash",
     };
-
+    const formEl = document.querySelector(queryForm);
     const popupWrapper = document.createElement("div");
     popupWrapper.classList.add("popup-wrapper");
 
@@ -52,7 +52,7 @@ function popup(
     closeBtn.addEventListener("click", closePop);
 
     submitBtn.addEventListener("click", () => {
-        window.location.href = href; // Sửa lỗi cú pháp
+        formEl.submit();
         closePop();
     });
 }

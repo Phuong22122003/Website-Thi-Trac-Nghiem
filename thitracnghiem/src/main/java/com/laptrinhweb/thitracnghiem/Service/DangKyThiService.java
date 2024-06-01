@@ -26,8 +26,9 @@ public class DangKyThiService {
     @Transactional(rollbackOn = Exception.class)
     public int registerExam(DangKyThi dangKyThi) {
         try {
-            int lanThi = (dangKyThiRepository.findByLopAndMonHoc(dangKyThi.getLop(),
-                    dangKyThi.getMonHoc()).size()) + 1;
+            int temp = dangKyThiRepository.findByLopAndMonHoc(dangKyThi.getLop(),
+                    dangKyThi.getMonHoc()).size();
+            int lanThi = temp + 1;
             dangKyThi.setLan(lanThi);
             DangKyThi dkt = dangKyThiRepository.save(dangKyThi);
             thiRepository.insertThiByIddk(dkt.getIddk());

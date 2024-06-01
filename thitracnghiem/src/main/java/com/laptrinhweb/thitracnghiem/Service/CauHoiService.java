@@ -66,7 +66,7 @@ public class CauHoiService {
         return cauHoiRepository.searchCauHoi(keyword, maGv);
     }
 
-    @Transactional(rollbackOn = Exception.class)
+    // @Transactional(rollbackOn = Exception.class)
     public int createYesNoQuestion(String noiDungCauhoi, String maMh, String maGv, int dapAnDung) {
         try {
             CauHoi cauHoi = new CauHoi();
@@ -99,10 +99,12 @@ public class CauHoiService {
 
     }
 
-    @Transactional(rollbackOn = Exception.class)
+    // @Transactional(rollbackOn = Exception.class)
     public int createOthersQuestion(String noiDungCauhoi, String maMh, String maGv, int dapAnDung,
             List<String> luaChonList, String hinhThuc) {
         try {
+            System.out.println("===========");
+            System.out.println(maGv);
             CauHoi cauHoi = new CauHoi();
             cauHoi.setDapAnDung(dapAnDung);
             cauHoi.setGiangVien(giangVienRepository.findByMaGvAndTrangThaiXoa(maGv, false));

@@ -54,7 +54,7 @@ public class AuthenticationService implements UserDetailsService {
             check = true;
         }
         if (check) {
-            UserDetails userDetails = new User(username, passwordEncoder.encode(password), grantList);
+            UserDetails userDetails = new User(username, password, grantList);
             return userDetails;
         } else
             throw new UnsupportedOperationException("Unimplemented method'loadUserByUsername'");

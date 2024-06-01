@@ -16,4 +16,8 @@ public class NhanVienService {
     public NhanVien findByManv(String manv) {
         return nhanVienRepository.findByManv(manv);
     }
+
+    public NhanVien findByUsername(String username) {
+        return nhanVienRepository.findByUserNameAndTrangThaiXoa(username, false);
+    }
 }

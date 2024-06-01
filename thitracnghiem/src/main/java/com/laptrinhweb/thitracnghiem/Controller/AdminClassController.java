@@ -14,13 +14,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
+import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
 import com.laptrinhweb.thitracnghiem.Service.LopHocService;
+import com.laptrinhweb.thitracnghiem.Service.NhanVienService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminClassController {
     @Autowired
     private LopHocService lopHocService;
+    @Autowired
+    private NhanVienService nhanVienService;
+
+    @ModelAttribute("nhanvien")
+    public NhanVien nhanVienLogin(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        NhanVien nv = nhanVienService.findByUsername(username);
+        return nhanVienService.findByUsername(username);
+    }
 
     @ModelAttribute("allClass")
     public List<Lop> classes() {

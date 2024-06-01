@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ import com.laptrinhweb.thitracnghiem.Service.GiangVienService;
 import com.laptrinhweb.thitracnghiem.Service.MonHocService;
 
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,10 +46,14 @@ public class LecturerController {
     MonHocService monHocService;
     @Autowired
     CauHoiService cauHoiService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @ModelAttribute("giangVien")
-    public GiangVien giangVienLogin() {
-        return giangVienService.findByMaGv("gv02           ");
+    public GiangVien giangVienLogin(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String magv = giangVienService.findByUsername(username).getMaGv();
+        return giangVienService.findByMaGv(magv);
     }
 
     @GetMapping("/score")
@@ -143,7 +149,7 @@ public class LecturerController {
     @PostMapping("/create-others-question/{maGv}")
     public String createOthersQuestion(@RequestParam("monHoc") String maMh, @RequestParam("hinhThuc") String hinhThuc,
             @RequestParam("noiDungCauHoi") String noiDungCauHoi, @RequestParam("luachon") List<String> luaChonList,
-            @RequestParam("dapAnDung") Integer dapAnDung, @PathVariable("maGv") String maGv,
+            @RequestParam(name = "dapAnDung", required = false) Integer dapAnDung, @PathVariable("maGv") String maGv,
             RedirectAttributes redirectAttributes) {
         int statusCreateCauHoi;
         if (dapAnDung == null || noiDungCauHoi.trim().length() == 0 || maMh.trim().length() == 0
@@ -179,6 +185,14 @@ public class LecturerController {
         List<LuaChonDTO> list = cauHoiService.getInfoLuaChon(idch);
         redirectAttributes.addFlashAttribute("listLuaChon", list);
         redirectAttributes.addFlashAttribute("idchEdited", idch);
+        return "redirect:/lecturer/question";
+    }
+
+    @GetMapping("/view-info-question/{idch}")
+    public String viewInfoQuestion(@PathVariable("idch") int idch, RedirectAttributes redirectAttributes) {
+        CauHoi cauHoi = cauHoiService.findByIdch(idch);
+        List<LuaChonDTO> list = cauHoiService.getInfoLuaChon(idch);
+        redirectAttributes.addFlashAttribute("infoCauhoi", list);
         return "redirect:/lecturer/question";
     }
 
@@ -232,9 +246,11 @@ public class LecturerController {
             BindingResult bindingResult, ModelMap model) {
         GiangVien giangVien = giangVienService.findByMaGv(magv);
         System.out.println("Password real: " + giangVien.getPassWord());
-        System.out.println("Old Password: " + form.getOldPassword());
+        System.out.println("Old Password chua ma hoa: " + form.getOldPassword());
+        System.out.println("Old Password ma hoa: " + passwordEncoder.encode(form.getOldPassword()));
         System.out.println("New Password: " + form.getNewPassword());
         System.out.println("Conform Password: " + form.getConfirmNewPassword());
+
         if (form.getNewPassword().isEmpty()) {
             bindingResult.rejectValue("newPassword", "errorChangePassword_newPassword",
                     "Mật khẩu mới không được để trống");
@@ -243,8 +259,13 @@ public class LecturerController {
             bindingResult.rejectValue("confirmNewPassword", "errorChangePassword_confirmNewPassword",
                     "Nhập lại mật khẩu không chính xác");
         }
+        // if (!Objects.equals(form.getNewPassword(), form.getConfirmNewPassword())) {
+        // bindingResult.rejectValue("confirmNewPassword",
+        // "errorChangePassword_confirmNewPassword",
+        // "Nhập lại mật khẩu không chính xác");
+        // }
         if (giangVien != null) {
-            if (!Objects.equals(giangVien.getPassWord(), form.getOldPassword())) {
+            if (!passwordEncoder.matches(form.getOldPassword(), giangVien.getPassWord())) {
                 bindingResult.rejectValue("oldPassword", "errorChangePassword_oldPassword",
                         "Mật khẩu không chính xác");
             }

@@ -1,4 +1,7 @@
-function exit(){
+function exit() {
     // window.alert('move')
-    window.location.href = '/student/home'
+    window.close();
+}
+function reload() {
+    window.location.href = "/student/home";
 }
