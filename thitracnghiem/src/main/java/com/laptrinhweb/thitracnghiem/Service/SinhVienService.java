@@ -29,7 +29,7 @@ public class SinhVienService {
     private PasswordEncoder passwordEncoder;
 
     public String getMasvByUsername(String username) {
-        SinhVien sv = sinhVienRepositoryImplt.getStudentByUserName(username);
+        SinhVien sv = sinhVienRepository.getStudentByUserName(username);
         if (sv != null)
             return sv.getMasv();
         return null;
@@ -38,7 +38,7 @@ public class SinhVienService {
     public SinhVien getStudentInfo(String masv) {
         if (masv == null || masv == "")
             return null;
-        return sinhVienRepositoryImplt.getStudentInfo(masv);
+        return sinhVienRepository.findSinhVienByMasv(masv);
     }
 
     public List<SinhVien> getStudentsByClass(String maLop) {

@@ -51,6 +51,7 @@ html {
     flex-grow: 9;
     padding: 20px;
     padding-top: 0px;
+    overflow-y: auto;
 }
 
 .info-view {
@@ -89,11 +90,16 @@ html {
 .exam-view .form .question-answer .question {
     word-break: break-all;
     flex-grow: 1;
-    max-height: 200px;
+    /* max-height: 200px; */
     padding: 10px;
 }
 
-
+.exam-view .form .question-answer .question .img-audio{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-direction: column;
+}
 .exam-view .form .question-answer .box-answer {
     display: flex;
     flex-direction: column;
@@ -233,4 +239,15 @@ a:hover {
 .btn-trans:hover {
     opacity: 0.9;
     cursor: pointer;
+}
+
+.radio-checked::after{
+    content: "";
+    background-color: black;
+    display: inline-block;
+    border-radius: 50%;
+    flex-grow: 1;
+}
+.radio-checked {
+    display: inline-flex;
 }

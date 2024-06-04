@@ -16,18 +16,18 @@ import org.springframework.stereotype.Service;
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
 import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
 import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.GiangVienRepositoryImplt;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.NhanVienRepositoryImplt;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.SinhVienRepositoryImplt;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.NhanVienRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.SinhVienRepository;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
     @Autowired
-    private SinhVienRepositoryImplt sinhVienRepositoryImplt;
+    private SinhVienRepository sinhVienRepository;
     @Autowired
-    private GiangVienRepositoryImplt giangVienRepositoryImplt;
+    private GiangVienRepository giangVienRepository;
     @Autowired
-    private NhanVienRepositoryImplt nhanVienRepositoryImplt;
+    private NhanVienRepository nhanVienRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -37,17 +37,17 @@ public class AuthenticationService implements UserDetailsService {
         boolean check = false;
         Object user = null;
         String password = "";
-        if ((user = sinhVienRepositoryImplt.getStudentByUserName(username)) != null) {
+        if ((user = sinhVienRepository.getStudentByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("STUDENT");
             grantList.add(authority);
             password = ((SinhVien) user).getPassWord();
             check = true;
-        } else if ((user = giangVienRepositoryImplt.getTeacherInfoByUserName(username)) != null) {
+        } else if ((user = giangVienRepository.getTeacherByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("TEACHER");
             grantList.add(authority);
             password = ((GiangVien) user).getPassWord();
             check = true;
-        } else if ((user = nhanVienRepositoryImplt.getStudentByUserName(username)) != null) {
+        } else if ((user = nhanVienRepository.getEmployeeByUserName(username)) != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority("EMPLOYEE");
             grantList.add(authority);
             password = ((NhanVien) user).getPassWord();

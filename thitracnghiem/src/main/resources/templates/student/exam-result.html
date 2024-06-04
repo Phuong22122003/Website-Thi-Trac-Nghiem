@@ -41,11 +41,24 @@
                     <div
                         th:each="cauhoi,itemStat : *{listCauHoi}"
                         class="question-answer"
+                        style="display: none;"
                     >
-                        <div
-                            class="question"
-                            th:text="'Câu ' +${itemStat.index +1 } + ': '+ ${cauhoi.getNoiDung()}"
-                        ></div>
+                        <div class="question" >
+                            <div  th:text="'Câu ' +${itemStat.index +1 } + ': '+ ${cauhoi.getNoiDung()}"></div>
+                            <div class="img-audio" >
+                                <div th:each = "file: ${cauhoi.files}">
+                                    <div th:if = "${file.type.toUpperCase()} =='IMAGE'">
+                                        <img style="width: 400px;" th:src="${'/get-file/image/' + file.fileName}" alt="image">
+                                    </div>
+                                    <div th:if = "${file.type.toUpperCase()} =='AUDIO'">
+                                        <audio controls style="width: 400px;">
+                                            <source th:src="${'/get-file/audio/' + file.fileName}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="box-answer">
                             <div
                                 class="answer"
@@ -61,12 +74,16 @@
                                             border-radius: 8px;
                                         "
                                     >
-                                        <input
-                                            type="radio"
-                                            th:value="${stat.index + 1}"
-                                            disabled
-                                            checked
-                                        />
+                                   
+                                    <input
+                                        type="radio"
+                                        th:value="${stat.index + 1}"
+                                        disabled
+                                        checked
+                                        class="radio-checked"
+                                    />
+
+                            
                                         <label
                                             th:text="${luachon.getNoiDung()}"
                                             style="color: white"
@@ -84,6 +101,7 @@
                                             th:value="${stat.index + 1}"
                                             disabled
                                             checked
+                                            class="radio-checked"
                                         />
                                         <label
                                             th:text="${luachon.getNoiDung()}"

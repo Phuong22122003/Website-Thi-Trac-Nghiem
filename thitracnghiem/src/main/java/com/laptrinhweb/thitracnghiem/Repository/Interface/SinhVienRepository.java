@@ -16,7 +16,8 @@ import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
 public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
         @Query(value = "from SinhVien s where s.masv = :masv and s.trangThaiXoa = false")
         public SinhVien findSinhVienByMasv(@Param("masv") String masv);
-
+        @Query(value = "from SinhVien s where s.userName = :userName and s.trangThaiXoa = false")
+        public SinhVien getStudentByUserName(@Param("userName") String userName);
         @Query(value = "from SinhVien s where (s.masv=:masv or s.userName = :userName) and s.trangThaiXoa = false")
         public SinhVien checkValidSinhVien(@Param("masv") String masv, @Param("userName") String userName);
 

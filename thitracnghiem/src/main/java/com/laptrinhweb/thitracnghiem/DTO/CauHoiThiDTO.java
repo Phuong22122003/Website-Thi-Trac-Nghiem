@@ -1,12 +1,15 @@
 package com.laptrinhweb.thitracnghiem.DTO;
 
 import java.util.List;
+
+import com.laptrinhweb.thitracnghiem.Entity.FileCauHoi;
 import com.laptrinhweb.thitracnghiem.Entity.LuaChon;
 public class CauHoiThiDTO {
     private Integer idch;
     private String noiDung;
     private Integer dapAnDung;
     private List<LuaChon> luaChons;
+    private List<FileCauHoi> files;
     private Integer dapAnSV;
     private Integer thuTu;
     //=================Constructor========================//
@@ -76,6 +79,12 @@ public class CauHoiThiDTO {
     public String toString() {
         return "CauHoiThiDTO [idch=" + idch + ", noiDung=" + noiDung + ", dapAnDung=" + dapAnDung + ", luaChons="
                 + luaChons + ", dapAnSV=" + dapAnSV + ", thuTu=" + thuTu + "]";
+    }
+    public List<FileCauHoi> getFiles() {
+        return files;
+    }
+    public void setFiles(List<FileCauHoi> files) {
+        this.files = files;
     }
     
 }

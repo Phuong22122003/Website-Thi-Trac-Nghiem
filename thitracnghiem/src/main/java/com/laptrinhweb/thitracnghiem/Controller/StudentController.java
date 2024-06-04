@@ -5,10 +5,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.test.OAuth2ContextConfiguration.Password;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.DanhSachCauHoi;
 import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
@@ -26,17 +23,15 @@ import com.laptrinhweb.thitracnghiem.Service.CTBaiThiService;
 import com.laptrinhweb.thitracnghiem.Service.CauHoiService;
 import com.laptrinhweb.thitracnghiem.Service.SinhVienService;
 import com.laptrinhweb.thitracnghiem.Service.ThiService;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/student")
-public class SinhVienController {
+public class StudentController {
     @Autowired
     private SinhVienService sinhVienService;
     @Autowired
@@ -63,11 +58,6 @@ public class SinhVienController {
 
     @GetMapping("/home")
     public String Home(Model model, HttpSession session) {
-
-        // if (session.getAttribute("masv") == null || (Integer)
-        // session.getAttribute("type") != 2)
-        // return "redirect:/login";
-
         String username = (String) session.getAttribute("username");
         String masv = sinhVienService.getMasvByUsername(username);
         List<InfoDTO> lichthi = sinhVienService.showExamSchedules(masv);
@@ -123,9 +113,6 @@ public class SinhVienController {
             // Lấy số giây từ Duration
             long seconds = duration.getSeconds();
             thongTinThi.setRemainingTime((long) thongTinThi.getThoiLuong() * 60 - seconds);
-            // if (thongTinThi.getRemainingTime() < 0) {
-            // return "redirect:/student/home";
-            // }
         }
         model.addAttribute("thongTinThi", thongTinThi);
         model.addAttribute("danhsachch", session.getAttribute("danhsachch" + idThi));

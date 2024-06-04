@@ -3,12 +3,15 @@ package com.laptrinhweb.thitracnghiem.Entity;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +20,23 @@ import jakarta.validation.constraints.Past;
 
 import java.util.Collection;
 
+import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
+
 @Entity
+// @SqlResultSetMapping(
+//     name = "getResultByIDMapping",
+//     classes = @ConstructorResult(
+//         targetClass = InfoDTO.class,
+//         columns = {
+//             @ColumnResult(name = "TENMH", type = String.class),
+//             @ColumnResult(name = "NGAYTHI", type = Date.class),
+//             @ColumnResult(name = "LAN", type = Integer.class),
+//             @ColumnResult(name = "SOCAU", type = Integer.class),
+//             @ColumnResult(name = "THOILUONG", type = Integer.class),
+//             @ColumnResult(name = "DIEM", type = Float.class)
+//         }
+//     )
+// )
 @Table(name = "SINHVIEN")
 public class SinhVien {
     @Id

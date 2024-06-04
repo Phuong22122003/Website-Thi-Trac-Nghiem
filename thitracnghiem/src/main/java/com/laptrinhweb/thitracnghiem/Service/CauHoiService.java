@@ -2,36 +2,28 @@ package com.laptrinhweb.thitracnghiem.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.DanhSachCauHoi;
 import com.laptrinhweb.thitracnghiem.DTO.LuaChonDTO;
-import com.laptrinhweb.thitracnghiem.Entity.CTBaiThi;
 import com.laptrinhweb.thitracnghiem.Entity.CauHoi;
 import com.laptrinhweb.thitracnghiem.Entity.LuaChon;
 import com.laptrinhweb.thitracnghiem.Repository.Implement.CauHoiRepositoryImplt;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.LuaChonRepositoryImplt;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.CTBaiThiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.CauHoiRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.FileRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LuaChonRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.MonHocRepository;
 import java.lang.Integer;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class CauHoiService {
     @Autowired
     private CauHoiRepositoryImplt cauHoiRepositoryImplt;
-    @Autowired
-    private LuaChonRepositoryImplt luaChonRepositoryImplt;
     @Autowired
     private CauHoiRepository cauHoiRepository;
     @Autowired
@@ -41,15 +33,16 @@ public class CauHoiService {
     @Autowired
     private LuaChonRepository luaChonRepository;
     @Autowired
-    private CTBaiThiRepository ctBaiThiRepository;
-    @Autowired
     private MonHocService monHocService;
+    @Autowired
+    private FileRepository fileRepository;
 
     public List<CauHoiThiDTO> getListOfExamQuestion(Integer idThi, List<Integer> dap_an) {
         List<CauHoiThiDTO> li = cauHoiRepositoryImplt.getListOfExamQuestion(idThi,
                 dap_an);
         for (CauHoiThiDTO ch : li) {
-            ch.setLuaChons(luaChonRepositoryImplt.findAllByIdch(ch.getIdch()));
+            ch.setLuaChons(luaChonRepository.findAllLuaChonByIdch(ch.getIdch()));
+            ch.setFiles(fileRepository.findAllByIDCH(ch.getIdch()));
         }
         return li;
     }

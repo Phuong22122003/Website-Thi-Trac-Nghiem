@@ -15,6 +15,7 @@ public interface LuaChonRepository extends JpaRepository<LuaChon, Integer> {
     // List<LuaChon> findAllByIdch(int IDCH);//Không dùng được nữa TAI SAO?
     @Query(value = "EXEC findLuaChonByIdch :idch", nativeQuery = true)
     List<LuaChonDTO> findLuaChonByIdch(@Param("idch") int idch);
-
+    @Query(value = "FROM LuaChon lc where lc.cauHoi.idch = :idch order by thuTu ASC")
+    List<LuaChon> findAllLuaChonByIdch(@Param("idch") int idch);
     LuaChon findByIdlc(int idlc);
 }

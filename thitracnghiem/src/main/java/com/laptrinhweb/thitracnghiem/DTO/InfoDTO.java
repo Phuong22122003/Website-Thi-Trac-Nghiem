@@ -22,7 +22,10 @@ public class InfoDTO {
         this.ngayThi = ngayThi;
         this.diem = diem;
     }
-
+    /*
+     * Sp: showExamResults
+     * Chức năng: Xem danh sách điểm môn học đã thi
+     */
     public InfoDTO(String tenMH, Integer lanThi, Float diem, Integer iDTHI) {
         IDTHI = iDTHI;
         this.lanThi = lanThi;
@@ -30,6 +33,10 @@ public class InfoDTO {
         this.diem = diem;
     }
 
+    /* 
+    SP: showExamSchedule;
+    Chức năng: dùng để lấy lịch thi
+    */
     public InfoDTO(Integer IDTHI, String maMH, Integer lanThi, Integer soCau, Integer thoiLuong,
             String tenMH, Date ngayThi, String trangThai) {
         this.IDTHI = IDTHI;
@@ -51,6 +58,18 @@ public class InfoDTO {
         this.ngayThi = ngayThi;
     }
 
+    /*
+    SP: getResultByID;
+    Chức năng: sẽ lấy thông tin của bài thi khi sinh viên có nhu cầu xem chi tiết bài thi
+    */
+    public InfoDTO(String tenMH,Date ngayThi,Integer lanThi,Integer soCau,Integer thoiLuong,Float diem){
+        this.tenMH = tenMH;
+        this.ngayThi = ngayThi;
+        this.lanThi = lanThi;
+        this.soCau = soCau;
+        this.thoiLuong = thoiLuong;
+        this.diem = diem;
+    }
     public InfoDTO() {
     }
 

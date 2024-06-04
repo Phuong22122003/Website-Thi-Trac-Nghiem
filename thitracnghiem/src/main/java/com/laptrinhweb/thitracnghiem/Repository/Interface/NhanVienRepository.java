@@ -14,6 +14,8 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, String> {
     // NhanVien findUserByUsername(@Param("username") String username);
 
     // List<NhanVien> findByUserName(String userName);
+    @Query(value = "From NhanVien s where s.userName = :userName and s.trangThaiXoa = false")
+    public NhanVien getEmployeeByUserName(@Param("userName") String userName);
 
     public NhanVien findByManv(String manv);
 

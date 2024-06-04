@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
+import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
 
 @Repository
 public interface GiangVienRepository extends JpaRepository<GiangVien, String> {
@@ -25,6 +26,8 @@ public interface GiangVienRepository extends JpaRepository<GiangVien, String> {
     // public List<GiangVien> searchGiangVien(@Param("keyword") String keyword);
 
     // public GiangVien findByUserName(String userName);
+    @Query(value = "from GiangVien s where s.userName = :userName and s.trangThaiXoa = false")
+    public GiangVien getTeacherByUserName(@Param("userName") String userName);
 
     @Query(value = "select * from giangvien where trangthaixoa=0", nativeQuery = true)
     public List<GiangVien> findAllGiangVien();

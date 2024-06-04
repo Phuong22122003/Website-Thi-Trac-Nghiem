@@ -9,33 +9,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-
 import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
-import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
 @Repository
 public class SinhVienRepositoryImplt{
     @Autowired private SessionFactory sessionFactory;
-    public SinhVien getStudentByUserName(String userName){
-        SinhVien sv =null;
-        Session session = sessionFactory.openSession();
-        String hql = "From SinhVien where userName =:userName";
-        Query<SinhVien> query = session.createQuery(hql, SinhVien.class);
-        query.setParameter("userName",userName);
-        sv = (SinhVien) query.uniqueResult();
-        session.close();
-        return  sv;
-    }
-    public SinhVien getStudentInfo(String masv){
-        SinhVien sv =null;
-        Session session = sessionFactory.openSession();
-        String hql = "From SinhVien where masv =:masv";
-        Query<SinhVien> query = session.createQuery(hql, SinhVien.class);
-        query.setParameter("masv",masv);
-        sv = (SinhVien) query.uniqueResult();
-        session.close();
-        return  sv;
-    }
     public List<InfoDTO> showExamSchedules(String masv) {
         List<InfoDTO> lichthi = null ;
         Session session = sessionFactory.openSession();

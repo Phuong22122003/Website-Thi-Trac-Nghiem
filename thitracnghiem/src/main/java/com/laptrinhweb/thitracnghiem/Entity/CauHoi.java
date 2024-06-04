@@ -3,7 +3,6 @@ package com.laptrinhweb.thitracnghiem.Entity;
 import java.util.Collection;
 
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +38,10 @@ public class CauHoi {
     @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
     @SQLRestriction("trangThaiXoa = 0")
     private Collection<LuaChon> luaChons;
+
+    @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
+    // @SQLRestriction("trangThaiXoa = 0")
+    private Collection<FileCauHoi> files;
 
     @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
     @SQLRestriction("trangThaiXoa = 0")
@@ -140,6 +143,14 @@ public class CauHoi {
         this.ctBaiThis = ctBaiThis;
     }
 
+    public Collection<FileCauHoi> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Collection<FileCauHoi> files) {
+        this.files = files;
+    }
+    
     // =================getter and setter===================//
 
 }
