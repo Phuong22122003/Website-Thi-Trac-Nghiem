@@ -127,7 +127,7 @@ public class StudentController {
         LocalDateTime startTime = (LocalDateTime) session.getAttribute("startTime" + danhsach.getIdThi());
         session.removeAttribute("thongTinThi" + danhsach.getIdThi());
         session.removeAttribute("danhsachch" + danhsach.getIdThi());
-        if (LocalDateTime.now().isAfter(startTime.plusSeconds(thongTinThi.getThoiLuong() * 60 + 10))) {
+        if (LocalDateTime.now().isAfter(startTime.plusSeconds(thongTinThi.getThoiLuong() * 60 + 20))) {
             session.removeAttribute("dapan" + danhsach.getIdThi());
             ctBaiThiService.setFinishedThi(danhsach.getIdThi());
             return "redirect:home";
