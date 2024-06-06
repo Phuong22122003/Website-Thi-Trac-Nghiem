@@ -1,5 +1,8 @@
 var currentIndex = 0;
+var listIndexQuestions = document.querySelectorAll(".index-question")
+var listAudios = document.querySelectorAll(".img-audio")
 function showQuestion(index) {
+    console.log(listIndexQuestions)
     currentIndex = index;
     const previous = document.getElementById("previous");
     const next = document.getElementById("next");
@@ -11,8 +14,12 @@ function showQuestion(index) {
     else previous.disabled = false;
     for (let i = 0; i < li.length; i++) {
         li[i].style.display = "none";
+        if(listIndexQuestions[i]!=null)listIndexQuestions[i].style.color = "white";
+       if(listAudios[i].querySelector("audio")!=null) listAudios[i].querySelector("audio").pause();
     }
+    console.log(listAudios);
     li[index].style.display = "flex";
+    listIndexQuestions[index].style.color = "red";
 }
 
 function countdownMinutes(time, remainingTime) {
