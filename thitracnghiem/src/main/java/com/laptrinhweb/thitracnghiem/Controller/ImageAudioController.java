@@ -18,21 +18,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-
 @Controller
 @RequestMapping("/get-file")
 public class ImageAudioController {
     @Value("${file.upload-dir}")
     private String uploadDir;
-    @GetMapping("/image/{imageName:.+}")
-    public void getImage(@PathVariable String imageName, HttpServletResponse response) throws IOException{
-        Path imagePath = Paths.get(uploadDir).resolve(imageName);
 
-        if(!Files.exists(imagePath)){
+    @GetMapping("/image/{imageName:.+}")
+    public void getImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
+        Path imagePath = Paths.get(uploadDir).resolve(imageName);
+        // Path imagePath =
+        // Paths.get(uploadDir).resolve("1717520689339illustration-gallery-icon_53876-27002.png");
+
+        if (!Files.exists(imagePath)) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
+            System.out.println("========================");
+            System.out.println(imageName);
             return;
-        }   
-         // Đặt loại hình ảnh trong tiêu đề
+        }
+        // Đặt loại hình ảnh trong tiêu đề
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 
         // Đọc hình ảnh vào InputStream và ghi vào OutputStream của HttpServletResponse
@@ -45,10 +49,12 @@ public class ImageAudioController {
         }
         return;
     }
+
     @GetMapping("/audio/{audioName:.+}")
     public void getAudio(@PathVariable String audioName, HttpServletResponse response) throws IOException {
         Path audioPath = Paths.get(uploadDir).resolve(audioName);
-
+        System.out.println("============================");
+        System.out.println("vao day");
         // Kiểm tra xem tệp âm thanh có tồn tại không
         if (!Files.exists(audioPath)) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -59,7 +65,8 @@ public class ImageAudioController {
         if (contentType != null) {
             response.setContentType(contentType);
         } else {
-            // Nếu không thể xác định được loại MIME, sử dụng loại MIME mặc định cho file âm thanh
+            // Nếu không thể xác định được loại MIME, sử dụng loại MIME mặc định cho file âm
+            // thanh
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         }
 

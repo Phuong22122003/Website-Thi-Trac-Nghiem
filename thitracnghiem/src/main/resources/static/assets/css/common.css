@@ -122,6 +122,8 @@ ul {
 .register-form {
     width: 100%;
     padding: 36px;
+    max-height: 700px;
+    overflow: auto;
 }
 
 .input-wrapper {
@@ -882,4 +884,13 @@ tbody .more {
 
 .form-message {
     color: red;
+}
+
+.upload-image {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    max-width: 60%;
+    max-height: 200px;
+    object-fit: cover;
 }

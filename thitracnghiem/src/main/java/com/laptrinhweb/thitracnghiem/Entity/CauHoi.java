@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.hibernate.annotations.SQLRestriction;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,7 +40,8 @@ public class CauHoi {
     @SQLRestriction("trangThaiXoa = 0")
     private Collection<LuaChon> luaChons;
 
-    @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "cauHoi", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cauHoi", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     // @SQLRestriction("trangThaiXoa = 0")
     private Collection<FileCauHoi> files;
 
@@ -150,7 +152,10 @@ public class CauHoi {
     public void setFiles(Collection<FileCauHoi> files) {
         this.files = files;
     }
-    
+
+    public void addFile(FileCauHoi file) {
+        files.add(file);
+    }
     // =================getter and setter===================//
 
 }

@@ -390,6 +390,6 @@ tbody .more {
 }
 
 .option-wrapper {
-    max-height: 250px;
+    max-height: 150px;
     overflow-y: auto;
 }
