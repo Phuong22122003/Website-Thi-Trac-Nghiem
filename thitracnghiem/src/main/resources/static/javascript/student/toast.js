@@ -24,5 +24,5 @@ function showToast(title, message) {
     setTimeout(function() {
         toast.classList.remove('show');
         document.body.removeChild(toastContainer);
-    }, 2000); 
+    }, 3000); 
 }

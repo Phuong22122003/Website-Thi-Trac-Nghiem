@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
@@ -28,8 +28,8 @@ public class AuthenticationService implements UserDetailsService {
     private GiangVienRepository giangVienRepository;
     @Autowired
     private NhanVienRepository nhanVienRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    // @Autowired
+    // private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -57,7 +57,7 @@ public class AuthenticationService implements UserDetailsService {
             UserDetails userDetails = new User(username, password, grantList);
             return userDetails;
         } else
-            throw new UnsupportedOperationException("Unimplemented method'loadUserByUsername'");
+            throw new UnsupportedOperationException("Invalid username or password");
     }
 
 }

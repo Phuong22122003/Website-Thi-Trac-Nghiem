@@ -1,10 +1,20 @@
 import XuLyTable, { openModal } from "../XuLyTable.js";
 XuLyTable();
 
+function showNumOfSubjects(listMonHoc){
+    const numOfSubjects = document.getElementById("numOfSubjects")
+    let count = 0
+    listMonHoc.forEach((row) => {
+        count ++;
+    })
+    numOfSubjects.textContent +=  count
+}
 const listMonHoc = document.querySelectorAll("tbody tr");
+showNumOfSubjects(listMonHoc)
 const modalContainer = document.querySelector(
     ".modal-container[data-name='m-monhoc']"
 );
+
 listMonHoc.forEach((row) => {
     const editBtn = row.querySelector(".edit");
     console.log(editBtn);

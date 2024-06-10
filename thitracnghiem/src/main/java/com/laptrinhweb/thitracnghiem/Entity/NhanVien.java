@@ -25,6 +25,8 @@ public class NhanVien {
     private String userName;
     @Column(name = "PASSWORD")
     private String passWord;
+    @Column(name = "EMAIL")
+    private String email;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
     @OneToMany(mappedBy = "nhanVien", fetch = FetchType.EAGER)

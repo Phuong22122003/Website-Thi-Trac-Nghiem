@@ -113,7 +113,14 @@ function debounce(func, delay) {
         }, delay);
     };
 }
-
+function showNumOfStudents(listSinhVien){
+    const numOfStudents = document.getElementById("numOfStudents")
+    let count = 0
+    listSinhVien.forEach((row) => {
+        count ++;
+    })
+    numOfStudents.textContent +=  count
+}
 // ------------Run---------------------
 
 // const btnSearch = document.getElementById("search-button")
@@ -122,6 +129,7 @@ const listSinhVien = document.querySelectorAll("tbody tr");
 const search = document.getElementById("search");
 const maLop = document.getElementById("classSelect");
 const delaySearch = debounce(inputSearchTyping, 1000);
+showNumOfStudents(listSinhVien)
 search.addEventListener("keyup", () => {
     delaySearch(listSinhVien);
 });

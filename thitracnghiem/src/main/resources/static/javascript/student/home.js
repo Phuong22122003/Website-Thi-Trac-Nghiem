@@ -24,13 +24,13 @@ function bodyClick() {
     const li = document.getElementById("profile-logout");
     li.style.display = "none";
 }
-// function openNewTabAndExecute(event) {  
-// // Ví dụ: Nếu bạn muốn load lại trang sau 5 giây
-//     setTimeout(function() {
-//         window.close();
-//     }, 1000); // 5000 milliseconds = 5 seconds
+function openNewTabAndExecute(event) {  
+// Ví dụ: Nếu bạn muốn load lại trang sau 5 giây
+    setTimeout(function() {
+        window.location.reload();
+    }, 1000); // 5000 milliseconds = 5 seconds
 
-// }
+}
 
 // ====================Main==============================
 // ==================biến======================

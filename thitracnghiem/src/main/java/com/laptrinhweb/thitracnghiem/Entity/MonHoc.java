@@ -3,9 +3,6 @@ package com.laptrinhweb.thitracnghiem.Entity;
 import java.util.Collection;
 
 import org.hibernate.annotations.SQLRestriction;
-
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

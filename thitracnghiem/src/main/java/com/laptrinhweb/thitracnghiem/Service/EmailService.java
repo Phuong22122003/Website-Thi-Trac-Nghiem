@@ -1,5 +1,11 @@
 package com.laptrinhweb.thitracnghiem.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+// import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,5 +29,17 @@ public class EmailService {
         } catch (MailException e) {
             return "Gửi mail thất bại, vui lòng thử lại!";
         }
+    }
+
+    public String randomPassword() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(10);
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+        return sb.toString();
     }
 }

@@ -2,6 +2,10 @@ package com.laptrinhweb.thitracnghiem.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiDTO;
@@ -9,9 +13,8 @@ import com.laptrinhweb.thitracnghiem.DTO.CauHoiThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.DanhSachCauHoi;
 import com.laptrinhweb.thitracnghiem.DTO.LuaChonDTO;
 import com.laptrinhweb.thitracnghiem.Entity.CauHoi;
+import com.laptrinhweb.thitracnghiem.Entity.FileCauHoi;
 import com.laptrinhweb.thitracnghiem.Entity.LuaChon;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.CauHoiRepositoryImplt;
-import com.laptrinhweb.thitracnghiem.Repository.Interface.CTBaiThiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.CauHoiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.FileRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
@@ -22,8 +25,6 @@ import java.lang.Integer;
 
 @Service
 public class CauHoiService {
-    @Autowired
-    private CauHoiRepositoryImplt cauHoiRepositoryImplt;
     @Autowired
     private CauHoiRepository cauHoiRepository;
     @Autowired
@@ -36,19 +37,54 @@ public class CauHoiService {
     private MonHocService monHocService;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired 
+    private SessionFactory sessionFactory;
+
 
     public List<CauHoiThiDTO> getListOfExamQuestion(Integer idThi, List<Integer> dap_an) {
-        List<CauHoiThiDTO> li = cauHoiRepositoryImplt.getListOfExamQuestion(idThi,
-                dap_an);
-        for (CauHoiThiDTO ch : li) {
+        List<CauHoiThiDTO> li =null;
+        String spCall = "exec listOfExamQuestions :idThi";
+        Session session = sessionFactory.openSession();
+        Query<CauHoiThiDTO> query = session.createNativeQuery(spCall, CauHoiThiDTO.class);
+        query.setParameter("idThi",idThi);
+        li=query.getResultList();
+        for(CauHoiThiDTO ch:li ){
+            dap_an.add(ch.getDapAnDung());
+            ch.setDapAnDung(null);
             ch.setLuaChons(luaChonRepository.findAllLuaChonByIdch(ch.getIdch()));
             ch.setFiles(fileRepository.findAllByIDCH(ch.getIdch()));
         }
+        session.close();
         return li;
     }
 
     public DanhSachCauHoi getPastExamQuestions(Integer idThi) {
-        return cauHoiRepositoryImplt.getPastExamQuestions(idThi);
+        DanhSachCauHoi ds = new DanhSachCauHoi();
+        List<CauHoiThiDTO> li = new ArrayList<>();
+        CauHoiThiDTO temp;
+        List<Object[]> rs ;
+        List<LuaChon> luaChons = null;
+        List<FileCauHoi> files = null;
+        CauHoi cauHoi = null;
+        String spCall = "exec getPastExamQuestions  :idThi";
+        Session session = sessionFactory.openSession();
+        Query<Object[]> query = session.createNativeQuery(spCall, Object[].class);
+        query.setParameter("idThi",idThi);
+        rs = query.getResultList();
+        for(Object[] r: rs){
+            temp = new CauHoiThiDTO((Integer)r[0], r[1].toString(), (Integer)r[2],(Integer)r[3],(Integer)r[4]);
+            cauHoi = cauHoiRepository.findByIdch((Integer)r[0]);
+            if(cauHoi!=null){
+                luaChons = (List<LuaChon>) cauHoi.getLuaChons();
+                files = (List<FileCauHoi>) cauHoi.getFiles();
+                temp.setLuaChons(luaChons);
+                if(files!=null)temp.setFiles(files);
+                li.add(temp);
+            }
+        }
+        ds.setListCauHoi(li);      
+        session.close();
+        return ds;
     }
 
     public List<CauHoiDTO> findCauHoiByMaGv(String maGv) {

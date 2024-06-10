@@ -250,8 +250,8 @@
                                                     style="margin-top: 0"
                                                     class="btn"
                                                     type="submit"
+                                                    onclick="openNewTabAndExecute(event)"
                                                     >
-                                                    <!-- onclick="openNewTabAndExecute(event)" -->
                                                     Thi
                                                 </button>
                                             </form>
@@ -294,6 +294,7 @@
                                     <td th:text="${diem.getDiem()}"></td>
                                     <td style="width: 10%">
                                         <a
+                                            target="_blank"
                                             th:href="'/student/resultview?idThi=' + ${diem.getIDTHI()}"
                                         >
                                             Xem chi tiết

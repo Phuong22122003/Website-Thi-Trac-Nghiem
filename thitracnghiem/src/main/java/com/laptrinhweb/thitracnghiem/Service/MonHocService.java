@@ -7,10 +7,6 @@ import org.springframework.stereotype.Service;
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.MonHocRepository;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-
 @Service
 public class MonHocService {
 

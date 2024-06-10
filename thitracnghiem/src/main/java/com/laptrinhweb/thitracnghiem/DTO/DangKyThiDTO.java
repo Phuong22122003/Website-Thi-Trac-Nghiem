@@ -2,8 +2,6 @@ package com.laptrinhweb.thitracnghiem.DTO;
 
 import java.sql.Date;
 
-import jakarta.persistence.Column;
-
 public interface DangKyThiDTO {
     public int getIddk();
 

@@ -1,23 +1,13 @@
 package com.laptrinhweb.thitracnghiem.Controller;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Random;
-
-import javax.print.attribute.standard.MediaSize.NA;
-
-import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.laptrinhweb.thitracnghiem.Entity.DangKyThi;
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
@@ -38,12 +27,8 @@ import com.laptrinhweb.thitracnghiem.Service.GiangVienService;
 import com.laptrinhweb.thitracnghiem.Service.LopService;
 import com.laptrinhweb.thitracnghiem.Service.MonHocService;
 import com.laptrinhweb.thitracnghiem.Service.NhanVienService;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin")
@@ -63,20 +48,10 @@ public class AdminController {
     @Autowired
     EmailService emailService;
 
-    // @GetMapping("/student")
-    // public String student() {
-    // return "/admin/student";
-    // }
-
-    // @GetMapping("/class")
-    // public String lophoc() {
-    // return "/admin/class";
-    // }
-
     @ModelAttribute("nhanvien")
     public NhanVien nhanVienLogin(HttpSession session) {
         String username = (String) session.getAttribute("username");
-        NhanVien nv = nhanVienService.findByUsername(username);
+        // NhanVien nv = nhanVienService.findByUsername(username);
         return nhanVienService.findByUsername(username);
     }
 
@@ -144,7 +119,6 @@ public class AdminController {
     @PostMapping("/editMonHoc")
     public String editMonHoc(@ModelAttribute("monHoc") MonHoc monHoc, RedirectAttributes redirectAttributes,
             BindingResult errors) {
-        String errorMessage = "";
         if (monHoc.getMamh().trim().length() == 0) {
             errors.rejectValue("mamh", "monHoc", "Mã môn học không được bỏ trống");
         }

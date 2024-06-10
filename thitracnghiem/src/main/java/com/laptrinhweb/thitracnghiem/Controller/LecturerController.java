@@ -15,25 +15,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.DangKyThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.LuaChonDTO;
 import com.laptrinhweb.thitracnghiem.Entity.CauHoi;
 import com.laptrinhweb.thitracnghiem.Entity.ChangePasswordForm;
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
-import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 import com.laptrinhweb.thitracnghiem.Service.CauHoiService;
 import com.laptrinhweb.thitracnghiem.Service.DangKyThiService;
 import com.laptrinhweb.thitracnghiem.Service.GiangVienService;
 import com.laptrinhweb.thitracnghiem.Service.MonHocService;
-
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/lecturer")
@@ -190,7 +183,7 @@ public class LecturerController {
 
     @GetMapping("/view-info-question/{idch}")
     public String viewInfoQuestion(@PathVariable("idch") int idch, RedirectAttributes redirectAttributes) {
-        CauHoi cauHoi = cauHoiService.findByIdch(idch);
+        // CauHoi cauHoi = cauHoiService.findByIdch(idch);
         List<LuaChonDTO> list = cauHoiService.getInfoLuaChon(idch);
         redirectAttributes.addFlashAttribute("infoCauhoi", list);
         return "redirect:/lecturer/question";

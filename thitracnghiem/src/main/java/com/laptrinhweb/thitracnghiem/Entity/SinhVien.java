@@ -3,24 +3,18 @@ package com.laptrinhweb.thitracnghiem.Entity;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ColumnResult;
-import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-
 import java.util.Collection;
-
-import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
 
 @Entity
 // @SqlResultSetMapping(

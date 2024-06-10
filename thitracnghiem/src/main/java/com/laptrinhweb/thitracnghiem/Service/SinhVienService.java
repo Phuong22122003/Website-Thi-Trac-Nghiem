@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
 import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
-import com.laptrinhweb.thitracnghiem.Repository.Implement.SinhVienRepositoryImplt;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LopRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.SinhVienRepository;
 
+
+
 @Service
 public class SinhVienService {
-    @Autowired
-    private SinhVienRepositoryImplt sinhVienRepositoryImplt;
     @Autowired
     private SinhVienRepository sinhVienRepository;
     @Autowired
@@ -27,7 +31,8 @@ public class SinhVienService {
     private EmailService emailService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired 
+    private SessionFactory sessionFactory;
     public String getMasvByUsername(String username) {
         SinhVien sv = sinhVienRepository.getStudentByUserName(username);
         if (sv != null)
@@ -52,17 +57,47 @@ public class SinhVienService {
     public List<InfoDTO> showExamSchedules(String masv) {
         if (masv == null || masv == "")
             return null;
-        return sinhVienRepositoryImplt.showExamSchedules(masv);
+            List<InfoDTO> lichthi = null ;
+            Session session = sessionFactory.openSession();
+            String hql = "exec showExamSchedules :masv";
+            Query<InfoDTO> query = session.createNativeQuery(hql,InfoDTO.class);
+            query.setParameter("masv",masv);
+            lichthi = query.getResultList();
+            session.close();
+            return lichthi;
     }
 
     public List<InfoDTO> showExamResults(String masv) {
         if (masv == null || masv == "")
             return null;
-        return sinhVienRepositoryImplt.showExamResults(masv);
+        Session session = sessionFactory.openSession();
+        List<InfoDTO> diems = null;
+        String spCall = "exec showExamResults :masv";
+        Query<InfoDTO> query = session.createNativeQuery(spCall, InfoDTO.class);
+        query.setParameter("masv", masv);
+        diems =  query.getResultList();
+        session.close();
+        return diems;
     }
 
+    // @Transactional
     public InfoDTO getResultByID(Integer idThi) {
-        return sinhVienRepositoryImplt.getResultByID(idThi);
+        InfoDTO result = new InfoDTO();
+        // Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
+       
+        String spCall = "exec getResultByID :idThi";
+        Query<Object[]> query = session.createNativeQuery(spCall, Object[].class);
+        query.setParameter("idThi", idThi);
+        Object[] temp =  query.uniqueResult();//TENMH,NGAYTHI,LAN,SOCAU,THOILUONG,DIEM
+        result.setTenMH(temp[0].toString());
+        result.setNgayThi(Date.valueOf(temp[1].toString()));
+        result.setLanThi((Integer)temp[2]);
+        result.setSoCau((Integer)temp[3]);
+        result.setThoiLuong((Integer)temp[4]);
+        result.setDiem((Float)temp[5]);
+        session.close();
+        return result;
     }
 
     public int deleteStudent(String masv) {
@@ -137,5 +172,16 @@ public class SinhVienService {
                 sinhVienRepository.updatePasswordByEmail(email, passwordEncoder.encode(newPassword));
         }
         return listEmailError;
+    }
+    public String resetStudentPassword(String email) {
+        String newPassword, status;
+        newPassword = randomPassword();
+        status = emailService.sendMessage(email, "New Password", "Password: " + newPassword, "ResetPassword thành công");
+        if (status == "Gửi mail thất bại, vui lòng thử lại!"){
+            return status;
+        }
+        else
+            sinhVienRepository.updatePasswordByEmail(email, passwordEncoder.encode(newPassword));
+        return status;
     }
 }

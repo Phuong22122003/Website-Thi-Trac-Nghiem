@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.laptrinhweb.thitracnghiem.Entity.DangKyThi;
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
-import com.laptrinhweb.thitracnghiem.Repository.Interface.DangKyThiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LopRepository;
 
 @Service

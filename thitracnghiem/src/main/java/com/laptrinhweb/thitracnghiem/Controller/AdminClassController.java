@@ -31,7 +31,7 @@ public class AdminClassController {
     @ModelAttribute("nhanvien")
     public NhanVien nhanVienLogin(HttpSession session) {
         String username = (String) session.getAttribute("username");
-        NhanVien nv = nhanVienService.findByUsername(username);
+        // NhanVien nv = nhanVienService.findByUsername(username);
         return nhanVienService.findByUsername(username);
     }
 

@@ -1,7 +1,15 @@
 import XuLyTable, { openModal } from "../XuLyTable.js";
 XuLyTable();
-
+function showNumOfTeachers(listGiangVien){
+    const numOfTeachers = document.getElementById("numOfTeachers")
+    let count = 0
+    listGiangVien.forEach((row) => {
+        count ++;
+    })
+    numOfTeachers.textContent +=  count
+}
 const listGiangVien = document.querySelectorAll("tbody tr");
+showNumOfTeachers(listGiangVien)
 const modalContainer = document.querySelector(
     ".modal-container[data-name='m-lecturer']"
 );

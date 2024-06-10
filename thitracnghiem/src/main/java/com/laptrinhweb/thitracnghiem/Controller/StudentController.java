@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -78,7 +79,7 @@ public class StudentController {
             HttpSession session) {
 
         if (thiService.checkFinished(IDTHI)) {
-            return "redirect:home";
+            return "redirect:resultview?idThi=" + IDTHI;
         }
         List<Integer> dap_an = new ArrayList<>();
         InfoDTO thongTinThi = new InfoDTO(IDTHI, lanThi, soCau, thoiLuong, tenMh, ngayThi);
@@ -143,14 +144,14 @@ public class StudentController {
         }
         return "redirect:resultview?idThi=" + danhsach.getIdThi();
     }
-
+    // @Transactional
     @GetMapping("/resultview")
     public String showResult(@RequestParam("idThi") Integer idThi, HttpSession session, Model model) {
         DanhSachCauHoi listQuestions = cauHoiService.getPastExamQuestions(idThi);
         InfoDTO resultInfo = sinhVienService.getResultByID(idThi);
         model.addAttribute("resultInfo", resultInfo);
         model.addAttribute("listQuestions", listQuestions);
-        return "/student/exam-result.html";
+        return "/student/exam-result";
     }
 
     @PostMapping("/changepass")

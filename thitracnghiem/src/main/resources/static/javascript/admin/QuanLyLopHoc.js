@@ -38,6 +38,14 @@ function debounce(func, delay) {
         }, delay);
     };
 }
+function showNumOfClass(listOfClass){
+    const numOfClass = document.getElementById("numOfClasses")
+    let count = 0
+    listOfClass.forEach((row) => {
+        count ++;
+    })
+    numOfClass.textContent +=  count
+}
 // ------------Run---------------------
 XuLyTable()
 // const btnSearch = document.getElementById("search-button")
@@ -48,7 +56,7 @@ const delaySearch = debounce(inputSearchTyping,1000)
 search.addEventListener("keyup",()=>{
     delaySearch(listOfClass)
 })
-
+showNumOfClass(listOfClass)
 const modalContainer = document.querySelector(
     ".modal-container[data-name='m-class']"
 );

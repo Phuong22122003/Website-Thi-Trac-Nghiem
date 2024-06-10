@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.laptrinhweb.thitracnghiem.DTO.DangKyThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.ThiDTO;
 import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
-import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
+// import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.DangKyThiRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.ThiRepository;
@@ -70,34 +70,6 @@ public class GiangVienService {
         newGiangVien.setEmail(giangVien.getEmail());
         giangVienRepository.save(newGiangVien);
         return 0;
-        // else if (existingGiangVien == null && existingUserName) {
-        // GiangVien newGiangVien = new GiangVien();
-        // newGiangVien.setGioiTinh(giangVien.isGioiTinh());
-        // newGiangVien.setHo(giangVien.getHo());
-        // newGiangVien.setHocHam(giangVien.getHocHam());
-        // newGiangVien.setHocVi(giangVien.getHocVi());
-        // newGiangVien.setMaGv(giangVien.getMaGv().toUpperCase());
-        // newGiangVien.setPassWord(giangVien.getPassWord());
-        // newGiangVien.setTen(giangVien.getTen());
-        // newGiangVien.setUserName(giangVien.getUserName());
-        // newGiangVien.setTrangThaiXoa(false);
-        // newGiangVien.setEmail(giangVien.getEmail());
-        // giangVienRepository.save(newGiangVien);
-        // return 0;
-        // } else if (existingGiangVien.isTrangThaiXoa()) {
-        // existingGiangVien.setEmail(giangVien.getEmail());
-        // existingGiangVien.setGioiTinh(giangVien.isGioiTinh());
-        // existingGiangVien.setHo(giangVien.getHo());
-        // existingGiangVien.setHocHam(giangVien.getHocHam());
-        // existingGiangVien.setHocVi(giangVien.getHocVi());
-        // existingGiangVien.setPassWord(giangVien.getPassWord());
-        // existingGiangVien.setTen(giangVien.getTen());
-        // existingGiangVien.setUserName(giangVien.getUserName());
-        // existingGiangVien.setTrangThaiXoa(false);
-        // giangVienRepository.save(existingGiangVien);
-        // return 0;
-        // }
-        // return 1;
     }
 
     public int editGiangVien(String ho, String ten, String email, String hocVi, String hocHam, boolean gioiTinh,
