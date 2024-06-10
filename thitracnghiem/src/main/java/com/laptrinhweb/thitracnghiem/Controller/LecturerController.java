@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -91,18 +92,19 @@ public class LecturerController {
     }
 
     @PostMapping("/profile")
-    public String changeProfile(@ModelAttribute("giangVien") GiangVien giangVien, ModelMap model,
-            BindingResult errors) {
+    public String changeProfile(@Validated @ModelAttribute("giangVien") GiangVien giangVien,
+            BindingResult errors, ModelMap model) {
         if (giangVien.getHo().length() == 0)
             errors.rejectValue("ho", "giangVien", "Họ không được để trống!");
         if (giangVien.getTen().length() == 0)
             errors.rejectValue("ten", "giangVien", "Tên không được để trống!");
         if (errors.hasErrors()) {
-            for (FieldError error : errors.getFieldErrors()) {
-                System.out.println("====================================");
-                System.out.println(error.getField());
-                model.addAttribute("errorProfile_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // System.out.println("====================================");
+            // System.out.println(error.getField());
+            // model.addAttribute("errorProfile_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
             return "/lecturer/profile";
         }
         giangVienService.changeProfile(giangVien);
@@ -154,6 +156,7 @@ public class LecturerController {
                 || monHocService.findByMamh(maMh) == null || giangVienService.findByMaGv(maGv) == null) {
             statusCreateCauHoi = 1;
             redirectAttributes.addFlashAttribute("statusCreateCauHoi", statusCreateCauHoi);
+            redirectAttributes.addFlashAttribute("message", "Thông tin không hợp lệ");
             return "redirect:/lecturer/question";
         }
         try {
@@ -196,6 +199,7 @@ public class LecturerController {
                 || luaChonList.size() == 0 || hinhThuc.length() == 0) {
             statusCreateCauHoi = 1;
             redirectAttributes.addFlashAttribute("statusCreateCauHoi", statusCreateCauHoi);
+            redirectAttributes.addFlashAttribute("message", "Thông tin không hợp lệ");
             return "redirect:/lecturer/question";
         }
         try {
@@ -359,22 +363,24 @@ public class LecturerController {
 
     @PostMapping("/change-password/{magv}")
     public String changePassword(@PathVariable("magv") String magv,
-            @ModelAttribute("changePasswordForm") ChangePasswordForm form,
+            @Validated @ModelAttribute("changePasswordForm") ChangePasswordForm form,
             BindingResult bindingResult, ModelMap model) {
         GiangVien giangVien = giangVienService.findByMaGv(magv);
-        System.out.println("Password real: " + giangVien.getPassWord());
-        System.out.println("Old Password chua ma hoa: " + form.getOldPassword());
-        System.out.println("Old Password ma hoa: " + passwordEncoder.encode(form.getOldPassword()));
-        System.out.println("New Password: " + form.getNewPassword());
-        System.out.println("Conform Password: " + form.getConfirmNewPassword());
+        // System.out.println("Password real: " + giangVien.getPassWord());
+        // System.out.println("Old Password chua ma hoa: " + form.getOldPassword());
+        // System.out.println("Old Password ma hoa: " +
+        // passwordEncoder.encode(form.getOldPassword()));
+        // System.out.println("New Password: " + form.getNewPassword());
+        // System.out.println("Conform Password: " + form.getConfirmNewPassword());
 
-        if (form.getNewPassword().isEmpty()) {
-            bindingResult.rejectValue("newPassword", "errorChangePassword_newPassword",
-                    "Mật khẩu mới không được để trống");
-        }
+        // if (form.getNewPassword().isEmpty()) {
+        // bindingResult.rejectValue("newPassword", "errorChangePassword_newPassword",
+        // "Mật khẩu mới không được để trống");
+        // }
         if (!Objects.equals(form.getNewPassword(), form.getConfirmNewPassword())) {
             bindingResult.rejectValue("confirmNewPassword", "errorChangePassword_confirmNewPassword",
                     "Nhập lại mật khẩu không chính xác");
+
         }
         // if (!Objects.equals(form.getNewPassword(), form.getConfirmNewPassword())) {
         // bindingResult.rejectValue("confirmNewPassword",

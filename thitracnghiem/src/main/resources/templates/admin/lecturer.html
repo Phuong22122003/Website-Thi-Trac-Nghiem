@@ -388,8 +388,9 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorAdd_ho}"
-                            class="form-message"
+                            th:if="${#fields.hasErrors('ho')}"
+                            th:errors="*{ho}"
+                            class="form-message error-message"
                         ></span>
                         <div class="input-wrapper">
                             <label for="firstname-lecturer">Tên</label>
@@ -406,7 +407,8 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorAdd_ten}"
+                            th:if="${#fields.hasErrors('ten')}"
+                            th:errors="*{ten}"
                             class="form-message"
                         ></span>
                     </div>
@@ -425,8 +427,9 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_email}"
-                        class="form-message"
+                        th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"
+                        class="form-message error-message"
                     ></span>
                     <div class="input-wrapper" data-name="username">
                         <label for="username-lecturer">User Name</label>
@@ -443,8 +446,9 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_userName}"
-                        class="form-message"
+                        th:if="${#fields.hasErrors('userName')}"
+                        th:errors="*{userName}"
+                        class="form-message error-message"
                     ></span>
                     <div class="input-wrapper" data-name="password">
                         <label for="password-lecturer">Password</label>
@@ -459,8 +463,9 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_passWord}"
-                        class="form-message"
+                        th:if="${#fields.hasErrors('passWord')}"
+                        th:errors="*{passWord}"
+                        class="form-message error-message"
                     ></span>
                     <div class="box-wrapper">
                         <input
@@ -523,8 +528,9 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_maGv}"
-                        class="form-message"
+                        th:if="${#fields.hasErrors('maGv')}"
+                        th:errors="*{maGv}"
+                        class="form-message error-message"
                     ></span>
                     <div class="btn-controller">
                         <button
@@ -563,7 +569,8 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorEdit_ho}"
+                            th:if="${#fields.hasErrors('ho')}"
+                            th:errors="*{ho}"
                             class="form-message"
                         ></span>
                         <div class="input-wrapper">
@@ -582,7 +589,8 @@
                             <div class="bar"></div>
                         </div>
                         <span
-                            th:text="${errorEdit_ten}"
+                            th:if="${#fields.hasErrors('ten')}"
+                            th:errors="*{ten}"
                             class="form-message"
                         ></span>
                     </div>
@@ -602,17 +610,11 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_email}"
+                        th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"
                         class="form-message"
                     ></span>
-                    <span
-                        th:text="${errorEdit_userName}"
-                        class="form-message"
-                    ></span>
-                    <span
-                        th:text="${errorEdit_passWord}"
-                        class="form-message"
-                    ></span>
+
                     <div class="box-wrapper">
                         <input
                             type="radio"
@@ -680,7 +682,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_maGv}"
+                        th:if="${#fields.hasErrors('maGv')}"
+                        th:errors="*{maGv}"
                         class="form-message"
                     ></span>
                     <div class="btn-controller">
