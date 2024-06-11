@@ -1,6 +1,6 @@
 package com.laptrinhweb.thitracnghiem.Entity;
 
-import java.sql.Date;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,11 +10,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+
+import java.time.LocalDate;
 import java.util.Collection;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 // @SqlResultSetMapping(
@@ -35,30 +44,38 @@ import java.util.Collection;
 public class SinhVien {
     @Id
     @NotBlank(message = "Mã sinh viên không được trống!")
+    @Length(max = 15, message = "Mã sinh viên tối đa 15 ký tự")
     @Column(name = "MASV")
     private String masv;
     @NotBlank(message = "Họ không được trống!")
+    @Length(max = 30, message = "Họ sinh viên tối đa 30 ký tự")
     @Column(name = "HO")
     private String ho;
     @NotBlank(message = "Tên không được trống!")
+    @Length(max = 10, message = "Tên sinh viên tối đa 10 ký tự")
     @Column(name = "TEN")
     private String ten;
     @Column(name = "GIOITINH")
     private boolean gioiTinh;
     @NotBlank(message = "Địa chỉ không được trống!")
+    @Length(max = 100, message = "Địa chỉ tối đa 100 ký tự")
     @Column(name = "DIACHI")
     private String diaChi;
     @NotNull(message = "Ngày sinh không được trống!")
-    @Past(message = "Ngày sinh không được trống!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Ngày sinh không hợp lệ!")
     @Column(name = "NGAYSINH")
-    private Date ngaySinh;
+    private LocalDate ngaySinh;
     @NotBlank(message = "Username không được trống!")
+    @Length(max = 50, message = "Username chỉ tối đa 50 ký tự")
     @Column(name = "USERNAME")
     private String userName;
     @NotBlank(message = "Password không được trống!")
+    @Length(max = 30, message = "Password chỉ tối đa 30 ký tự")
     @Column(name = "PASSWORD")
     private String passWord;
     @Email(message = "Email không hợp lệ!")
+    @Length(max = 50, message = "Email chỉ tối đa 50 ký tự")
     @NotBlank(message = "Email không được trống!")
     @Column(name = "EMAIL")
     private String email;
@@ -75,7 +92,7 @@ public class SinhVien {
     public SinhVien() {
     }
 
-    public SinhVien(String masv, String ho, String ten, boolean gioiTinh, String diaChi, Date ngaySinh, String userName,
+    public SinhVien(String masv, String ho, String ten, boolean gioiTinh, String diaChi, LocalDate ngaySinh, String userName,
             String passWord, String maLop) {
         this.masv = masv;
         this.ho = ho;
@@ -128,11 +145,11 @@ public class SinhVien {
         this.diaChi = diaChi;
     }
 
-    public Date getNgaySinh() {
+    public LocalDate getNgaySinh() {
         return ngaySinh;
     }
 
-    public void setNgaySinh(Date ngaySinh) {
+    public void setNgaySinh(LocalDate ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
 

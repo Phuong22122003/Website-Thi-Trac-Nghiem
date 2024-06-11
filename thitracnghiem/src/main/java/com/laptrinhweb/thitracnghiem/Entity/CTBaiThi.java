@@ -17,10 +17,10 @@ import jakarta.persistence.Table;
 public class CTBaiThi {
 	@Id
 	@Column(name = "IDTHI")
-	private Integer idThi;
+	private Integer idThi;//tương ứng khóa chính của Thi
 	@Id
 	@Column(name = "IDCH")
-	private Integer idch;
+	private Integer idch;//tương ứng khóa chính của cauhoi
 
 	@Column(name = "DAPANSV")
 	private Integer dapAnSv;
@@ -30,7 +30,8 @@ public class CTBaiThi {
 	private boolean trangThaiXoa;
 
 	@ManyToOne
-	@MapsId
+	@MapsId//Dùng cho trường hợp vừa khóa chính vừa khóa ngoại 
+			//-> thông báo rằng chung field idThi với thi. Khi lưu chi tiết bài thi nếu không có thì sẽ bị dư một field thi bên dưới
 	@JoinColumn(name = "IDTHI")
 	private Thi thi;
 

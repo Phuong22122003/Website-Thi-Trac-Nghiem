@@ -7,10 +7,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.CauHoiThiDTO;
 import com.laptrinhweb.thitracnghiem.DTO.DanhSachCauHoi;
+import com.laptrinhweb.thitracnghiem.DTO.InfoFileDTO;
 import com.laptrinhweb.thitracnghiem.DTO.LuaChonDTO;
 import com.laptrinhweb.thitracnghiem.Entity.CauHoi;
 import com.laptrinhweb.thitracnghiem.Entity.FileCauHoi;
@@ -20,8 +24,17 @@ import com.laptrinhweb.thitracnghiem.Repository.Interface.FileRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.GiangVienRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LuaChonRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.MonHocRepository;
-import java.lang.Integer;
 
+import jakarta.transaction.Transactional;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.Integer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class CauHoiService {
@@ -40,6 +53,8 @@ public class CauHoiService {
     @Autowired 
     private SessionFactory sessionFactory;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     public List<CauHoiThiDTO> getListOfExamQuestion(Integer idThi, List<Integer> dap_an) {
         List<CauHoiThiDTO> li =null;
@@ -95,9 +110,19 @@ public class CauHoiService {
         return cauHoiRepository.searchCauHoi(keyword, maGv);
     }
 
-    // @Transactional(rollbackOn = Exception.class)
-    public int createYesNoQuestion(String noiDungCauhoi, String maMh, String maGv, int dapAnDung) {
+    public List<FileCauHoi> findFileCauHoiByCauHoi(CauHoi cauHoi) {
+        return fileRepository.findByCauHoi(cauHoi);
+    }
+
+    public List<InfoFileDTO> findInfoFile(CauHoi cauHoi) {
+        return fileRepository.findInfoFile(cauHoi.getIdch());
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public int createYesNoQuestion(String noiDungCauhoi, String maMh, String maGv, int dapAnDung, MultipartFile audio,
+            MultipartFile image) {
         try {
+
             CauHoi cauHoi = new CauHoi();
             cauHoi.setDapAnDung(dapAnDung);
             cauHoi.setGiangVien(giangVienRepository.findByMaGvAndTrangThaiXoa(maGv, false));
@@ -118,6 +143,37 @@ public class CauHoiService {
             luaChonNo.setThuTu(2);
             luaChonNo.setTrangThaiXoa(false);
             luaChonRepository.save(luaChonNo);
+            if (audio.getOriginalFilename() != "") {
+                long time = System.currentTimeMillis();
+                FileCauHoi fileAudio = new FileCauHoi();
+                fileAudio.setCauHoi(cauHoi);
+                fileAudio.setFileName(time +
+                        audio.getOriginalFilename());
+                // fileAudio.setFileName("a");
+                fileAudio.setType("audio");
+                fileRepository.save(fileAudio);
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                Path filePath = uploadPath.resolve(time + audio.getOriginalFilename());
+                Files.write(filePath, audio.getBytes());
+            }
+            if (image.getOriginalFilename() != "") {
+                long time = System.currentTimeMillis();
+                FileCauHoi fileImage = new FileCauHoi();
+                fileImage.setCauHoi(cauHoi);
+                fileImage.setFileName(time + image.getOriginalFilename());
+                fileImage.setType("image");
+                fileRepository.save(fileImage);
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                Path filePath = uploadPath.resolve(time + image.getOriginalFilename());
+                Files.write(filePath, image.getBytes());
+            }
+
             return 0;
         } catch (Exception e) {
             System.out.println("=============================");
@@ -130,7 +186,8 @@ public class CauHoiService {
 
     // @Transactional(rollbackOn = Exception.class)
     public int createOthersQuestion(String noiDungCauhoi, String maMh, String maGv, int dapAnDung,
-            List<String> luaChonList, String hinhThuc) {
+            List<String> luaChonList, String hinhThuc, MultipartFile audio,
+            MultipartFile image) {
         try {
             System.out.println("===========");
             System.out.println(maGv);
@@ -150,6 +207,36 @@ public class CauHoiService {
                 luaChon.setThuTu(thutu++);
                 luaChon.setTrangThaiXoa(false);
                 luaChonRepository.save(luaChon);
+            }
+            if (audio.getOriginalFilename() != "") {
+                long time = System.currentTimeMillis();
+                FileCauHoi fileAudio = new FileCauHoi();
+                fileAudio.setCauHoi(cauHoi);
+                fileAudio.setFileName(time +
+                        audio.getOriginalFilename());
+                // fileAudio.setFileName("a");
+                fileAudio.setType("audio");
+                fileRepository.save(fileAudio);
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                Path filePath = uploadPath.resolve(time + audio.getOriginalFilename());
+                Files.write(filePath, audio.getBytes());
+            }
+            if (image.getOriginalFilename() != "") {
+                long time = System.currentTimeMillis();
+                FileCauHoi fileImage = new FileCauHoi();
+                fileImage.setCauHoi(cauHoi);
+                fileImage.setFileName(time + image.getOriginalFilename());
+                fileImage.setType("image");
+                fileRepository.save(fileImage);
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                Path filePath = uploadPath.resolve(time + image.getOriginalFilename());
+                Files.write(filePath, image.getBytes());
             }
             return 0;
         } catch (Exception e) {
@@ -173,6 +260,15 @@ public class CauHoiService {
                     luaChonRepository.save(luaChon);
                 }
             }
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            for (FileCauHoi fileCauHoi : cauHoi.getFiles()) {
+                Path deletedPath = uploadPath.resolve(fileCauHoi.getFileName());
+                Files.deleteIfExists(deletedPath);
+            }
+            cauHoi.getFiles().clear();
             cauHoi.setTrangThaiXoa(true);
             cauHoiRepository.save(cauHoi);
             return 0;
@@ -189,39 +285,172 @@ public class CauHoiService {
         return luaChonDTOList;
     }
 
-    public int editYesNoQuestion(String mamh, String noiDungCauHoi, Integer dapAnDung, Integer idch) {
+    // @Transactional(rollbackOn = Exception.class)
+    // public int editYesNoQuestion(String mamh, String noiDungCauHoi, Integer
+    // dapAnDung, Integer idch,
+    // MultipartFile image, MultipartFile audio) {
 
+    // try {
+    // if (noiDungCauHoi.length() == 0 || monHocService.findByMamh(mamh) == null ||
+    // dapAnDung == null
+    // || idch == null)
+    // return 1;
+    // Path uploadPath = Paths.get(uploadDir);
+    // CauHoi cauHoi = cauHoiRepository.findByIdch(idch);
+    // cauHoi.setMonHoc(monHocRepository.findByMamh(mamh));
+    // cauHoi.setNoiDung(noiDungCauHoi);
+    // cauHoi.setDapAnDung(dapAnDung);
+
+    // List<FileCauHoi> currentFiles = new ArrayList<>(cauHoi.getFiles());
+    // if (image.getOriginalFilename() != "" || audio.getOriginalFilename() != "") {
+    // for (FileCauHoi fileCauHoi : currentFiles) {
+    // String type = null;
+    // String name = null;
+    // long time = System.currentTimeMillis();
+    // boolean isChanged = false;
+    // if (image.getOriginalFilename() != "" &&
+    // fileCauHoi.getType().equals("image")) {
+    // type = "image";
+    // currentFiles.remove(fileCauHoi);
+    // name = time + image.getOriginalFilename();
+    // isChanged = true;
+    // }
+    // if (audio.getOriginalFilename() != "" &&
+    // fileCauHoi.getType().equals("audio")) {
+    // type = "audio";
+    // currentFiles.remove(fileCauHoi);
+    // name = time + audio.getOriginalFilename();
+    // isChanged = true;
+    // }
+    // if (isChanged) {
+    // Path deletePath = uploadPath.resolve(fileCauHoi.getFileName());
+    // Files.deleteIfExists(deletePath);
+    // FileCauHoi newFileCauHoi = new FileCauHoi();
+    // newFileCauHoi.setCauHoi(cauHoi);
+    // newFileCauHoi.setFileName(time + image.getOriginalFilename());
+    // newFileCauHoi.setType(type);
+    // currentFiles.add(newFileCauHoi);
+    // if (!Files.exists(uploadPath)) {
+    // Files.createDirectories(uploadPath);
+    // }
+    // Path filePath = uploadPath.resolve(name);
+    // Files.write(filePath, image.getBytes());
+    // }
+    // }
+    // }
+
+    // cauHoi.setFiles(currentFiles);
+    // cauHoiRepository.save(cauHoi);
+    // return 0;
+    // } catch (
+
+    // Exception e) {
+    // System.out.println("====================");
+    // System.out.println(e.toString());
+    // return 1;
+    // }
+    // }
+
+    // public static boolean containsEmptyString(List<String> list) {
+    // for (String str : list) {
+    // if (str.isEmpty()) {
+    // return false; // Trả về false nếu có chuỗi rỗng
+    // }
+    // }
+    // return true; // Trả về true nếu không có chuỗi rỗng
+    // }
+    @Transactional(rollbackOn = Exception.class)
+    public int editYesNoQuestion(String mamh, String noiDungCauHoi, Integer dapAnDung, Integer idch,
+            MultipartFile image, MultipartFile audio) {
         try {
-            if (noiDungCauHoi.length() == 0 || monHocService.findByMamh(mamh) == null || dapAnDung == null
-                    || idch == null)
+            // Validate input parameters
+            if (noiDungCauHoi.isEmpty() || monHocService.findByMamh(mamh) == null || dapAnDung == null
+                    || idch == null) {
                 return 1;
+            }
 
+            // Fetch the question by id
             CauHoi cauHoi = cauHoiRepository.findByIdch(idch);
+            if (cauHoi == null) {
+                return 1;
+            }
 
+            // Set new values for the question
             cauHoi.setMonHoc(monHocRepository.findByMamh(mamh));
             cauHoi.setNoiDung(noiDungCauHoi);
             cauHoi.setDapAnDung(dapAnDung);
+
+            // Prepare the upload directory path
+            Path uploadPath = Paths.get(uploadDir);
+
+            // Handle image and audio file updates
+            if (!image.getOriginalFilename().isEmpty() || !audio.getOriginalFilename().isEmpty()) {
+                List<FileCauHoi> updatedFiles = new ArrayList<>(cauHoi.getFiles());
+
+                // Handle image file update
+                if (!image.getOriginalFilename().isEmpty()) {
+                    handleFileUpdate(image, "image", cauHoi, updatedFiles, uploadPath);
+                }
+
+                // Handle audio file update
+                if (!audio.getOriginalFilename().isEmpty()) {
+                    handleFileUpdate(audio, "audio", cauHoi, updatedFiles, uploadPath);
+                }
+
+                // Update the files list using utility methods
+                cauHoi.getFiles().clear();
+                for (FileCauHoi file : updatedFiles) {
+                    cauHoi.addFile(file);
+                }
+                // cauHoi.setFiles(updatedFiles);
+            }
+
+            // Save the updated question
             cauHoiRepository.save(cauHoi);
             return 0;
         } catch (Exception e) {
-            System.out.println("====================");
-            System.out.println(e.toString());
+            e.printStackTrace();
             return 1;
         }
     }
 
-    public static boolean containsEmptyString(List<String> list) {
-        for (String str : list) {
-            if (str.isEmpty()) {
-                return false; // Trả về false nếu có chuỗi rỗng
+    private void handleFileUpdate(MultipartFile file, String fileType, CauHoi cauHoi, List<FileCauHoi> files,
+            Path uploadPath) throws IOException {
+        // Generate new file name
+        long time = System.currentTimeMillis();
+        String newFileName = time + "_" + file.getOriginalFilename(); // Make sure the file name is unique
+
+        // Remove existing file of the same type
+        files.removeIf(f -> f.getType().equals(fileType));
+
+        // Delete the existing file if it exists
+        for (FileCauHoi existingFile : files) {
+            if (existingFile.getType().equals(fileType)) {
+                Path deletePath = uploadPath.resolve(existingFile.getFileName());
+                Files.deleteIfExists(deletePath);
             }
         }
-        return true; // Trả về true nếu không có chuỗi rỗng
+
+        // Create new file entry
+        FileCauHoi newFileCauHoi = new FileCauHoi();
+        newFileCauHoi.setCauHoi(cauHoi);
+        newFileCauHoi.setFileName(newFileName);
+        newFileCauHoi.setType(fileType);
+        files.add(newFileCauHoi);
+
+        // Write new file to the disk
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        Path filePath = uploadPath.resolve(newFileName);
+        Files.write(filePath, file.getBytes());
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public int editOthersQuestion(String mamh, String noiDungCauHoi, Integer dapAnDung, Integer idch,
             List<Integer> idlcEditedList,
-            List<String> noiDungLuaChonEditedList, List<String> noiDungLuaChonAddedList) {
+            List<String> noiDungLuaChonEditedList, List<String> noiDungLuaChonAddedList, MultipartFile image,
+            MultipartFile audio) {
         try {
             if (noiDungCauHoi.length() == 0 || monHocService.findByMamh(mamh) == null || dapAnDung == null
                     || idch == null || idlcEditedList.size() == 0 || noiDungLuaChonEditedList.size() == 0)
@@ -232,6 +461,29 @@ public class CauHoiService {
             cauHoi.setMonHoc(monHocRepository.findByMamh(mamh));
             cauHoi.setNoiDung(noiDungCauHoi);
             cauHoi.setDapAnDung(dapAnDung);
+            Path uploadPath = Paths.get(uploadDir);
+
+            // Handle image and audio file updates
+            if (!image.getOriginalFilename().isEmpty() || !audio.getOriginalFilename().isEmpty()) {
+                List<FileCauHoi> updatedFiles = new ArrayList<>(cauHoi.getFiles());
+
+                // Handle image file update
+                if (!image.getOriginalFilename().isEmpty()) {
+                    handleFileUpdate(image, "image", cauHoi, updatedFiles, uploadPath);
+                }
+
+                // Handle audio file update
+                if (!audio.getOriginalFilename().isEmpty()) {
+                    handleFileUpdate(audio, "audio", cauHoi, updatedFiles, uploadPath);
+                }
+
+                // Update the files list using utility methods
+                cauHoi.getFiles().clear();
+                for (FileCauHoi file : updatedFiles) {
+                    cauHoi.addFile(file);
+                }
+                // cauHoi.setFiles(updatedFiles);
+            }
             cauHoiRepository.save(cauHoi);
             int thuTu = noiDungLuaChonEditedList.size() + 1;
             int i = 0;
@@ -249,6 +501,7 @@ public class CauHoiService {
                     luaChonRepository.save(luaChon);
                 }
             }
+
         } catch (Exception e) {
             System.out.println("====================");
             System.out.println(e.toString());

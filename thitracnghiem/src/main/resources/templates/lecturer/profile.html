@@ -248,7 +248,8 @@
                             </div>
                             <span
                                 class="form-message"
-                                th:text="${errorProfile_ho}"
+                                th:if="${#fields.hasErrors('ho')}"
+                                th:errors="*{ho}"
                             ></span>
                             <div class="input-wrapper">
                                 <label for="firstname">Tên</label>
@@ -266,7 +267,8 @@
                             </div>
                             <span
                                 class="form-message"
-                                th:text="${errorProfile_ten}"
+                                th:if="${#fields.hasErrors('ten')}"
+                                th:errors="*{ten}"
                             ></span>
                         </div>
                         <span class="form-message"></span>

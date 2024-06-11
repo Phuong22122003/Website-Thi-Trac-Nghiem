@@ -10,10 +10,14 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
-import java.sql.Date;
-
+// import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "LOP")
@@ -21,13 +25,17 @@ public class Lop implements Serializable {
     @Id
     @Column(name = "MALOP")
     @NotBlank(message = "Mã lớp không được trống")
+    @Length(max = 15, message = "Mã lớp tối đa 15 ký tự")
     private String maLop;
     @Column(name = "TENLOP")
     @NotBlank(message = "Tên lớp không được trống")
+    @Length(max = 50, message = "Tên lớp tối đa 50 ký tự")
     private String tenLop;
     @Column(name = "NAMNHAPHOC")
     @NotNull(message = "Năm nhập học không được trống")
-    private Date nam_nhap_hoc;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Năm nhập học không hợp lệ!")
+    private LocalDate nam_nhap_hoc;
     @Column(name = "TRANGTHAIXOA")
     private boolean trang_thai_xoa;
     @OneToMany(mappedBy = "lop", fetch = FetchType.LAZY)
@@ -39,7 +47,7 @@ public class Lop implements Serializable {
 
     }
 
-    public Lop(String maLop, String tenLop, Date nam_nhap_hoc, boolean trang_thai_xoa) {
+    public Lop(String maLop, String tenLop, LocalDate nam_nhap_hoc, boolean trang_thai_xoa) {
         this.maLop = maLop;
         this.tenLop = tenLop;
         this.nam_nhap_hoc = nam_nhap_hoc;
@@ -62,11 +70,11 @@ public class Lop implements Serializable {
         this.tenLop = tenLop;
     }
 
-    public Date getNamNhapHoc() {
-        return (Date) nam_nhap_hoc.clone();
+    public LocalDate getNamNhapHoc() {
+        return nam_nhap_hoc;
     }
 
-    public void setNamNhapHoc(Date nam_nhap_hoc) {
+    public void setNamNhapHoc(LocalDate nam_nhap_hoc) {
         this.nam_nhap_hoc = nam_nhap_hoc;
     }
 
@@ -74,11 +82,11 @@ public class Lop implements Serializable {
         return sinhviens;
     }
 
-    public Date getNam_nhap_hoc() {
+    public LocalDate getNam_nhap_hoc() {
         return nam_nhap_hoc;
     }
 
-    public void setNam_nhap_hoc(Date nam_nhap_hoc) {
+    public void setNam_nhap_hoc(LocalDate nam_nhap_hoc) {
         this.nam_nhap_hoc = nam_nhap_hoc;
     }
 

@@ -130,61 +130,40 @@
                     />
                 </a>
                 <p class="desc">
-                    Welcome back! <br />Please login/Signup to your account.
+                    Vui lòng nhập mã xác nhận
                 </p>
-                <div
-                    th:if="${param.error}"
-                    style="color: red"
-                >
-                Invalid username and password.
-                </div>
-                <div
-                    th:if="${param.logout}"
-                    style="color: red"
-                >
-                You have been logged out.
-                </div>
                 <div
                     th:if="${message}"
                     th:text="${message}"
                     style="color: red"
-                 ></div>
-                <form th:action="@{/login}" class="login-form" method="post">
+                ></div>
+
+                <form 
+                    th:action="@{/validation}" 
+                    class="login-form" 
+                    th:object="${validationDTO}"
+                    method="post"
+                >
                     <div class="input-wrapper">
-                        <label for="username">Username</label>
+                        <label for="code">code</label>
                         <input
                             type="text"
                             placeholder=""
-                            name="username"
-                            id="username"
+                            name="code"
+                            id="code"
                             autocomplete="nope"
                             autofocus
+                            th:field = "*{code}"
                         />
                         <div class="bar"></div>
                     </div>
-                    <div class="input-wrapper">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            placeholder=""
-                            name="password"
-                            id="password"
-                        />
-                        <div class="bar"></div>
-                    </div>
-                    <!-- <div class="box_wrapper">
-                        <input
-                            type="checkbox"
-                            name="remember"
-                            id="remember"
-                            hidden
-                        />
-                        <label for="remember">Remember me</label>
-                    </div> -->
-                    <div class="box_wrapper">
-                        <a href="/forgot-password" style="color: rgb(0, 8, 255); padding-left: 70px;">Quên mật khẩu</a>
-                    </div>
-                    <input type="submit" value="Login" class="btn" />
+                    <span
+                        class="error-message"
+                        th:if="${#fields.hasErrors('code')}"
+                        th:errors="*{code}"
+                        style="color: red; font-style: italic"
+                    ></span>
+                <button type="submit" value="Login" class="btn">Gửi</button>
                 </form>
             </div>
             <div class="login-right">

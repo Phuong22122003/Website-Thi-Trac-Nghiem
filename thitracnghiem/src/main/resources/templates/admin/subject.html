@@ -483,7 +483,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_mamh}"
+                        th:if="${#fields.hasErrors('mamh')}"
+                        th:errors="*{mamh}"
                         class="form-message"
                     ></span>
 
@@ -501,7 +502,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_tenmh}"
+                        th:if="${#fields.hasErrors('tenmh')}"
+                        th:errors="*{tenmh}"
                         class="form-message"
                     ></span>
 
@@ -519,7 +521,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_soTietLt}"
+                        th:if="${#fields.hasErrors('soTietLt')}"
+                        th:errors="*{soTietLt}"
                         class="form-message"
                     ></span>
 
@@ -537,7 +540,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorAdd_soTietTh}"
+                        th:if="${#fields.hasErrors('soTietTh')}"
+                        th:errors="*{soTietTh}"
                         class="form-message"
                     ></span>
 
@@ -573,7 +577,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_mamh}"
+                        th:if="${#fields.hasErrors('mamh')}"
+                        th:errors="*{mamh}"
                         class="form-message"
                     ></span>
                     <div class="input-wrapper">
@@ -590,7 +595,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_tenmh}"
+                        th:if="${#fields.hasErrors('tenmh')}"
+                        th:errors="*{tenmh}"
                         class="form-message"
                     ></span>
                     <div class="input-wrapper">
@@ -608,7 +614,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_soTietLt}"
+                        th:if="${#fields.hasErrors('soTietLt')}"
+                        th:errors="*{soTietLt}"
                         class="form-message"
                     ></span>
                     <div class="input-wrapper">
@@ -626,7 +633,8 @@
                         <div class="bar"></div>
                     </div>
                     <span
-                        th:text="${errorEdit_soTietTh}"
+                        th:if="${#fields.hasErrors('soTietTh')}"
+                        th:errors="*{soTietTh}"
                         class="form-message"
                     ></span>
 
@@ -655,6 +663,7 @@
             var errorAdd = /*[[${errorAdd}]]*/ null;
             var errorEdit = /*[[${errorEdit}]]*/ null;
             var monHocError = /*[[${monHocError}]]*/ null;
+            console.log(errorAdd);
             if (
                 statusXoaMonHoc !== "null" &&
                 statusXoaMonHoc !== undefined &&

@@ -10,7 +10,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import com.laptrinhweb.thitracnghiem.DTO.InfoDTO;
@@ -18,6 +17,8 @@ import com.laptrinhweb.thitracnghiem.Entity.Lop;
 import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LopRepository;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.SinhVienRepository;
+
+import jakarta.transaction.Transactional;
 
 
 
@@ -85,7 +86,7 @@ public class SinhVienService {
         InfoDTO result = new InfoDTO();
         // Session session = sessionFactory.getCurrentSession();
         Session session = sessionFactory.openSession();
-       
+        session.getTransaction();    
         String spCall = "exec getResultByID :idThi";
         Query<Object[]> query = session.createNativeQuery(spCall, Object[].class);
         query.setParameter("idThi", idThi);
@@ -109,6 +110,12 @@ public class SinhVienService {
         return 1;
     }
 
+    public boolean checkExistEmail(String masv,String email){
+        SinhVien sv = sinhVienRepository.findStudentByEmail(email);
+        if(sv!=null && !sv.getMasv().trim().toUpperCase().equals(masv.trim().toUpperCase()))return true;//Có trung email
+        return false;
+    }
+
     public boolean modifyInfo(SinhVien sinhVien) {
         try {
             sinhVienRepository.modifyInfo(sinhVien.getMasv(), sinhVien.getHo(), sinhVien.getTen(),
@@ -122,11 +129,12 @@ public class SinhVienService {
 
     public boolean addNewStudent(SinhVien sv) throws Exception {
         SinhVien temp;
-        if ((temp = sinhVienRepository.checkValidSinhVien(sv.getMasv(), sv.getUserName())) != null) {
-            if (temp.getMasv() == sv.getMasv())
+        if ((temp = sinhVienRepository.checkValidSinhVien(sv.getMasv(), sv.getUserName(),sv.getEmail())) != null) {
+            if (temp.getMasv().trim().toUpperCase().equals(sv.getMasv().trim().toUpperCase()))
                 throw new Exception("Mã sinh viên đã tồn tại");
-            else
+            else if(temp.getUserName().trim().toUpperCase().equals(sv.getUserName().trim().toUpperCase()))
                 throw new Exception("Username đã được sử dụng");
+            else throw new Exception("Email đã được sử dụng");
         }
         try {
             sv.setPassWord(passwordEncoder.encode(sv.getPassWord()));

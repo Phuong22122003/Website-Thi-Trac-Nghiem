@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.laptrinhweb.thitracnghiem.DTO.EmailDTO;
+import com.laptrinhweb.thitracnghiem.DTO.ListEmailDTO;
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
 import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
 import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.SinhVienRepository;
+import com.laptrinhweb.thitracnghiem.Service.GiangVienService;
 import com.laptrinhweb.thitracnghiem.Service.LopHocService;
 import com.laptrinhweb.thitracnghiem.Service.NhanVienService;
 import com.laptrinhweb.thitracnghiem.Service.SinhVienService;
@@ -35,19 +38,20 @@ public class AdminStudentController {
     LopHocService lopHocService;
     @Autowired
     NhanVienService nhanVienService;
-
+    @Autowired SinhVienRepository sinhVienRepository;
+    @Autowired private GiangVienService giangVienService;
+    //Lấy danh sách lớp 
     @ModelAttribute("listOfClass")
     public List<Lop> getListOfClass() {
         return lopHocService.getAllClass();
     }
-
+    //Hiện thông tin nhân viên 
     @ModelAttribute("nhanvien")
     public NhanVien nhanVienLogin(HttpSession session) {
         String username = (String) session.getAttribute("username");
-        // NhanVien nv = nhanVienService.findByUsername(username);
         return nhanVienService.findByUsername(username);
     }
-
+    //Đưa sinh viên lên cho việc nhập form thêm mới
     @ModelAttribute("student")
     public SinhVien newStudent() {
         SinhVien sv = new SinhVien();
@@ -55,7 +59,7 @@ public class AdminStudentController {
         sv.setLop(lop);
         return sv;
     }
-
+    // Đưa sinh viên lên cho việc nhập form sửa chữa
     @ModelAttribute("editStudent")
     public SinhVien editStudent() {
         SinhVien sv = new SinhVien();
@@ -63,16 +67,17 @@ public class AdminStudentController {
         sv.setLop(lop);
         return sv;
     }
-
+    //Đưa danh sách email trống cho giảng viên có nhu cầu gửi mail cho sinh viên
     @ModelAttribute("EmailDTO")
-    public EmailDTO createListOfEmail() {
+    public ListEmailDTO createListOfEmail() {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 150; i++) {
             emails.add("");
         }
-        return new EmailDTO(emails);
+        return new ListEmailDTO(emails);
     }
 
+    //Khi người dùng vào trang student thì sẽ tìm lớp và trả về danh sách sinh viên của lớp đầu
     @GetMapping("/student")
     public String student(Model model) {
         @SuppressWarnings("unchecked")
@@ -94,8 +99,8 @@ public class AdminStudentController {
     }
 
     @PostMapping("/deleteStudent")
-    public String deleteStudent(@RequestParam(name = "masv", defaultValue = "", required = false) String masv,
-            @RequestParam(name = "maLop", defaultValue = "", required = false) String maLop,
+    public String deleteStudent(@RequestParam(name = "masv") String masv,
+            @RequestParam(name = "maLop") String maLop,
             RedirectAttributes redirectAttributes) {
         int status = sinhVienService.deleteStudent(masv);
         if (status == 0) {
@@ -105,6 +110,7 @@ public class AdminStudentController {
         return "redirect:student/" + maLop.trim();
     }
 
+    // chỉnh sửa thông tin sinh viên
     @PostMapping("/editStudent")
     public String editStudent(@ModelAttribute("editStudent") SinhVien student, RedirectAttributes redirectAttributes,
             BindingResult errors) {
@@ -116,6 +122,16 @@ public class AdminStudentController {
             errors.rejectValue("diaChi", "editStudent", "Địa chỉ không được trống");
         if (student.getNgaySinh() == null)
             errors.rejectValue("ngaySinh", "editStudent", "Ngày sinh không được trống");
+        if(student.getEmail().length() == 0)
+            errors.rejectValue("email", null, "Email không được trống");
+        else
+            if(sinhVienService.checkExistEmail(student.getMasv(),student.getEmail()))
+              errors.rejectValue("email", null, "Email bị trùng với sinh viên khác");
+        else 
+            if(giangVienService.findByEmail(student.getEmail())!=null||
+                nhanVienService.findByEmail(student.getEmail())!=null)
+                errors.rejectValue("email", null, "Email đã được sử dụng");
+        
         String classID = student.getLop().getMaLop().trim();
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("message", "Sửa thất bại\nVui lòng nhập chính xác các trường sau");
@@ -145,6 +161,26 @@ public class AdminStudentController {
             redirectAttributes.addFlashAttribute("student", student);
             return "redirect:student/" + classID;
         }
+        if(sinhVienRepository.findSinhVienByMasv(student.getMasv())!=null){
+            errors.rejectValue("masv", "", "Mã sinh viên đã tồn tại");
+        }
+        if(sinhVienRepository.getStudentByUserName(student.getUserName())!=null||
+                    giangVienService.findByUsername(student.getUserName())!=null||
+                    nhanVienService.findByUsername(student.getUserName())!=null){
+
+            errors.rejectValue("userName", "", "UserName đã tồn tại");
+        }
+        if(sinhVienRepository.findStudentByEmail(student.getEmail())!=null||
+            giangVienService.findByEmail(student.getEmail())!=null||
+            nhanVienService.findByEmail(student.getEmail())!=null){
+            errors.rejectValue("email", "", "Email đã tồn tại");
+        }
+        if (errors.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message", "Thêm thất bại\nVui lòng nhập chính xác các trường sau");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.student", errors);
+            redirectAttributes.addFlashAttribute("student", student);
+            return "redirect:student/" + classID;
+        }
         try {
             sinhVienService.addNewStudent(student);
             redirectAttributes.addFlashAttribute("message", "Thêm thành công");
@@ -157,7 +193,7 @@ public class AdminStudentController {
     }
 
     @PostMapping("/sendemail")
-    public String sendMail(EmailDTO emails, RedirectAttributes redirectAttributes) {
+    public String sendMail(ListEmailDTO emails, RedirectAttributes redirectAttributes) {
         String maLop = emails.getListEmail().get(0).trim();
         emails.getListEmail().removeIf(email -> email.length() == 0);
         List<String> emailsError = sinhVienService

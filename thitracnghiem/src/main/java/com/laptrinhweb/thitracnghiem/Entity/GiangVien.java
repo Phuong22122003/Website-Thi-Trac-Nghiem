@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "GIANGVIEN")
@@ -35,6 +38,9 @@ public class GiangVien implements Serializable {
     private String passWord;
     @Column(name = "TRANGTHAIXOA")
     private boolean trangThaiXoa;
+    @NotBlank(message = "Email không được bỏ trống")
+    @Email(message = "Email không hợp lệ!")
+    @Length(max = 50, message = "Email tối đa 50 ký tự")
     @Column(name = "EMAIL")
     private String email;
 

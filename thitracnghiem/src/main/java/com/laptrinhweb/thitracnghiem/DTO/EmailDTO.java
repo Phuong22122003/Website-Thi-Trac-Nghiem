@@ -1,23 +1,29 @@
 package com.laptrinhweb.thitracnghiem.DTO;
 
-import java.util.List;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
+/*
+ * Dùng để kiểm tra email người dùng nhập khi người dùng quên mật khẩu và muốn lấy mật khẩu mới
+ */
 public class EmailDTO {
-    private List<String> listEmail;
+    @NotBlank(message = "Vui lòng nhập email")
+    @Email(message = "Email không hợp lệ")
+    private String email;
 
-    public List<String> getListEmail() {
-        return listEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setListEmail(List<String> listEmail) {
-        this.listEmail = listEmail;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public EmailDTO(String email) {
+        this.email = email;
     }
 
     public EmailDTO() {
-    }
-
-    public EmailDTO(List<String> listEmail) {
-        this.listEmail = listEmail;
     }
     
 }

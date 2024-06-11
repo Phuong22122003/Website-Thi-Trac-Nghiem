@@ -11,7 +11,7 @@ import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
 
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, String> {
-    @Query(value = "From NhanVien s where s.userName = :userName and s.trangThaiXoa = false")
+    @Query(value = "From NhanVien s where s.userName = :userName")
     public NhanVien getEmployeeByUserName(@Param("userName") String userName);
 
     @Query(value = "From NhanVien s where s.email = :email")

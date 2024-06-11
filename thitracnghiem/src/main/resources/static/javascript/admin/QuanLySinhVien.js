@@ -9,7 +9,9 @@ function openFormCreateNewAccount() {
         );
         const inputMaLop = modalContainer.querySelector("#class");
         const maLop = document.getElementById("classSelect");
+        // const inputNgaySinh = document.getElementById("birthday-student")
         inputMaLop.value = maLop.value;
+        // inputNgaySinh.value = "2000-01-01";
         clearErrorMessage();
         openModal(modalContainer);
     });
@@ -19,7 +21,7 @@ function sendEmail(listSinhVien) {
     const btnChooseEmail = document.querySelectorAll(".btn-register")[1];
     const btnSend = document.querySelectorAll(".btn-register")[2];
     if (btnChooseEmail.innerHTML == "Hủy") {
-        currentIndexOfEmail = 2;
+        currentIndexOfEmail = 1;
         btnSend.style.display = "none";
         btnCreateNewForm.style.display = "inline-flex";
         btnChooseEmail.innerHTML = innerHTMLOfBtnEmail;
@@ -57,12 +59,14 @@ function sendEmail(listSinhVien) {
     };
 }
 function setValueBeforSend(listSinhVien) {
+    const btnChooseEmail = document.querySelectorAll(".btn-register")[1];
+    if (btnChooseEmail.innerHTML == "Hủy") return;
     const maLop = document.getElementById("classSelect");
     const listOfEmail = document.querySelector("#sendemail");
     const inputEmails = listOfEmail.querySelectorAll("input");
     inputEmails[0].value = maLop.value;
-    const btnSend = document.querySelectorAll(".btn-register")[2];
-
+    // const btnSend = document.querySelectorAll(".btn-register")[2];
+    // window.alert('a')
     listSinhVien.forEach((row) => {
         row.onclick = function () {
             if (row.style.color === "white") {

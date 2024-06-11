@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +21,9 @@ import com.laptrinhweb.thitracnghiem.Entity.GiangVien;
 import com.laptrinhweb.thitracnghiem.Entity.Lop;
 import com.laptrinhweb.thitracnghiem.Entity.MonHoc;
 import com.laptrinhweb.thitracnghiem.Entity.NhanVien;
+import com.laptrinhweb.thitracnghiem.Entity.SinhVien;
 import com.laptrinhweb.thitracnghiem.Repository.Interface.LopRepository;
+import com.laptrinhweb.thitracnghiem.Repository.Interface.SinhVienRepository;
 import com.laptrinhweb.thitracnghiem.Service.DangKyThiService;
 import com.laptrinhweb.thitracnghiem.Service.EmailService;
 import com.laptrinhweb.thitracnghiem.Service.GiangVienService;
@@ -47,6 +50,8 @@ public class AdminController {
     NhanVienService nhanVienService;
     @Autowired
     EmailService emailService;
+    @Autowired
+    SinhVienRepository sinhVienRepository;
 
     @ModelAttribute("nhanvien")
     public NhanVien nhanVienLogin(HttpSession session) {
@@ -94,9 +99,12 @@ public class AdminController {
         }
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorAdd", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.monHoc", errors);
+            redirectAttributes.addFlashAttribute("monHoc", monHoc);
             redirectAttributes.addFlashAttribute("monHocError", monHoc);
             return "redirect:/admin/subject";
         }
@@ -106,10 +114,14 @@ public class AdminController {
         if (statusThemMonHoc != 0) {
             redirectAttributes.addFlashAttribute("errorAdd", true);
             errors.rejectValue("mamh", "monHoc", "Mã môn học đã tồn tại!");
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.monHoc", errors);
+            redirectAttributes.addFlashAttribute("monHoc", monHoc);
             redirectAttributes.addFlashAttribute("monHocError", monHoc);
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            // redirectAttributes.addFlashAttribute("monHocError", monHoc);
             return "redirect:/admin/subject";
         }
         redirectAttributes.addFlashAttribute("statusThemMonHoc", statusThemMonHoc);
@@ -131,11 +143,17 @@ public class AdminController {
         if (monHoc.getSoTietTh() < 0) {
             errors.rejectValue("soTietTh", "monHoc", "Số tiết thực hành không thể < 0");
         }
+        if (monHoc.getSoTietTh() + monHoc.getSoTietLt() <= 0) {
+            errors.rejectValue("soTietTh", "monHoc", "STLT và STTH không thể < 0");
+        }
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorEdit", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.monHoc", errors);
+            redirectAttributes.addFlashAttribute("monHoc", monHoc);
             redirectAttributes.addFlashAttribute("monHocError", monHoc);
             return "redirect:/admin/subject";
         }
@@ -144,9 +162,12 @@ public class AdminController {
         if (statusEditMonHoc != 0) {
             redirectAttributes.addFlashAttribute("errorEdit", true);
             errors.rejectValue("mamh", "monHoc", "Mã môn học không tồn tại!");
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(), error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.monHoc", errors);
+            redirectAttributes.addFlashAttribute("monHoc", monHoc);
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
             redirectAttributes.addFlashAttribute("monHocError", monHoc);
             return "redirect:/admin/subject";
         }
@@ -188,8 +209,8 @@ public class AdminController {
     }
 
     @PostMapping("/addGiangVien")
-    public String addGiangVien(@ModelAttribute("giangVien") GiangVien giangVien, RedirectAttributes redirectAttributes,
-            BindingResult errors) {
+    public String addGiangVien(@Validated @ModelAttribute("giangVien") GiangVien giangVien, BindingResult errors,
+            RedirectAttributes redirectAttributes) {
         if (giangVien.getHo().trim().length() == 0) {
             errors.rejectValue("ho", "giangVien", "Họ giảng viên không được bỏ trống");
         }
@@ -205,34 +226,55 @@ public class AdminController {
         if (giangVien.getUserName().trim().length() == 0) {
             errors.rejectValue("userName", "giangVien", "Username không được bỏ trống");
         }
-        if (giangVien.getEmail().trim().length() == 0) {
-            errors.rejectValue("email", "giangVien", "Email không được bỏ trống");
+        GiangVien gv = giangVienService.findByEmail(giangVien.getEmail());
+        GiangVien checkUsernameGiangVien = giangVienService.findByUsername(giangVien.getUserName());
+        SinhVien checkEmailSinhVien = sinhVienRepository.findStudentByEmail(giangVien.getEmail());
+        SinhVien checkUsernameSinhVien = sinhVienRepository.getStudentByUserName(giangVien.getUserName());
+        if (gv!= null || checkEmailSinhVien!=null)  {
+            errors.rejectValue("email", "giangVien", "Email đã tồn tại");
         }
+        if (checkUsernameSinhVien != null) {
+            errors.rejectValue("userName", "giangVien", "Username đã tồn tại"); 
+        }
+        if (checkUsernameGiangVien != null) {
+            errors.rejectValue("userName", "giangVien", "Username đã tồn tại"); 
+        }
+        // if (giangVien.getEmail().trim().length() == 0) {
+        //     errors.rejectValue("email", "giangVien", "Email không được bỏ trống");
+        // }
+        
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorAdd", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.giangVien", errors);
+            redirectAttributes.addFlashAttribute("giangVien", giangVien);
+
             redirectAttributes.addFlashAttribute("giangVienError", giangVien);
             return "redirect:/admin/lecturer";
         }
 
+        // redirectAttributes.addFlashAttribute("giangVienError", giangVien);
         giangVien.setTrangThaiXoa(false);
         int statusThemGiangVien = giangVienService.addGiangVien(giangVien);
         if (statusThemGiangVien == 1) {
             errors.rejectValue("maGv", "giangVien", "Mã giáo viên đã tồn tại");
             redirectAttributes.addFlashAttribute("errorAdd", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.giangVien", errors);
+            redirectAttributes.addFlashAttribute("giangVien", giangVien);
             redirectAttributes.addFlashAttribute("giangVienError", giangVien);
             return "redirect:/admin/lecturer";
         } else if (statusThemGiangVien == 2) {
             errors.rejectValue("userName", "giangVien", "Tên tài khoản đã tồn tại");
             redirectAttributes.addFlashAttribute("errorAdd", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorAdd_" + error.getField(), error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.giangVien", errors);
+            redirectAttributes.addFlashAttribute("giangVien", giangVien);
             redirectAttributes.addFlashAttribute("giangVienError", giangVien);
             return "redirect:/admin/lecturer";
         }
@@ -244,8 +286,8 @@ public class AdminController {
     }
 
     @PostMapping("/editGiangVien")
-    public String editGiangVien(@ModelAttribute("giangVien") GiangVien giangVien, RedirectAttributes redirectAttributes,
-            BindingResult errors) {
+    public String editGiangVien(@Validated @ModelAttribute("giangVien") GiangVien giangVien, BindingResult errors, RedirectAttributes redirectAttributes
+           ) {
         if (giangVien.getHo().trim().length() == 0) {
             errors.rejectValue("ho", "giangVien", "Họ giảng viên không được bỏ trống");
         }
@@ -255,14 +297,25 @@ public class AdminController {
         if (giangVien.getTen().trim().length() == 0) {
             errors.rejectValue("ten", "giangVien", "Tên giảng viên không được bỏ trống");
         }
-        if (giangVien.getEmail().trim().length() == 0) {
-            errors.rejectValue("email", "giangVien", "Email không được bỏ trống");
+        // if (giangVien.getEmail().trim().length() == 0) {
+        //     errors.rejectValue("email", "giangVien", "Email không được bỏ trống");
+        // }
+        GiangVien gv = giangVienService.findByEmail(giangVien.getEmail());
+        SinhVien sv = sinhVienRepository.findStudentByEmail(giangVien.getEmail());
+        if (gv!= null && !gv.getMaGv().equals(giangVien.getMaGv()))  {
+            errors.rejectValue("email", "giangVien", "Email đã tồn tại");
+            }
+        if (sv != null) { 
+            errors.rejectValue("email", "giangVien", "Email đã tồn tại");
         }
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorEdit", true);
-            for (FieldError error : errors.getFieldErrors()) {
-                redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(), error.getDefaultMessage());
-            }
+            // for (FieldError error : errors.getFieldErrors()) {
+            // redirectAttributes.addFlashAttribute("errorEdit_" + error.getField(),
+            // error.getDefaultMessage());
+            // }
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.giangVien", errors);
+            redirectAttributes.addFlashAttribute("giangVien", giangVien);
             redirectAttributes.addFlashAttribute("giangVienError", giangVien);
             return "redirect:/admin/lecturer";
         }
@@ -276,10 +329,10 @@ public class AdminController {
     }
 
     @GetMapping("/searchGiangVien")
-    public String searchGiangVien(@RequestParam(name = "keyword") String keyword, ModelMap model) {
+    public String searchGiangVien(@RequestParam(name = "keyword") String keyword, Model model) {
         List<GiangVien> giangVienList = giangVienService.searchGiangVien(keyword);
         model.addAttribute("giangVienList", giangVienList);
-        return "redirect:/admin/lecturer";
+        return "/admin/lecturer";
     }
 
     // =============================Create Exam=============================

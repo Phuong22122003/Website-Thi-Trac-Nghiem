@@ -1,5 +1,8 @@
 package com.laptrinhweb.thitracnghiem.DTO;
 
+/*
+ * Dùng để hiển thị thông tin khi người dùng thi, xem điểm, xem lịch thi 
+ */
 import java.sql.Date;
 
 public class InfoDTO {

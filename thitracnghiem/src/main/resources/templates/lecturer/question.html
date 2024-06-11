@@ -345,6 +345,7 @@
             <div class="modal-container" data-name="create-cauhoi-yes/no">
                 <div class="header">Tạo câu hỏi</div>
                 <form
+                    enctype="multipart/form-data"
                     th:action="@{/lecturer/create-yesno-question/{maGv}(maGv=${giangVien.maGv})}"
                     class="register-form"
                     method="post"
@@ -367,11 +368,48 @@
                             id="noiDungCauHoi"
                             cols="30"
                             rows="2"
-                            required
                             autofocus
                         ></textarea>
                         <div class="bar"></div>
                     </div>
+                    <label for="image">File hinh ảnh</label>
+                    <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        onchange="preview.src=window.URL.createObjectURL(this.files[0])"
+                    />
+                    <label
+                        for="image"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 16px;
+                        "
+                    >
+                        <img
+                            th:src="@{/assets/img/image-holder.jpg}"
+                            src="#"
+                            alt=""
+                            class="upload-image"
+                            id="preview"
+                        />
+                    </label>
+                    <label for="audio">File audio</label>
+                    <input
+                        type="file"
+                        name="audio"
+                        id="audio"
+                        onchange="audioCreateYesno.src=window.URL.createObjectURL(this.files[0])"
+                    />
+                    <audio
+                        controls
+                        id="audioCreateYesno"
+                        src=""
+                        style="display: block; width: 100%; margin-top: 16px"
+                    >
+                        <source type="audio/mpeg" />
+                    </audio>
                     <span class="form-message"></span>
                     <div class="box-wrapper box-wrapper-yesno-question">
                         <input
@@ -414,6 +452,7 @@
                     th:action="@{/lecturer/create-others-question/{maGv}(maGv=${giangVien.maGv})}"
                     class="register-form"
                     method="post"
+                    enctype="multipart/form-data"
                 >
                     <div class="input-wrapper">
                         <label for="hinhThuc">Hình thức câu hỏi:</label>
@@ -450,6 +489,46 @@
                         <div class="bar"></div>
                     </div>
                     <span class="form-message"></span>
+                    <label for="image">File hinh ảnh</label>
+                    <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        onchange="previewOther.src=window.URL.createObjectURL(this.files[0])"
+                    />
+                    <label
+                        for="image"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 16px;
+                        "
+                    >
+                        <img
+                            th:src="@{/assets/img/image-holder.jpg}"
+                            src="#"
+                            alt=""
+                            class="upload-image"
+                            id="previewOther"
+                        />
+                    </label>
+                    <div>
+                        <label for="audio">File audio</label>
+                        <input
+                            type="file"
+                            name="audio"
+                            id="audio"
+                            onchange="audioCreateOthers.src = window.URL.createObjectURL(this.files[0])"
+                        />
+                    </div>
+                    <audio
+                        controls
+                        id="audioCreateOthers"
+                        src=""
+                        style="display: block; width: 100%; margin-top: 16px"
+                    >
+                        <source type="audio/mpeg" />
+                    </audio>
                     <div class="option-wrapper">
                         <div class="input-wrapper input-option">
                             <div class="wrapper-option">
@@ -519,6 +598,27 @@
                         class="question-content"
                         th:text="${infoCauhoi[0].noiDungCauHoi}"
                     ></p>
+                    <div
+                        th:each="file: ${listHinhAnh}"
+                        style="display: flex; justify-content: center"
+                    >
+                        <img
+                            th:if="${file.type}=='image'"
+                            class="upload-image"
+                            th:src="${'/get-file/image/' + file.fileName}"
+                            alt=""
+                        />
+                        <audio
+                            th:if="${file.type}=='audio'"
+                            controls
+                            style="width: 400px"
+                        >
+                            <source
+                                th:src="${'/get-file/audio/' + file.fileName}"
+                                type="audio/mpeg"
+                            />
+                        </audio>
+                    </div>
                     <div class="selection-wrapper">
                         <span
                             class="selection"
@@ -532,6 +632,7 @@
             <div class="modal-container" data-name="edit-cauhoi-yes/no">
                 <div class="header">Chỉnh sửa câu hỏi</div>
                 <form
+                    enctype="multipart/form-data"
                     th:action="@{/lecturer/edit-yesno-question/{idchEdited}(idchEdited=${idchEdited})}"
                     class="register-form"
                     method="post"
@@ -562,6 +663,67 @@
                         <div class="bar"></div>
                     </div>
                     <span class="form-message"></span>
+                    <div>
+                        <label for="image">Chọn hình ảnh:</label>
+                        <input
+                            type="file"
+                            name="image"
+                            id="image"
+                            onchange="imgEditYesno.src=window.URL.createObjectURL(this.files[0])"
+                        />
+                    </div>
+                    <div th:each="file: ${listHinhAnh}">
+                        <div
+                            th:switch="${file.type}"
+                            style="
+                                display: flex;
+                                align-items: center;
+                                flex-direction: column;
+                                margin-top: 16px;
+                                row-gap: 16px;
+                            "
+                        >
+                            <img
+                                th:case="'image'"
+                                id="imgEditYesno"
+                                class="upload-image"
+                                th:src="${'/get-file/image/' + file.fileName}"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="audio">Chọn audio</label>
+                        <input
+                            type="file"
+                            name="audio"
+                            id="audio"
+                            onchange="audioEditYesno.src=window.URL.createObjectURL(this.files[0])"
+                        />
+                    </div>
+                    <div th:each="file : ${listHinhAnh}">
+                        <div
+                            th:switch="${file.type}"
+                            style="
+                                display: flex;
+                                align-items: center;
+                                flex-direction: column;
+                                margin-top: 16px;
+                                row-gap: 16px;
+                            "
+                        >
+                            <audio
+                                th:src="${'/get-file/audio/' + file.fileName}"
+                                controls
+                                style="width: 400px"
+                                id="audioEditYesno"
+                                th:case="'audio'"
+                            >
+                                <source type="audio/mpeg" />
+                            </audio>
+                        </div>
+                    </div>
                     <div class="box-wrapper box-wrapper-yesno-question">
                         <input
                             type="radio"
@@ -606,6 +768,7 @@
                     class="register-form"
                     method="post"
                     th:if="${listLuaChon!=null && listLuaChon[0].hinhThuc.toLowerCase() != 'yes/no'}"
+                    enctype="multipart/form-data"
                 >
                     <div class="input-wrapper">
                         <label for="monHoc">Chọn môn học:</label>
@@ -635,6 +798,67 @@
                         <div class="bar"></div>
                     </div>
                     <span class="form-message"></span>
+                    <div>
+                        <label for="image">Chọn hình ảnh:</label>
+                        <input
+                            type="file"
+                            name="image"
+                            id="image"
+                            onchange="imgEditOthers.src=window.URL.createObjectURL(this.files[0])"
+                        />
+                    </div>
+                    <div th:each="file: ${listHinhAnh}">
+                        <div
+                            th:switch="${file.type}"
+                            style="
+                                display: flex;
+                                align-items: center;
+                                flex-direction: column;
+                                margin-top: 16px;
+                                row-gap: 16px;
+                            "
+                        >
+                            <img
+                                th:case="'image'"
+                                id="imgEditOthers"
+                                class="upload-image"
+                                th:src="${'/get-file/image/' + file.fileName}"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="audio">Chọn audio</label>
+                        <input
+                            type="file"
+                            name="audio"
+                            id="audio"
+                            onchange="audioEditOthers.src=window.URL.createObjectURL(this.files[0])"
+                        />
+                    </div>
+                    <div th:each="file : ${listHinhAnh}">
+                        <div
+                            th:switch="${file.type}"
+                            style="
+                                display: flex;
+                                align-items: center;
+                                flex-direction: column;
+                                margin-top: 16px;
+                                row-gap: 16px;
+                            "
+                        >
+                            <audio
+                                th:src="${'/get-file/audio/' + file.fileName}"
+                                controls
+                                style="width: 400px"
+                                id="audioEditOthers"
+                                th:case="'audio'"
+                            >
+                                <source type="audio/mpeg" />
+                            </audio>
+                        </div>
+                    </div>
                     <div class="option-wrapper">
                         <div
                             class="input-wrapper input-option"
@@ -708,12 +932,14 @@
         ></script>
         <script th:inline="javascript">
             var statusCreateCauHoi = /*[[${statusCreateCauHoi}]]*/ null;
+            var message = /*[[${message}]]*/ null;
             var statusDeleteCauHoi = /*[[${statusDeleteCauHoi}]]*/ null;
             var statusEditCauHoi = /*[[${statusEditCauHoi}]]*/ null;
             var listLuaChon = /*[[${listLuaChon}]]*/ null;
+            var listHinhAnh = /*[[${listHinhAnh}]]*/ null;
             var infoCauhoi = /*[[${infoCauhoi}]]*/ null;
             let optionAddedList = [];
-            console.log(infoCauhoi);
+            console.log(listHinhAnh);
             let rowQuestions = document.querySelectorAll(".question");
             const tbody = document.querySelector("tbody");
             if (
@@ -733,7 +959,7 @@
                     toast({
                         type: "error",
                         title: "Thất bại!",
-                        message: "Không thể thêm câu hỏi",
+                        message: message,
                         duration: 3000,
                     });
                 }
@@ -785,7 +1011,7 @@
                     toast({
                         type: "error",
                         title: "Thất bại!",
-                        message: "Không thể sửa câu hỏi đã thi",
+                        message: message,
                         duration: 3000,
                     });
                 }
@@ -825,6 +1051,8 @@
                     event.stopPropagation()
                 );
                 modal.addEventListener("click", () => {
+                    const audio = modalContainer.querySelector("audio");
+                    if (audio) audio.pause();
                     modal.classList.remove("open");
                     modalContainer.classList.remove("open");
                     const formGroups =
@@ -842,6 +1070,8 @@
                 const closeBtn = modalContainer.querySelector(`.closeBtn`);
 
                 closeBtn.addEventListener("click", () => {
+                    const audio = modalContainer.querySelector("audio");
+                    if (audio) audio.pause();
                     modal.classList.remove("open");
                     modalContainer.classList.remove("open");
                     const formGroups =
@@ -876,12 +1106,16 @@
                     event.stopPropagation()
                 );
                 modal.addEventListener("click", () => {
+                    const audio = modalContainer.querySelector("audio");
+                    if (audio) audio.pause();
                     modal.classList.remove("open");
                     modalContainer.classList.remove("open");
                 });
                 const closeBtn = modalContainer.querySelector(".top i");
 
                 closeBtn.addEventListener("click", () => {
+                    const audio = modalContainer.querySelector("audio");
+                    if (audio) audio.pause();
                     modal.classList.remove("open");
                     modalContainer.classList.remove("open");
                 });
@@ -913,6 +1147,21 @@
             //     });
             // }
 
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        document
+                            .querySelector("#image-upload")
+                            .attr("src", e.target.result)
+                            .width(150)
+                            .height(200);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
             function sortQuestionBySubject() {
                 tbody.innerHTML = "";
                 const selectedOption =

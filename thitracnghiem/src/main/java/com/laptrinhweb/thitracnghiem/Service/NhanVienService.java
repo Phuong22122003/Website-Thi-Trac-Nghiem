@@ -17,9 +17,11 @@ public class NhanVienService {
     public NhanVien findByManv(String manv) {
         return nhanVienRepository.findByManv(manv);
     }
-
+    public NhanVien findByEmail(String email) {
+        return nhanVienRepository.findEmployeeByEmail(email);
+    }
     public NhanVien findByUsername(String username) {
-        return nhanVienRepository.findByUserNameAndTrangThaiXoa(username, false);
+        return nhanVienRepository.getEmployeeByUserName(username);
     }
     public String resetEmployeePassword(String email){
         String newPassword = emailService.randomPassword();

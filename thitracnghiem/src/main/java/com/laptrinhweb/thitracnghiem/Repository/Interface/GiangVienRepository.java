@@ -26,8 +26,9 @@ public interface GiangVienRepository extends JpaRepository<GiangVien, String> {
 
     public GiangVien findByUserName(String userName);
 
+    
     public GiangVien findByUserNameAndTrangThaiXoa(String userName, boolean trangThaiXoa);
 
-    @Query(value = "exec searchGiangVien @keyword = :keyword", nativeQuery = true)
+    @Query(value = "EXEC searchGiangVien @keyword = :keyword", nativeQuery = true)
     public List<GiangVien> searchGiangVien(@Param("keyword") String keyword);
 }

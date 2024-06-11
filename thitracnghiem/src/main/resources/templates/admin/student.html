@@ -870,9 +870,15 @@
                             id="m-email"
                             rules="required"
                             th:field="*{email}"
-                            readonly
                         />
+                            <!-- readonly -->
                     </div>
+                    <span
+                        class="error-message"
+                        th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"
+                        style="color: red; font-style: italic"
+                    ></span>
                     <!-- <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">cccc</span> -->
                     <span class="form-message"></span>
                     <div class="btn-controller">

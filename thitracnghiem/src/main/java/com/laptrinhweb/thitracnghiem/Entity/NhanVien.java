@@ -2,6 +2,8 @@ package com.laptrinhweb.thitracnghiem.Entity;
 
 import java.util.Collection;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,17 +16,23 @@ import jakarta.persistence.Table;
 public class NhanVien {
     @Id
     @Column(name = "MANV")
+    @Length(max = 15, message = "Mã NV dài tối đa 15 ký tự")
     private String manv;
+    @Length(max = 20, message = "Họ dài tối đa 20 ký tự")
     @Column(name = "HO")
     private String ho;
+    @Length(max = 7, message = "Tên dài tối đa 7 ký tự")
     @Column(name = "TEN")
     private String ten;
     @Column(name = "GIOITINH")
     private boolean gioiTinh;
+    @Length(max = 50, message = "Username dài tối đa 50 ký tự")
     @Column(name = "USERNAME")
     private String userName;
+    @Length(max = 30, message = "Password dài tối đa 30 ký tự")
     @Column(name = "PASSWORD")
     private String passWord;
+    @Length(max = 50, message = "Email dài tối đa 50 ký tự")
     @Column(name = "EMAIL")
     private String email;
     @Column(name = "TRANGTHAIXOA")

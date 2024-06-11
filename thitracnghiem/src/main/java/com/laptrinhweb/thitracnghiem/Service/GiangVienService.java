@@ -97,6 +97,10 @@ public class GiangVienService {
         return giangVienRepository.findByMaGv(maGv);
     }
 
+    public GiangVien findByEmail(String email) {
+        return giangVienRepository.findByEmail(email);
+    }
+
     public String resetPasswordLecturer(String maGv) {
         GiangVien gv = giangVienRepository.findByMaGv(maGv);
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -142,6 +146,6 @@ public class GiangVienService {
     }
 
     public GiangVien findByUsername(String username) {
-        return giangVienRepository.findByUserNameAndTrangThaiXoa(username, false);
+        return giangVienRepository.findByUserName(username);
     }
 }
